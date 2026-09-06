@@ -33,18 +33,19 @@ test('todayKey uses local calendar fields instead of UTC slicing', () => {
   assert.equal(todayKey(date), '2026-09-06');
 });
 
-test('childTemplate creates v2 required collections and profile areas', () => {
+test('childTemplate creates current required collections and profile areas', () => {
   const child = childTemplate({ name: ' Bé A ', dateOfBirth: '2020-01-01' });
   assert.equal(child.name, 'Bé A');
   assert.deepEqual(child.learningGoals, []);
   assert.deepEqual(child.healthRecords, []);
   assert.deepEqual(child.assessments, []);
+  assert.deepEqual(child.attachments, []);
   assert.deepEqual(child.developmentProfile.interests, []);
 });
 
 test('import validation migrates supported v1 and rejects unsupported versions', () => {
   assert.throws(() => validateImportedState('{"version":9,"children":[]}'));
-  assert.equal(validateImportedState('{"version":1,"children":[]}').version, 2);
+  assert.equal(validateImportedState('{"version":1,"children":[]}').version, 3);
 });
 
 test('local advisor still returns development-stage insight after migration changes', () => {

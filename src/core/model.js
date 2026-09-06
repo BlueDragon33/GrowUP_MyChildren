@@ -65,6 +65,7 @@ export function childTemplate(data) {
     portfolio: [],
     roadmap: [],
     reminders: [],
+    attachments: [],
     developmentProfile: { strengths: [], interests: [], supportNeeds: [], notes: '' },
     education: { curriculum: '', languages: [], targetOutcomes: [] },
     privacy: { screenLockEnabled: false, hideHealthOnOverview: false }

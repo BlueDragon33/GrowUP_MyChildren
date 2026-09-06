@@ -40,10 +40,15 @@
 - Lượt 33: Longitudinal development cockpit (goals, 7-day movement, 7-day habits, portfolio, measurement trends). **Completed in v0.2.0.** This advances Lượt 29 without claiming pediatric interpretation.
 - Lượt 34: Portable calendar bridge via `.ics` export. **Completed in v0.2.0.** Google account authorization remains Lượt 24.
 - Lượt 35: Local-calendar date correctness. **Completed in v0.2.0.** Replaces UTC slicing for daily logs to avoid date drift near local midnight.
+- Lượt 36: Screen-privacy controls and sensitive-data presentation hardening. **Completed in v0.3.0 as screen privacy only.** This is not encryption-at-rest.
+- Lượt 37: Development-profile editor (strengths, interests, support needs, target outcomes). **Completed in v0.3.0.**
+- Lượt 38: Attachment metadata layer and storage adapter interface. **Metadata layer completed in v0.3.0; binary/cloud storage remains Lượt 26.**
+- Lượt 39: Cloud/auth provider interfaces with no provider secrets in source. **Provider-neutral calendar/cloud interfaces completed in v0.3.0; real authorization remains Lượt 21/22/24.**
+- Lượt 40: Browser smoke tests and accessibility regression gate. **Static/PWA/accessibility smoke gate completed in v0.3.0; true browser E2E remains pending until a browser runner is introduced.**
 
 ## Next generated rounds
-- Lượt 36: Screen-privacy controls and sensitive-data presentation hardening.
-- Lượt 37: Development-profile editor (strengths, interests, support needs, target outcomes).
-- Lượt 38: Attachment metadata layer and storage adapter interface.
-- Lượt 39: Cloud/auth provider interfaces with no provider secrets in source.
-- Lượt 40: End-to-end browser smoke tests and accessibility regression gate.
+- Lượt 41: Family-role policy model (owner/parent/guardian/viewer) before external authentication.
+- Lượt 42: Local notification capability layer and reminder due-state engine before push delivery.
+- Lượt 43: Backup integrity manifest, import preview and safer restore workflow.
+- Lượt 44: Age-stage goal templates and development-domain taxonomy without forcing fixed outcomes.
+- Lượt 45: Longitudinal family report export (machine-readable first; printable report later).
