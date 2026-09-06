@@ -70,7 +70,9 @@ test('child dialog receives accessibility semantics and Escape closes it', async
   const dialog = page.locator('[role="dialog"]');
   await expect(dialog).toBeVisible();
   await expect(dialog).toHaveAttribute('aria-modal', 'true');
-  await expect(dialog).toHaveAttribute('aria-labelledby', 'growup-child-dialog-title');
+  const labelledBy = await dialog.getAttribute('aria-labelledby');
+  expect(labelledBy).toBeTruthy();
+  await expect(page.locator(`#${labelledBy}`)).toHaveText('Tạo hồ sơ trẻ');
   await expect(page.locator('#childForm input[name="name"]')).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(page.locator('#childForm')).toHaveCount(0);
