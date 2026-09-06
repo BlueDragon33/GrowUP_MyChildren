@@ -45,7 +45,7 @@ test('childTemplate creates current required collections and profile areas', () 
 
 test('import validation migrates supported v1 and rejects unsupported versions', () => {
   assert.throws(() => validateImportedState('{"version":9,"children":[]}'));
-  assert.equal(validateImportedState('{"version":1,"children":[]}').version, 3);
+  assert.equal(validateImportedState('{"version":1,"children":[]}').version, 4);
 });
 
 test('local advisor still returns development-stage insight after migration changes', () => {
