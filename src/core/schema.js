@@ -1,6 +1,7 @@
 import { normalizeIntegration, PROVIDERS } from './integrations.js';
+import { normalizeFamilyMember, defaultOwnerMember } from './roles.js';
 
-export const CURRENT_SCHEMA_VERSION = 3;
+export const CURRENT_SCHEMA_VERSION = 4;
 
 function array(value) { return Array.isArray(value) ? value : []; }
 function object(value, fallback = {}) { return value && typeof value === 'object' && !Array.isArray(value) ? value : fallback; }
@@ -44,10 +45,11 @@ export function normalizeChild(child = {}) {
   };
 }
 
-export function blankStateV3() {
+export function blankStateV4() {
+  const owner = defaultOwnerMember();
   return {
     version: CURRENT_SCHEMA_VERSION,
-    family: { name: 'Gia đình của tôi', members: [] },
+    family: { name: 'Gia đình của tôi', members: [owner], activeMemberId: owner.id },
     children: [],
     selectedChildId: null,
     settings: { compact: false, privacyMode: false, lastBackupAt: null, lastSavedAt: null },
@@ -62,17 +64,22 @@ export function blankStateV3() {
 export function migrateState(input) {
   if (!input || typeof input !== 'object') throw new Error('Dữ liệu GrowUP không hợp lệ.');
   if (!Array.isArray(input.children)) throw new Error('Dữ liệu GrowUP thiếu danh sách trẻ.');
-  if (input.version != null && ![1, 2, 3].includes(Number(input.version))) {
+  if (input.version != null && ![1, 2, 3, 4].includes(Number(input.version))) {
     throw new Error(`Phiên bản dữ liệu GrowUP ${input.version} chưa được hỗ trợ.`);
   }
 
-  const base = blankStateV3();
+  const base = blankStateV4();
+  const sourceFamily = object(input.family);
+  const sourceMembers = array(sourceFamily.members);
+  const members = sourceMembers.length ? sourceMembers.map(normalizeFamilyMember) : base.family.members;
+  const requestedMemberId = sourceFamily.activeMemberId || base.family.activeMemberId;
+  const activeMemberId = members.some((member) => member.id === requestedMemberId) ? requestedMemberId : members[0]?.id || null;
   const sourceIntegrations = object(input.integrations);
   const migrated = {
     ...base,
     ...input,
     version: CURRENT_SCHEMA_VERSION,
-    family: { ...base.family, ...object(input.family), members: array(input.family?.members) },
+    family: { ...base.family, ...sourceFamily, members, activeMemberId },
     settings: { ...base.settings, ...object(input.settings) },
     integrations: {
       calendar: normalizeIntegration(sourceIntegrations.calendar || base.integrations.calendar, PROVIDERS.LOCAL),
