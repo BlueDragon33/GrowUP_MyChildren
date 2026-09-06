@@ -23,7 +23,7 @@ test('v3 controls include accessible privacy state and labeled forms', async () 
 test('service worker caches every v3 runtime module', async () => {
   const sw = await read('sw.js');
   for (const asset of ['enhancements.js','schema.js','analytics.js','calendar.js','attachments.js','integrations.js','privacy.js']) {
-    assert.match(sw, new RegExp(asset.replace('.', '\\.')));
+    assert.ok(sw.includes(asset), `service worker should cache ${asset}`);
   }
   assert.match(sw, /growup-mychildren-v3/);
 });
