@@ -73,7 +73,8 @@ document.addEventListener('submit',(event)=>{
   if(event.target.id==='v7PrintForm'){
     event.preventDefault(); const state=readState(),child=childOf(state); if(!child)return;
     const sections=new FormData(event.target).getAll('sections'); if(!sections.length){alert('Hãy chọn ít nhất một phần cho báo cáo.');return;}
-    const printWindow=window.open('','_blank','noopener,noreferrer'); if(!printWindow){alert('Trình duyệt đang chặn cửa sổ báo cáo.');return;}
+    const printWindow=window.open('','_blank'); if(!printWindow){alert('Trình duyệt đang chặn cửa sổ báo cáo.');return;}
+    try { printWindow.opener=null; } catch {}
     const html=buildPrintableReport(child,{sections,title:`Báo cáo phát triển - ${child.name}`});
     printWindow.document.open(); printWindow.document.write(html); printWindow.document.close(); setTimeout(()=>{printWindow.focus();printWindow.print();},150); return;
   }
