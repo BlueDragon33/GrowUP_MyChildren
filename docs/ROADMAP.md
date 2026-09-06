@@ -45,10 +45,15 @@
 - Lượt 38: Attachment metadata layer and storage adapter interface. **Metadata layer completed in v0.3.0; binary/cloud storage remains Lượt 26.**
 - Lượt 39: Cloud/auth provider interfaces with no provider secrets in source. **Provider-neutral calendar/cloud interfaces completed in v0.3.0; real authorization remains Lượt 21/22/24.**
 - Lượt 40: Browser smoke tests and accessibility regression gate. **Static/PWA/accessibility smoke gate completed in v0.3.0; true browser E2E remains pending until a browser runner is introduced.**
+- Lượt 41: Family-role policy model (owner/parent/guardian/viewer) before external authentication. **Completed in v0.4.0 as a local policy model. Real identity/authentication remains Lượt 21.**
+- Lượt 42: Local notification capability layer and reminder due-state engine before push delivery. **Completed in v0.4.0 for due-state and browser permission capability. Background push delivery remains Lượt 25.**
+- Lượt 43: Backup integrity manifest, import preview and safer restore workflow. **Completed in v0.4.0 with SHA-256 checksum verification and restore preview.**
+- Lượt 44: Age-stage goal templates and development-domain taxonomy without forcing fixed outcomes. **Completed in v0.4.0 as optional templates.**
+- Lượt 45: Longitudinal family report export. **Machine-readable JSON completed in v0.4.0; health is excluded by default and printable report remains later work.**
 
 ## Next generated rounds
-- Lượt 41: Family-role policy model (owner/parent/guardian/viewer) before external authentication.
-- Lượt 42: Local notification capability layer and reminder due-state engine before push delivery.
-- Lượt 43: Backup integrity manifest, import preview and safer restore workflow.
-- Lượt 44: Age-stage goal templates and development-domain taxonomy without forcing fixed outcomes.
-- Lượt 45: Longitudinal family report export (machine-readable first; printable report later).
+- Lượt 46: Unified developmental event timeline linking learning, health, physical activity, reminders and portfolio milestones without duplicating source records.
+- Lượt 47: Evidence linking between learning goals, skills, portfolio items and attachment metadata so progress can be traced to supporting artifacts.
+- Lượt 48: Local family-policy editor with safeguards; real users/identity still depend on Lượt 21 authentication.
+- Lượt 49: Interoperability exports for selected non-sensitive datasets (CSV/JSON) with explicit field selection and health exclusion by default.
+- Lượt 50: Production-readiness gate: true browser E2E, accessibility audit, destructive-action regression tests and deployment verification after GitHub Pages is enabled.

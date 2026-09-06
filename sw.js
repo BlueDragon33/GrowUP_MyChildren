@@ -1,9 +1,11 @@
-const CACHE = 'growup-mychildren-v3';
+const CACHE = 'growup-mychildren-v4';
 const ASSETS = [
   './', './index.html', './app.webmanifest', './assets/icon.svg',
-  './src/styles.css', './src/enhancements.css', './src/app.js', './src/enhancements.js',
+  './src/styles.css', './src/enhancements.css', './src/v4.css',
+  './src/app.js', './src/enhancements.js', './src/v4.js',
   './src/core/model.js', './src/core/store.js', './src/core/schema.js', './src/core/analytics.js',
   './src/core/calendar.js', './src/core/attachments.js', './src/core/integrations.js', './src/core/privacy.js',
+  './src/core/roles.js', './src/core/reminders.js', './src/core/backup.js', './src/core/templates.js', './src/core/report.js',
   './src/core/insights.js'
 ];
 self.addEventListener('install', (event) => {
