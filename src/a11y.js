@@ -32,7 +32,10 @@ function enhanceDialog(anchorSelector, closeSelector, titleId) {
     heading.id = heading.id || titleId;
     card.setAttribute('aria-labelledby', heading.id);
   }
-  queueMicrotask(() => card.querySelector('input,select,textarea,button')?.focus());
+  const focusTarget = card.querySelector('input,select,textarea,button');
+  const moveFocusInside = () => focusTarget?.focus({ preventScroll: true });
+  moveFocusInside();
+  setTimeout(moveFocusInside, 0);
   card.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
     event.preventDefault();
