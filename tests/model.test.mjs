@@ -40,12 +40,16 @@ test('childTemplate creates current required collections and profile areas', () 
   assert.deepEqual(child.healthRecords, []);
   assert.deepEqual(child.assessments, []);
   assert.deepEqual(child.attachments, []);
+  assert.deepEqual(child.evidenceLinks, []);
   assert.deepEqual(child.developmentProfile.interests, []);
 });
 
-test('import validation migrates supported v1 and rejects unsupported versions', () => {
+test('import validation migrates v1-v4 to v5 and rejects unsupported versions', () => {
   assert.throws(() => validateImportedState('{"version":9,"children":[]}'));
-  assert.equal(validateImportedState('{"version":1,"children":[]}').version, 4);
+  for (const version of [1,2,3,4]) {
+    const migrated = validateImportedState(JSON.stringify({ version, children: [] }));
+    assert.equal(migrated.version, 5);
+  }
 });
 
 test('local advisor still returns development-stage insight after migration changes', () => {

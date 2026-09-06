@@ -13,14 +13,15 @@ const observer = new MutationObserver(() => queueMicrotask(enhance));
 let scheduled = false;
 
 function readState() {
-  try { return migrateState(JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"version":3,"children":[]}')); }
-  catch { return migrateState({ version: 3, children: [] }); }
+  try { return migrateState(JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"version":5,"children":[]}')); }
+  catch { return migrateState({ version: 5, children: [] }); }
 }
 function childOf(state) { return state.children.find((c) => c.id === state.selectedChildId) || state.children[0] || null; }
 function escapeHtml(value = '') { return String(value).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function csvList(value='') { return String(value).split(',').map((item)=>item.trim()).filter(Boolean); }
 function download(name, text, type) { const blob = new Blob([text], { type }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = name; a.click(); URL.revokeObjectURL(url); }
 function privacyActive() { return sessionStorage.getItem(PRIVACY_KEY) === '1'; }
+function isOverviewTitle(title='') { return String(title).startsWith('Tổng quan'); }
 
 function saveChildChange(mutator, type) {
   let state = readState();
@@ -51,14 +52,14 @@ function lineChart(records, field, label) {
 
 function overviewPanel(child) {
   const snap = childSnapshot(child), age = ageOnDate(child.dateOfBirth), stage = stageForAge(age), records = recentHealthRecords(child, 8);
-  return `<section class="card v2-panel" data-v2="overview"><div class="v2-heading"><div><span class="v2-kicker">Development cockpit v3</span><h2>Tổng hợp phát triển dài hạn</h2></div><span class="pill">${escapeHtml(stage.title)}</span></div><div class="v2-metrics"><div><strong>${progressPercent(child.learningGoals)}%</strong><span>Mục tiêu hoàn thành</span></div><div><strong>${snap.weeklyPhysicalMinutes}</strong><span>Phút vận động / 7 ngày</span></div><div><strong>${snap.habit7dRate}%</strong><span>Thói quen / 7 ngày</span></div><div><strong>${snap.portfolioCount}</strong><span>Dấu mốc portfolio</span></div></div><div class="v2-growth-grid privacy-health">${lineChart(records,'height','Chiều cao (cm)')}${lineChart(records,'weight','Cân nặng (kg)')}</div><div class="v2-note">Hồ sơ v3 có schema migration, hồ sơ phát triển, minh chứng và adapter tích hợp; dữ liệu sức khỏe vẫn chỉ được mô tả, không tự chẩn đoán.</div></section>`;
+  return `<section class="card v2-panel" data-v2="overview"><div class="v2-heading"><div><span class="v2-kicker">Development cockpit</span><h2>Tổng hợp phát triển dài hạn</h2></div><span class="pill">${escapeHtml(stage.title)}</span></div><div class="v2-metrics"><div><strong>${progressPercent(child.learningGoals)}%</strong><span>Mục tiêu hoàn thành</span></div><div><strong>${snap.weeklyPhysicalMinutes}</strong><span>Phút vận động / 7 ngày</span></div><div><strong>${snap.habit7dRate}%</strong><span>Thói quen / 7 ngày</span></div><div><strong>${snap.portfolioCount}</strong><span>Dấu mốc portfolio</span></div></div><div class="v2-growth-grid privacy-health">${lineChart(records,'height','Chiều cao (cm)')}${lineChart(records,'weight','Cân nặng (kg)')}</div><div class="v2-note">Biểu đồ và số liệu mô tả tiến trình đã nhập; dữ liệu sức khỏe không được tự diễn giải thành chẩn đoán.</div></section>`;
 }
 
 function calendarPanel(child, state) {
   const local = publicIntegrationDescriptor(PROVIDERS.LOCAL);
   const google = publicIntegrationDescriptor(PROVIDERS.GOOGLE_CALENDAR);
   const cloud = publicIntegrationDescriptor(PROVIDERS.CLOUD);
-  return `<section class="card v2-panel" data-v2="calendar"><div class="v2-heading"><div><span class="v2-kicker">Calendar & integration bridge</span><h2>Kết nối lịch và dữ liệu</h2></div><span class="pill">${escapeHtml(state.integrations.calendar.status)}</span></div><p>Xuất nhắc nhở thành <code>.ics</code> để nhập vào Google Calendar, Apple Calendar hoặc Outlook. OAuth Google và cloud sync chỉ được kích hoạt sau khi có backend/authorization; source code không chứa secret.</p><div class="v3-adapters"><div><strong>${escapeHtml(local.label)}</strong><small>${local.supports.join(' · ')}</small></div><div><strong>${escapeHtml(google.label)}</strong><small>Yêu cầu cấp quyền tài khoản</small></div><div><strong>${escapeHtml(cloud.label)}</strong><small>Yêu cầu backend + mã hóa</small></div></div><button class="primary" id="v2ExportIcs">Xuất lịch .ics</button></section>`;
+  return `<section class="card v2-panel" data-v2="calendar"><div class="v2-heading"><div><span class="v2-kicker">Calendar & integration bridge</span><h2>Kết nối lịch và dữ liệu</h2></div><span class="pill">${escapeHtml(state.integrations.calendar.status)}</span></div><p>Xuất nhắc nhở thành tệp <code>.ics</code> để nhập vào Google Calendar, Apple Calendar hoặc Outlook. OAuth Google và cloud sync chỉ được kích hoạt sau khi có backend/authorization; source code không chứa secret.</p><div class="v3-adapters"><div><strong>${escapeHtml(local.label)}</strong><small>${local.supports.join(' · ')}</small></div><div><strong>${escapeHtml(google.label)}</strong><small>Yêu cầu cấp quyền tài khoản</small></div><div><strong>${escapeHtml(cloud.label)}</strong><small>Yêu cầu backend + mã hóa</small></div></div><button class="primary" id="v2ExportIcs">Xuất lịch .ics</button></section>`;
 }
 
 function profilePanel(child) {
@@ -69,7 +70,7 @@ function profilePanel(child) {
 
 function attachmentPanel(child) {
   const list = (child.attachments || []).slice().reverse().map((item)=>`<div class="item"><div class="item-main"><div class="item-title">${escapeHtml(item.title)}</div><small>${escapeHtml(item.kind)}${item.fileName?` · ${escapeHtml(item.fileName)}`:''}${item.url?` · <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">Mở liên kết</a>`:''}</small></div><button class="secondary" data-v3-delete-attachment="${escapeHtml(item.id)}">Xóa</button></div>`).join('');
-  return `<section class="card v2-panel" data-v3="attachments"><div class="v2-heading"><div><span class="v2-kicker">Evidence metadata</span><h2>Minh chứng & tài liệu</h2></div><span class="pill">${child.attachments?.length||0} mục</span></div><div class="grid two-col"><form id="v3AttachmentForm" class="form"><label><span>Tiêu đề</span><input name="title" required placeholder="Bài dự án, chứng chỉ, ảnh hoạt động..."></label><label><span>Loại</span><select name="kind"><option value="project">Dự án</option><option value="certificate">Chứng chỉ</option><option value="image">Ảnh</option><option value="video">Video</option><option value="document">Tài liệu</option><option value="link">Liên kết</option><option value="other">Khác</option></select></label><label><span>Liên kết https (nếu có)</span><input name="url" type="url" placeholder="https://..."></label><label><span>Tên tệp tham chiếu (nếu có)</span><input name="fileName" placeholder="certificate.pdf"></label><label><span>Ghi chú</span><textarea name="note"></textarea></label><button class="primary">Thêm metadata minh chứng</button><small>v0.3 chỉ lưu metadata/liên kết; chưa tải byte tệp lên cloud.</small></form><div class="list">${list||'<div class="empty">Chưa có minh chứng metadata.</div>'}</div></div></section>`;
+  return `<section class="card v2-panel" data-v3="attachments"><div class="v2-heading"><div><span class="v2-kicker">Evidence metadata</span><h2>Minh chứng & tài liệu</h2></div><span class="pill">${child.attachments?.length||0} mục</span></div><div class="grid two-col"><form id="v3AttachmentForm" class="form"><label><span>Tiêu đề</span><input name="title" required placeholder="Bài dự án, chứng chỉ, ảnh hoạt động..."></label><label><span>Loại</span><select name="kind"><option value="project">Dự án</option><option value="certificate">Chứng chỉ</option><option value="image">Ảnh</option><option value="video">Video</option><option value="document">Tài liệu</option><option value="link">Liên kết</option><option value="other">Khác</option></select></label><label><span>Liên kết https (nếu có)</span><input name="url" type="url" placeholder="https://..."></label><label><span>Tên tệp tham chiếu (nếu có)</span><input name="fileName" placeholder="certificate.pdf"></label><label><span>Ghi chú</span><textarea name="note"></textarea></label><button class="primary">Thêm metadata minh chứng</button><small>Chỉ lưu metadata/liên kết ở bản tĩnh; chưa tải byte tệp lên cloud.</small></form><div class="list">${list||'<div class="empty">Chưa có minh chứng metadata.</div>'}</div></div></section>`;
 }
 
 function ensurePrivacyButton() {
@@ -87,7 +88,7 @@ function applyPrivacy(title) {
   document.querySelectorAll('.privacy-obscured').forEach((node)=>node.classList.remove('privacy-obscured'));
   if (!active) return;
   if (isSensitivePage(title)) document.querySelectorAll('.main > :not(.topbar)').forEach((node)=>node.classList.add('privacy-obscured'));
-  if (title === 'Tổng quan') {
+  if (isOverviewTitle(title)) {
     document.querySelector('.cards-4 .card:nth-child(4)')?.classList.add('privacy-obscured');
     document.querySelector('.privacy-health')?.classList.add('privacy-obscured');
   }
@@ -104,7 +105,7 @@ function enhance() {
     const state = readState(), child = childOf(state);
     document.documentElement.dataset.schemaVersion = String(state.version);
     ensurePrivacyButton();
-    if (child && title === 'Tổng quan' && !document.querySelector('[data-v2="overview"]')) main.insertAdjacentHTML('beforeend', overviewPanel(child));
+    if (child && isOverviewTitle(title) && !document.querySelector('[data-v2="overview"]')) main.insertAdjacentHTML('beforeend', overviewPanel(child));
     if (child && /Lịch/.test(title) && !document.querySelector('[data-v2="calendar"]')) main.insertAdjacentHTML('beforeend', calendarPanel(child,state));
     if (child && title === 'Đánh giá' && !document.querySelector('[data-v3="profile"]')) main.insertAdjacentHTML('beforeend', profilePanel(child));
     if (child && title === 'Portfolio' && !document.querySelector('[data-v3="attachments"]')) main.insertAdjacentHTML('beforeend', attachmentPanel(child));
