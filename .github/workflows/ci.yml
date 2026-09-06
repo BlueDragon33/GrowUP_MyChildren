@@ -14,3 +14,17 @@ jobs:
           node-version: 22
       - name: Verify source and tests
         run: npm run verify
+
+  browser-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Install Playwright test runner
+        run: npm install --no-save --no-audit --no-fund @playwright/test
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run Chromium E2E
+        run: npm run e2e
