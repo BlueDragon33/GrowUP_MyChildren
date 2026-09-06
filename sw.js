@@ -1,13 +1,14 @@
-const CACHE = 'growup-mychildren-v6';
+const CACHE = 'growup-mychildren-v7';
 const ASSETS = [
   './', './index.html', './app.webmanifest', './assets/icon.svg',
-  './src/styles.css', './src/enhancements.css', './src/v4.css', './src/v5.css', './src/v6.css',
-  './src/app.js', './src/enhancements.js', './src/v4.js', './src/v5.js', './src/v6.js', './src/a11y.js',
+  './src/styles.css', './src/enhancements.css', './src/v4.css', './src/v5.css', './src/v6.css', './src/v7.css',
+  './src/app.js', './src/enhancements.js', './src/v4.js', './src/v5.js', './src/v6.js', './src/v7.js', './src/a11y.js',
   './src/core/model.js', './src/core/store.js', './src/core/schema.js', './src/core/analytics.js',
   './src/core/calendar.js', './src/core/attachments.js', './src/core/integrations.js', './src/core/privacy.js',
   './src/core/roles.js', './src/core/reminders.js', './src/core/backup.js', './src/core/templates.js', './src/core/report.js',
   './src/core/timeline.js', './src/core/evidence.js', './src/core/family-policy.js', './src/core/export.js',
   './src/core/evidence-repair.js', './src/core/archive.js', './src/core/timeline-filter.js',
+  './src/core/consistency.js', './src/core/retention.js', './src/core/yearly-summary.js', './src/core/print-report.js',
   './src/core/insights.js'
 ];
 self.addEventListener('install', (event) => {
