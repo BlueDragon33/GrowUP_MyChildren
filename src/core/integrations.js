@@ -15,7 +15,9 @@ export function normalizeIntegration(input = {}, fallbackProvider = null) {
   const provider = input.provider || fallbackProvider;
   const status = Object.values(INTEGRATION_STATUS).includes(input.status)
     ? input.status
-    : (input.connected ? INTEGRATION_STATUS.CONNECTED : INTEGRATION_STATUS.DISCONNECTED);
+    : (input.connected
+        ? INTEGRATION_STATUS.CONNECTED
+        : (provider === PROVIDERS.LOCAL ? INTEGRATION_STATUS.READY : INTEGRATION_STATUS.DISCONNECTED));
   return {
     provider,
     status,
@@ -38,6 +40,6 @@ export function publicIntegrationDescriptor(provider) {
 
 export function integrationReady(integration, requiredScopes = []) {
   const normalized = normalizeIntegration(integration);
-  if (normalized.status !== INTEGRATION_STATUS.CONNECTED) return false;
+  if (normalized.status !== INTEGRATION_STATUS.CONNECTED && normalized.status !== INTEGRATION_STATUS.READY) return false;
   return requiredScopes.every((scope) => normalized.scopes.includes(scope));
 }
