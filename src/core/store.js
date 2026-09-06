@@ -1,10 +1,10 @@
-import { CURRENT_SCHEMA_VERSION, blankStateV2, migrateState } from './schema.js';
+import { CURRENT_SCHEMA_VERSION, blankStateV3, migrateState } from './schema.js';
 
 const STORAGE_KEY = 'growup_mychildren_v1';
 const MAX_AUDIT_ITEMS = 200;
 
 export function blankState() {
-  return blankStateV2();
+  return blankStateV3();
 }
 
 export function loadState() {
