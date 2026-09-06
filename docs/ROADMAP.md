@@ -54,11 +54,16 @@
 - Lượt 47: Evidence linking between learning goals and portfolio/attachment metadata. **Completed in v0.5.0 with validation and orphan detection.**
 - Lượt 48: Local family-policy editor safeguards. **Completed in v0.5.0; it cannot create a new owner and cannot remove the final owner.**
 - Lượt 49: Interoperability exports for selected non-sensitive datasets. **Completed in v0.5.0 for CSV/JSON; health is excluded from the default safe dataset allowlist.**
-- Lượt 50: Production-readiness browser gate. **Chromium E2E is implemented in v0.5.0 and must PASS in GitHub Actions before v0.5 is merged. GitHub Pages deployment verification remains blocked until Pages is enabled.**
+- Lượt 50: Production-readiness browser gate. **Completed in v0.5.0: both `verify` and Chromium Playwright E2E passed before merge. Public Pages verification remained separately blocked by Lượt 31.**
+- Lượt 51: Evidence integrity repair tools. **Completed in v0.6.0 with orphan detection, summary and confirmed prune that never deletes source goal/portfolio/attachment records.**
+- Lượt 52: Portable archive manifest. **Completed in v0.6.0 with schema/app metadata, SHA-256 checksum, compatibility validation and health exclusion by default.**
+- Lượt 53: Timeline month/quarter/year filters and period summaries. **Completed in v0.6.0 as a derived period explorer without altering raw history.**
+- Lượt 54: Keyboard/focus/accessibility hardening. **Completed in v0.6.0 with skip link, main landmark focus target, aria-current navigation, dialog semantics/focus and Escape-to-close.**
+- Lượt 55: Deployment verification gate. **Implemented in v0.6.0: after GitHub Pages deploy, workflow verifies public HTML, manifest and service worker. It can only execute successfully after repository Pages is enabled.**
 
 ## Next generated rounds
-- Lượt 51: Evidence integrity repair tools: identify and optionally prune orphan goal/evidence links after source deletion.
-- Lượt 52: Portable export manifest with schema/version metadata and compatibility checks for long-term archival.
-- Lượt 53: Timeline filters and period summaries so parents can inspect month/quarter/year without altering raw history.
-- Lượt 54: Keyboard/focus/accessibility hardening for dialogs, navigation and dynamically inserted panels.
-- Lượt 55: Deployment verification gate that confirms the public PWA URL, service worker and offline shell after GitHub Pages is enabled.
+- Lượt 56: Local data consistency scanner for duplicate IDs, malformed dates and dangling references beyond evidence links.
+- Lượt 57: Data-retention and archive-policy UI so the family can decide what to keep, export or remove without automatic deletion.
+- Lượt 58: Year-over-year development summaries derived from timeline data without ranking the child.
+- Lượt 59: Printable family/child development report with explicit dataset selection and health excluded by default.
+- Lượt 60: Pre-production accessibility/privacy audit gate, including automated browser accessibility checks and destructive-action regression coverage.
