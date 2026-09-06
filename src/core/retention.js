@@ -3,6 +3,7 @@ export const RETENTION_DATASETS = Object.freeze(['completedReminders','physicalA
 function array(value) { return Array.isArray(value) ? value : []; }
 function validYears(value) { const n=Number(value); return Number.isFinite(n) && n>=1 && n<=20 ? Math.round(n) : 5; }
 function cutoffDate(years,onDate=new Date()) { const d=new Date(onDate); d.setFullYear(d.getFullYear()-years); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function ids(items=[]) { return new Set(array(items).map((item)=>item?.id).filter(Boolean)); }
 
 export function normalizeRetentionPolicy(input = {}) {
   const datasets = array(input.datasets).filter((name)=>RETENTION_DATASETS.includes(name));
@@ -30,17 +31,17 @@ export function retentionPreview(child = {}, policyInput = {}, onDate = new Date
 }
 
 export function applyRetentionRemoval(child = {}, preview = {}) {
-  const candidateIds = new Set();
-  Object.values(preview.candidates || {}).forEach((items)=>array(items).forEach((item)=>item?.id && candidateIds.add(item.id)));
   const next = structuredClone(child);
   const removed = [];
   if (preview.candidates?.completedReminders) {
+    const candidateIds = ids(preview.candidates.completedReminders);
     next.reminders = array(next.reminders).filter((item)=>{
       if (candidateIds.has(item?.id)) { removed.push({dataset:'completedReminders',item}); return false; }
       return true;
     });
   }
   if (preview.candidates?.physicalActivities) {
+    const candidateIds = ids(preview.candidates.physicalActivities);
     next.physicalActivities = array(next.physicalActivities).filter((item)=>{
       if (candidateIds.has(item?.id)) { removed.push({dataset:'physicalActivities',item}); return false; }
       return true;
