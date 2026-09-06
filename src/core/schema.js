@@ -1,4 +1,6 @@
-export const CURRENT_SCHEMA_VERSION = 2;
+import { normalizeIntegration, PROVIDERS } from './integrations.js';
+
+export const CURRENT_SCHEMA_VERSION = 3;
 
 function array(value) { return Array.isArray(value) ? value : []; }
 function object(value, fallback = {}) { return value && typeof value === 'object' && !Array.isArray(value) ? value : fallback; }
@@ -23,6 +25,7 @@ export function normalizeChild(child = {}) {
     portfolio: array(child.portfolio),
     roadmap: array(child.roadmap),
     reminders: array(child.reminders),
+    attachments: array(child.attachments),
     developmentProfile: {
       strengths: array(child.developmentProfile?.strengths),
       interests: array(child.developmentProfile?.interests),
@@ -41,17 +44,17 @@ export function normalizeChild(child = {}) {
   };
 }
 
-export function blankStateV2() {
+export function blankStateV3() {
   return {
     version: CURRENT_SCHEMA_VERSION,
-    family: { name: 'Gia đình của tôi' },
+    family: { name: 'Gia đình của tôi', members: [] },
     children: [],
     selectedChildId: null,
     settings: { compact: false, privacyMode: false, lastBackupAt: null, lastSavedAt: null },
     auditLog: [],
     integrations: {
-      calendar: { provider: 'local', connected: false },
-      cloud: { provider: null, connected: false }
+      calendar: normalizeIntegration({ provider: PROVIDERS.LOCAL, status: 'ready' }, PROVIDERS.LOCAL),
+      cloud: normalizeIntegration({ provider: PROVIDERS.CLOUD, status: 'disconnected' }, PROVIDERS.CLOUD)
     }
   };
 }
@@ -59,22 +62,21 @@ export function blankStateV2() {
 export function migrateState(input) {
   if (!input || typeof input !== 'object') throw new Error('Dữ liệu GrowUP không hợp lệ.');
   if (!Array.isArray(input.children)) throw new Error('Dữ liệu GrowUP thiếu danh sách trẻ.');
-  if (input.version != null && ![1, 2].includes(Number(input.version))) {
+  if (input.version != null && ![1, 2, 3].includes(Number(input.version))) {
     throw new Error(`Phiên bản dữ liệu GrowUP ${input.version} chưa được hỗ trợ.`);
   }
 
-  const base = blankStateV2();
+  const base = blankStateV3();
+  const sourceIntegrations = object(input.integrations);
   const migrated = {
     ...base,
     ...input,
     version: CURRENT_SCHEMA_VERSION,
-    family: { ...base.family, ...object(input.family) },
+    family: { ...base.family, ...object(input.family), members: array(input.family?.members) },
     settings: { ...base.settings, ...object(input.settings) },
     integrations: {
-      ...base.integrations,
-      ...object(input.integrations),
-      calendar: { ...base.integrations.calendar, ...object(input.integrations?.calendar) },
-      cloud: { ...base.integrations.cloud, ...object(input.integrations?.cloud) }
+      calendar: normalizeIntegration(sourceIntegrations.calendar || base.integrations.calendar, PROVIDERS.LOCAL),
+      cloud: normalizeIntegration(sourceIntegrations.cloud || base.integrations.cloud, PROVIDERS.CLOUD)
     },
     children: input.children.map(normalizeChild),
     auditLog: array(input.auditLog).slice(-200)
