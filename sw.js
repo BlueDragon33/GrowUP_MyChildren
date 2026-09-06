@@ -1,7 +1,9 @@
-const CACHE = 'growup-mychildren-v1';
+const CACHE = 'growup-mychildren-v2';
 const ASSETS = [
   './', './index.html', './app.webmanifest', './assets/icon.svg',
-  './src/styles.css', './src/app.js', './src/core/model.js', './src/core/store.js', './src/core/insights.js'
+  './src/styles.css', './src/enhancements.css', './src/app.js', './src/enhancements.js',
+  './src/core/model.js', './src/core/store.js', './src/core/schema.js', './src/core/analytics.js',
+  './src/core/calendar.js', './src/core/insights.js'
 ];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ASSETS)));

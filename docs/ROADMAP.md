@@ -22,7 +22,7 @@
 - Lượt 19: Automated checks and tests.
 - Lượt 20: GitHub Pages deployment workflow.
 
-## Generated follow-up rounds
+## Planned platform rounds
 - Lượt 21: Authentication and family roles.
 - Lượt 22: Cloud database and encrypted sync.
 - Lượt 23: Fine-grained health-data permissions.
@@ -33,3 +33,17 @@
 - Lượt 28: AI provider gateway with consent, redaction, audit logs and parental controls.
 - Lượt 29: Analytics and longitudinal trend visualizations.
 - Lượt 30: Accessibility, security and privacy audit before production family use.
+
+## Auto-generated implementation rounds
+- Lượt 31: GitHub Pages enablement gate. **Blocked by repository Pages setting**; tracked in issue #2. Source workflow is ready.
+- Lượt 32: Schema v2 + backward migration from v1. **Completed in v0.2.0.**
+- Lượt 33: Longitudinal development cockpit (goals, 7-day movement, 7-day habits, portfolio, measurement trends). **Completed in v0.2.0.** This advances Lượt 29 without claiming pediatric interpretation.
+- Lượt 34: Portable calendar bridge via `.ics` export. **Completed in v0.2.0.** Google account authorization remains Lượt 24.
+- Lượt 35: Local-calendar date correctness. **Completed in v0.2.0.** Replaces UTC slicing for daily logs to avoid date drift near local midnight.
+
+## Next generated rounds
+- Lượt 36: Screen-privacy controls and sensitive-data presentation hardening.
+- Lượt 37: Development-profile editor (strengths, interests, support needs, target outcomes).
+- Lượt 38: Attachment metadata layer and storage adapter interface.
+- Lượt 39: Cloud/auth provider interfaces with no provider secrets in source.
+- Lượt 40: End-to-end browser smoke tests and accessibility regression gate.
