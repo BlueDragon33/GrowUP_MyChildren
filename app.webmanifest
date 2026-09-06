@@ -1,0 +1,18 @@
+{
+  "name": "GrowUP My Children",
+  "short_name": "GrowUP",
+  "description": "Theo dõi quá trình học tập, sức khỏe và phát triển của trẻ 3-18 tuổi.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7f3",
+  "theme_color": "#24434f",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
