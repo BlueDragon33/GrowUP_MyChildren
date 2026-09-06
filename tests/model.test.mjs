@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ageOnDate, stageForAge, bmi, progressPercent, childTemplate } from '../src/core/model.js';
+import { ageOnDate, stageForAge, bmi, progressPercent, childTemplate, todayKey } from '../src/core/model.js';
 import { validateImportedState } from '../src/core/store.js';
 import { buildInsights } from '../src/core/insights.js';
 
 test('ageOnDate handles birthday boundary', () => {
-  assert.equal(ageOnDate('2016-09-07', new Date('2026-09-06T12:00:00Z')), 9);
-  assert.equal(ageOnDate('2016-09-06', new Date('2026-09-06T12:00:00Z')), 10);
+  assert.equal(ageOnDate('2016-09-07', new Date('2026-09-06T12:00:00')), 9);
+  assert.equal(ageOnDate('2016-09-06', new Date('2026-09-06T12:00:00')), 10);
 });
 
 test('stageForAge maps core age bands', () => {
@@ -28,19 +28,26 @@ test('progressPercent calculates completed items', () => {
   assert.equal(progressPercent([{completed:true},{completed:false}]), 50);
 });
 
-test('childTemplate creates required collections', () => {
+test('todayKey uses local calendar fields instead of UTC slicing', () => {
+  const date = new Date(2026, 8, 6, 0, 15, 0);
+  assert.equal(todayKey(date), '2026-09-06');
+});
+
+test('childTemplate creates v2 required collections and profile areas', () => {
   const child = childTemplate({ name: ' Bé A ', dateOfBirth: '2020-01-01' });
   assert.equal(child.name, 'Bé A');
   assert.deepEqual(child.learningGoals, []);
   assert.deepEqual(child.healthRecords, []);
+  assert.deepEqual(child.assessments, []);
+  assert.deepEqual(child.developmentProfile.interests, []);
 });
 
-test('import validation rejects invalid shapes', () => {
-  assert.throws(() => validateImportedState('{"version":2}'));
-  assert.equal(validateImportedState('{"version":1,"children":[]}').version, 1);
+test('import validation migrates supported v1 and rejects unsupported versions', () => {
+  assert.throws(() => validateImportedState('{"version":9,"children":[]}'));
+  assert.equal(validateImportedState('{"version":1,"children":[]}').version, 2);
 });
 
-test('local advisor returns development-stage insight', () => {
+test('local advisor still returns development-stage insight after migration changes', () => {
   const child = childTemplate({ name: 'A', dateOfBirth: '2020-01-01' });
   const insights = buildInsights(child);
   assert.ok(insights.length >= 3);
