@@ -32,7 +32,9 @@ function enhanceDialog(anchorSelector, closeSelector, titleId) {
     heading.id = heading.id || titleId;
     card.setAttribute('aria-labelledby', heading.id);
   }
-  const focusTarget = card.querySelector('input,select,textarea,button');
+  const form = anchor.matches('form') ? anchor : anchor.closest('form');
+  const focusTarget = form?.querySelector('input:not([type="hidden"]),select,textarea,button:not([disabled])')
+    || card.querySelector('button:not([disabled]),input:not([type="hidden"]),select,textarea');
   const moveFocusInside = () => focusTarget?.focus({ preventScroll: true });
   moveFocusInside();
   setTimeout(moveFocusInside, 0);
