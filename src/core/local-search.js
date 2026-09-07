@@ -1,18 +1,22 @@
 const SEARCH_DATASETS = Object.freeze(['learning','skills','portfolio','roadmap','familyPlan']);
+const TARGET_PAGE = Object.freeze({learning:'learning',skills:'skills',portfolio:'portfolio',roadmap:'roadmap',familyPlan:'overview'});
 
 function array(value){return Array.isArray(value)?value:[];}
 function text(value,max=240){return typeof value==='string'?value.trim().slice(0,max):'';}
 function normalized(value){return text(value,500).toLocaleLowerCase('vi-VN').normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+function safeDate(value){return /^\d{4}-\d{2}-\d{2}$/.test(String(value||''))?String(value):'';}
 
 function item(dataset,child,source,title,subtitle,date=''){
   return {
     dataset,
+    targetPage:TARGET_PAGE[dataset] || 'overview',
     childId:child?.id || '',
     childName:text(child?.name,100),
     sourceId:text(source?.id,100),
+    domainId:text(source?.developmentDomainId,80),
     title:text(title,160),
     subtitle:text(subtitle,220),
-    date:/^\d{4}-\d{2}-\d{2}$/.test(String(date||''))?String(date):''
+    date:safeDate(date)
   };
 }
 
@@ -32,16 +36,25 @@ export function buildSafeSearchIndex(state = {}) {
   return results.filter((entry)=>entry.title);
 }
 
-export function searchSafeDevelopment(state = {}, query = '', options = {}) {
-  const q=normalized(query);
-  if(!q) return [];
+export function advancedSafeSearch(state = {}, options = {}) {
+  const q=normalized(options.query||'');
   const datasets=new Set(array(options.datasets).filter((name)=>SEARCH_DATASETS.includes(name)));
+  const domains=new Set(array(options.domainIds).map((id)=>text(id,80)).filter(Boolean));
   const childId=text(options.childId,100);
+  const fromDate=safeDate(options.fromDate);
+  const toDate=safeDate(options.toDate);
+  const binding=options.binding==='bound'||options.binding==='unbound'?options.binding:'';
   const limit=Math.min(100,Math.max(1,Number(options.limit)||30));
   return buildSafeSearchIndex(state)
     .filter((entry)=>!datasets.size || datasets.has(entry.dataset))
     .filter((entry)=>!childId || entry.childId===childId)
+    .filter((entry)=>!domains.size || domains.has(entry.domainId))
+    .filter((entry)=>binding!=='bound' || Boolean(entry.domainId))
+    .filter((entry)=>binding!=='unbound' || !entry.domainId)
+    .filter((entry)=>!fromDate || (entry.date && entry.date>=fromDate))
+    .filter((entry)=>!toDate || (entry.date && entry.date<=toDate))
     .map((entry)=>{
+      if(!q)return {...entry,score:1};
       const haystack=normalized(`${entry.title} ${entry.subtitle} ${entry.childName}`);
       const pos=haystack.indexOf(q);
       return {...entry,score:pos===0?2:pos>=0?1:0};
@@ -52,5 +65,12 @@ export function searchSafeDevelopment(state = {}, query = '', options = {}) {
     .map(({score,...entry})=>entry);
 }
 
+export function searchSafeDevelopment(state = {}, query = '', options = {}) {
+  const q=normalized(query);
+  if(!q)return [];
+  return advancedSafeSearch(state,{...options,query});
+}
+
 export const SAFE_SEARCH_DATASETS = SEARCH_DATASETS;
+export const SAFE_SEARCH_TARGET_PAGES = TARGET_PAGE;
 export const SAFE_SEARCH_NOTE = 'Chỉ lập chỉ mục metadata học tập, kỹ năng, portfolio, roadmap và kế hoạch gia đình. Health/Nutrition, ghi chú sức khỏe và ghi chú portfolio không được đưa vào chỉ mục.';
