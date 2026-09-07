@@ -13,10 +13,12 @@ Website/PWA theo dõi quá trình học tập, kỹ năng, sức khỏe, thể c
 - Family-role policy cục bộ, consistency scanner và manual retention.
 - Báo cáo in có chọn dataset; Health chỉ xuất khi người dùng chủ động chọn.
 - Audit-log explorer với JSON/CSV metadata allowlist.
-- Development-domain taxonomy có phiên bản, không viết lại lịch sử.
-- Multi-child family time planning chỉ tổng hợp thời lượng/lịch, không xếp hạng trẻ.
-- Backup JSON có checksum và backup tùy chọn mã hóa passphrase bằng Web Crypto AES-GCM-256.
+- Development-domain taxonomy có phiên bản, binding theo bản ghi và dashboard coverage chỉ đếm đã/chưa gắn domain; không score/rank trẻ.
+- Multi-child family time planning và conflict assistant chỉ tổng hợp thời lượng/lịch, phát hiện ngày quá tải và đề xuất ngày lân cận nhẹ hơn; không tự đổi lịch hay xếp hạng trẻ.
+- Privacy-safe local search có bộ lọc child/domain/date/dataset và deep link về đúng hồ sơ/tab/bản ghi; Health/Nutrition và free-text notes vẫn ngoài index.
+- Backup JSON có checksum và backup tùy chọn mã hóa passphrase bằng Web Crypto AES-GCM-256; recovery history chỉ lưu metadata PASS/FAIL an toàn.
 - PWA/offline app shell, responsive desktop/mobile, cập nhật PWA có xác nhận.
+- Runtime v1.0 dùng một JS entrypoint (`src/runtime-entry.js`) và một CSS entrypoint (`src/runtime.css`); các lớp tương thích cũ được nạp nội bộ theo thứ tự cố định.
 - CI gồm syntax/unit/privacy tests + Chromium E2E + Axe accessibility gate.
 
 ## Chạy cục bộ
@@ -51,6 +53,7 @@ Workflow `.github/workflows/pages.yml` triển khai từ `main`. Repository cầ
 - `docs/ROADMAP.md`
 - `docs/IMPLEMENTATION_REPORT.md`
 - `docs/IMPLEMENTATION_REPORT_V0.8.md`
+- `docs/IMPLEMENTATION_REPORT_V1.0.md`
 
 ## Quy tắc phát triển
 Không sửa thử nghiệm trực tiếp trên `main`. Mỗi đợt thay đổi lớn đi qua feature branch + pull request + CI gate. Không merge khi `verify` hoặc Chromium E2E/Axe còn lỗi.
