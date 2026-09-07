@@ -15,27 +15,27 @@ test('index exposes exactly one javascript and one stylesheet entrypoint',async(
 
 test('runtime entry imports compatibility layers once and in release order',async()=>{
   const runtime=await read('src/runtime-entry.js');
-  const expected=['./app.js','./enhancements.js','./v4.js','./v5.js','./v6.js','./v7.js','./v8.js','./v9-runtime.js','./v9-compat.js','./v10-runtime.js','./a11y.js'];
+  const expected=['./app.js','./enhancements.js','./v4.js','./v5.js','./v6.js','./v7.js','./v8.js','./v9-runtime.js','./v9-compat.js','./v10-runtime.js','./v11-runtime.js','./a11y.js'];
   for(const path of expected) assert.equal((runtime.match(new RegExp(path.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length,1,`${path} should be imported exactly once`);
 });
 
 test('runtime css imports each active stylesheet once',async()=>{
   const css=await read('src/runtime.css');
-  for(const name of ['styles.css','enhancements.css','v4.css','v5.css','v6.css','v7.css','v8.css','v9.css','v10.css']) assert.equal((css.match(new RegExp(name.replace('.','\\.'),'g'))||[]).length,1);
+  for(const name of ['styles.css','enhancements.css','v4.css','v5.css','v6.css','v7.css','v8.css','v9.css','v10.css','v11.css']) assert.equal((css.match(new RegExp(name.replace('.','\\.'),'g'))||[]).length,1);
 });
 
-test('service worker and package agree on v1 runtime modules and cache',async()=>{
+test('service worker and package agree on current runtime modules and cache',async()=>{
   const sw=await read('sw.js');
   const pkg=JSON.parse(await read('package.json'));
   const release=await read('src/core/release.js');
   const rc=await read('src/core/rc-gate.js');
-  assert.equal(pkg.version,'1.0.0');
-  assert.match(sw,/growup-mychildren-v10/);
-  for(const path of ['runtime-entry.js','runtime.css','v10-runtime.js','domain-coverage.js','family-conflicts.js','recovery-history.js']) assert.ok(sw.includes(path));
-  for(const path of ['src/runtime-entry.js','src/v10-runtime.js','src/core/domain-coverage.js','src/core/family-conflicts.js','src/core/recovery-history.js']) assert.ok(pkg.scripts.check.includes(path));
-  assert.match(release,/APP_VERSION = '1\.0\.0'/);
-  assert.match(release,/c7cdab1c2b5aedf4952d9f276bef6d444b27713a/);
-  assert.match(rc,/growup-mychildren-v10/);
+  assert.equal(pkg.version,'1.1.0');
+  assert.match(sw,/growup-mychildren-v11/);
+  for(const path of ['runtime-entry.js','runtime.css','v10-runtime.js','v11-runtime.js','data-portability.js','workload-windows.js','saved-searches.js','recovery-schedule.js','compatibility-usage.js']) assert.ok(sw.includes(path));
+  for(const path of ['src/runtime-entry.js','src/v10-runtime.js','src/v11-runtime.js','src/core/data-portability.js','src/core/workload-windows.js','src/core/saved-searches.js','src/core/recovery-schedule.js','src/core/compatibility-usage.js']) assert.ok(pkg.scripts.check.includes(path));
+  assert.match(release,/APP_VERSION = '1\.1\.0'/);
+  assert.match(release,/605c4948cbcc60164d8a34ba220558d39d8eeeb5/);
+  assert.match(rc,/growup-mychildren-v11/);
 });
 
 test('v10 privacy boundaries keep safe search and recovery-history outputs constrained',async()=>{
