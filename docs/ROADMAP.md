@@ -65,11 +65,11 @@
 - Lượt 58: Year-over-year development summaries. **Completed in v0.7.0 as neutral recorded-data/activity counts, never a score or child ranking.**
 - Lượt 59: Printable development report. **Completed in v0.7.0 with explicit section selection; health is unchecked by default and only appears when explicitly selected.**
 - Lượt 60: Pre-production accessibility/privacy audit gate. **Completed in v0.7.0; verify + 7/7 Chromium E2E/Axe passed after fixing real WCAG AA color-contrast violations before merge.**
-- Lượt 61: Local audit-log explorer and export. **Implemented in v0.8.0 with fixed metadata allowlist so raw health/free-text details are not exported; awaiting final CI/merge gate.**
-- Lượt 62: Versioned development-domain taxonomy/customization. **Implemented in v0.8.0 as settings-layer taxonomy version `2026.1`, without rewriting historical records or increasing data schema; awaiting final CI/merge gate.**
-- Lượt 63: Multi-child family scheduling/resource planning. **Implemented in v0.8.0 with time/commitment summaries in profile order and no score/rank/ability comparison; awaiting final CI/merge gate.**
-- Lượt 64: Optional passphrase-encrypted portable backup. **Implemented in v0.8.0 with PBKDF2-SHA-256 + AES-GCM-256, no stored passphrase, checksum verification and confirmed restore; awaiting final CI/merge gate.**
-- Lượt 65: Release/rollback operational hardening. **Implemented in v0.8.0 with centralized version metadata, changelog, stable v0.7 rollback point and user-approved service-worker activation; awaiting final CI/merge gate.**
+- Lượt 61: Local audit-log explorer and export. **Completed in v0.8.0 with fixed metadata allowlist so raw health/free-text details are not exported.**
+- Lượt 62: Versioned development-domain taxonomy/customization. **Completed in v0.8.0 as settings-layer taxonomy version `2026.1`, without rewriting historical records or increasing data schema. Custom IDs are normalized idempotently.**
+- Lượt 63: Multi-child family scheduling/resource planning. **Completed in v0.8.0 with time/commitment summaries in profile order and no score/rank/ability comparison.**
+- Lượt 64: Optional passphrase-encrypted portable backup. **Completed in v0.8.0 with PBKDF2-SHA-256 + AES-GCM-256, no stored passphrase, checksum verification and confirmed restore; real Chromium download/restore regression passed.**
+- Lượt 65: Release/rollback operational hardening. **Completed in v0.8.0 with centralized version metadata, changelog, stable v0.7 rollback point and user-approved service-worker activation.**
 
 ## Next generated rounds
 - Lượt 66: Bind versioned development-domain IDs to new goals/skills/portfolio records while preserving legacy labels and historical compatibility.
