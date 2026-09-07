@@ -8,7 +8,7 @@ test('document exposes Vietnamese language, viewport and v9 runtime assets', asy
   const html = await read('index.html');
   assert.match(html, /<html lang="vi">/);
   assert.match(html, /name="viewport"/);
-  for (const asset of ['enhancements.css','enhancements.js','v4.css','v4.js','v5.css','v5.js','v6.css','v6.js','v7.css','v7.js','v8.css','v8.js','v9.css','v9.js','a11y.js']) {
+  for (const asset of ['enhancements.css','enhancements.js','v4.css','v4.js','v5.css','v5.js','v6.css','v6.js','v7.css','v7.js','v8.css','v8.js','v9.css','v9.js','v9-compat.js','a11y.js']) {
     assert.ok(html.includes(asset), `index should load ${asset}`);
   }
 });
@@ -34,7 +34,7 @@ test('v9 runtime keeps domain calendar search and recovery boundaries explicit',
 
 test('service worker caches every v9 runtime module and waits for explicit update approval', async () => {
   const sw = await read('sw.js');
-  for (const asset of ['v7.js','v8.js','v9.js','domain-binding.js','local-search.js','recovery-inspector.js','rc-gate.js','encrypted-backup.js','release.js']) {
+  for (const asset of ['v7.js','v8.js','v9.js','v9-compat.js','domain-binding.js','local-search.js','recovery-inspector.js','rc-gate.js','encrypted-backup.js','release.js']) {
     assert.ok(sw.includes(asset), `service worker should cache ${asset}`);
   }
   assert.match(sw, /growup-mychildren-v9/);
@@ -48,11 +48,12 @@ test('package and CI pin the v9 release-candidate tooling profile', async () => 
   const ci = await read('.github/workflows/ci.yml');
   const release = await read('src/core/release.js');
   const rc = await read('src/core/rc-gate.js');
+  const compat = await read('src/v9-compat.js');
   assert.equal(pkg.version,'0.9.0');
   assert.equal(pkg.engines.node,'22.x');
   assert.equal(pkg.devDependencies['@playwright/test'],'1.55.0');
   assert.equal(pkg.devDependencies['@axe-core/playwright'],'4.10.2');
-  for (const path of ['src/v9.js','src/core/domain-binding.js','src/core/local-search.js','src/core/recovery-inspector.js','src/core/rc-gate.js']) assert.ok(pkg.scripts.check.includes(path));
+  for (const path of ['src/v9.js','src/v9-compat.js','src/core/domain-binding.js','src/core/local-search.js','src/core/recovery-inspector.js','src/core/rc-gate.js']) assert.ok(pkg.scripts.check.includes(path));
   assert.match(ci, /@playwright\/test@1\.55\.0/);
   assert.match(ci, /@axe-core\/playwright@4\.10\.2/);
   assert.match(ci, /node-version: 22/);
@@ -60,6 +61,7 @@ test('package and CI pin the v9 release-candidate tooling profile', async () => 
   assert.match(release, /241653d6fb12f021ebd20704144e47a5a12cc8fd/);
   assert.match(rc, /growup-mychildren-v9/);
   assert.match(rc, /playwrightVersion:'1\.55\.0'/);
+  assert.match(compat, /Đã xem v\$\{APP_VERSION\}/);
 });
 
 test('existing privacy and deployment gates remain present', async () => {
