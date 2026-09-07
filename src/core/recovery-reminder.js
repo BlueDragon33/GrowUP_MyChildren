@@ -19,10 +19,10 @@ export function integrateRecoveryReminder(state={},childId=''){
   if(status.existing)return {state,created:false,deduplicated:true,reason:null,reminder:status.existing};
   const next=structuredClone(state);
   const child=next.children.find((item)=>item.id===childId);
-  const reminder={id:makeId('reminder'),title:status.candidate.title,date:status.candidate.date,type:'recovery',source:'recovery-drill',completed:false};
+  const reminder={id:makeId('reminder'),title:status.candidate.title,date:status.candidate.date,type:'recovery',source:'recovery-drill',completed:false,lineage:{originSource:'recovery-drill',originDate:status.candidate.date,previousDates:[]}};
   child.reminders=Array.isArray(child.reminders)?child.reminders:[];
   child.reminders.push(reminder);
   return {state:next,created:true,deduplicated:false,reason:null,reminder};
 }
 
-export const RECOVERY_REMINDER_NOTE='Recovery reminder chỉ được thêm khi người dùng chọn hồ sơ đích. Cùng source/date sẽ được deduplicate; không tạo nhắc nền, không lưu passphrase và không tự chạy restore.';
+export const RECOVERY_REMINDER_NOTE='Recovery reminder chỉ được thêm khi người dùng chọn hồ sơ đích. Cùng source/date sẽ được deduplicate; lineage giữ nguồn/ngày gốc, không tạo nhắc nền, không lưu passphrase và không tự chạy restore.';
