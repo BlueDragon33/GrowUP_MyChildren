@@ -1,12 +1,13 @@
-export const APP_VERSION = '0.8.0';
+export const APP_VERSION = '0.9.0';
 export const DATA_SCHEMA_VERSION = 5;
 export const STABLE_ROLLBACK = Object.freeze({
-  version:'0.7.0',
-  commit:'adb345c5ec94ccb1933661bad06c8c6473e7ef36',
-  note:'Bản v0.7 đã qua verify + Chromium E2E/Axe trước khi v0.8 bắt đầu.'
+  version:'0.8.0',
+  commit:'241653d6fb12f021ebd20704144e47a5a12cc8fd',
+  note:'Bản v0.8 đã qua final verify + 9/9 Chromium E2E/Axe trước khi v0.9 bắt đầu.'
 });
 
 export const RELEASE_NOTES = Object.freeze([
+  { version:'0.9.0', title:'Domain binding, family calendar bridge, safe search, recovery drill & RC gate', rounds:'66–70' },
   { version:'0.8.0', title:'Audit, taxonomy, family planning, encrypted backup & release hardening', rounds:'61–65' },
   { version:'0.7.0', title:'Consistency, retention, reporting & Axe privacy/accessibility gate', rounds:'56–60' },
   { version:'0.6.0', title:'Evidence repair, archive integrity, timeline filters & accessibility', rounds:'51–55' },

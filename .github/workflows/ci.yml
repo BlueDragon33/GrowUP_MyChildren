@@ -22,8 +22,8 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-      - name: Install Playwright and accessibility audit runner
-        run: npm install --no-save --no-audit --no-fund @playwright/test @axe-core/playwright
+      - name: Install pinned Playwright and accessibility audit runner
+        run: npm install --no-save --no-audit --no-fund @playwright/test@1.55.0 @axe-core/playwright@4.10.2
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run Chromium E2E and accessibility audit
