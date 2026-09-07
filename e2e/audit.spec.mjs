@@ -16,7 +16,7 @@ test('starting screen has no serious or critical automated accessibility violati
   await expectNoBlockingA11yIssues(page,'starting screen');
 });
 
-test('populated development overview including v8 and v9 tools has no serious or critical automated accessibility violations', async ({ page }) => {
+test('populated development overview including v8-v10 tools has no serious or critical automated accessibility violations', async ({ page }) => {
   await page.goto('/');
   await page.locator('#emptyAddChild').click();
   await page.locator('#childForm input[name="name"]').fill('Bé Audit');
@@ -25,11 +25,8 @@ test('populated development overview including v8 and v9 tools has no serious or
   await expect(page.locator('[data-v7="consistency"]')).toBeVisible();
   await expect(page.locator('[data-v7="retention"]')).toBeVisible();
   await expect(page.locator('[data-v7="print-report"]')).toBeVisible();
-  for (const panel of ['audit','taxonomy','family-plan','encrypted-backup','release']) {
-    await expect(page.locator(`[data-v8="${panel}"]`)).toBeVisible();
-  }
-  for (const panel of ['domain-history','family-calendar','search','recovery','rc']) {
-    await expect(page.locator(`[data-v9="${panel}"]`)).toBeVisible();
-  }
-  await expectNoBlockingA11yIssues(page,'populated overview with v8 and v9 tools');
+  for (const panel of ['audit','taxonomy','family-plan','encrypted-backup','release']) await expect(page.locator(`[data-v8="${panel}"]`)).toBeVisible();
+  for (const panel of ['domain-history','family-calendar','search','recovery','rc']) await expect(page.locator(`[data-v9="${panel}"]`)).toBeVisible();
+  for (const panel of ['coverage','conflicts','recovery-history','runtime']) await expect(page.locator(`[data-v10="${panel}"]`)).toBeVisible();
+  await expectNoBlockingA11yIssues(page,'populated overview with v8-v10 tools');
 });
