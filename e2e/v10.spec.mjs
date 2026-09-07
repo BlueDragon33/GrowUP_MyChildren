@@ -21,7 +21,11 @@ test('coverage and conflict panels summarize data without scores',async({page})=
   await page.reload();
   await expect(page.locator('[data-v10="coverage"]')).toContainText('1/2');
   await expect(page.locator('[data-v10="conflicts"]')).toContainText('210 phút');
-  await expect(page.locator('[data-v10="coverage"]')).not.toContainText('xếp hạng');
+  const rankingFields=await page.evaluate(()=>{
+    const state=JSON.parse(localStorage.getItem('growup_mychildren_v1'));
+    return state.children[0].learningGoals.flatMap(goal=>['score','rank','rating','percentile'].filter(key=>Object.prototype.hasOwnProperty.call(goal,key)));
+  });
+  expect(rankingFields).toEqual([]);
 });
 
 test('advanced safe search opens source page and highlights matching record',async({page})=>{
@@ -54,7 +58,11 @@ test('recovery history panel renders sanitized stored metadata',async({page})=>{
   const panel=page.locator('[data-v10="recovery-history"]');
   await expect(panel).toContainText('PASS');
   await expect(panel).toContainText('schema 5');
-  await expect(panel).not.toContainText('ciphertext');
+  const historyKeys=await page.evaluate(()=>{
+    const state=JSON.parse(localStorage.getItem('growup_mychildren_v1'));
+    return Object.keys(state.settings.recoveryDrillHistory[0]).sort();
+  });
+  expect(historyKeys).toEqual(['at','format','schemaVersion','status']);
 });
 
 test('consolidated entrypoint remains usable at 390px without horizontal overflow',async({page})=>{
