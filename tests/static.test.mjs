@@ -31,31 +31,31 @@ test('v9 runtime keeps domain calendar search and recovery boundaries explicit',
   assert.doesNotMatch(recovery, /localStorage\.(?:setItem|getItem|removeItem|clear)|sessionStorage\.(?:setItem|getItem|removeItem|clear)/);
 });
 
-test('service worker caches active v10 runtime and waits for explicit update approval', async () => {
+test('service worker caches active v11 runtime and waits for explicit update approval', async () => {
   const sw = await read('sw.js');
-  for (const asset of ['runtime-entry.js','runtime.css','v10-runtime.js','domain-coverage.js','family-conflicts.js','recovery-history.js','v9-runtime.js','v9-compat.js']) assert.ok(sw.includes(asset));
-  assert.match(sw, /growup-mychildren-v10/);
+  for (const asset of ['runtime-entry.js','runtime.css','v11-runtime.js','portability-map.js','family-workload.js','saved-search.js','recovery-schedule.js','runtime-compatibility.js','v9-runtime.js','v9-compat.js']) assert.ok(sw.includes(asset));
+  assert.match(sw, /growup-mychildren-v11/);
   assert.match(sw, /event\.data\?\.type === 'SKIP_WAITING'/);
   const installBlock = sw.match(/self\.addEventListener\('install',[\s\S]*?\n\}\);/)?.[0] || '';
   assert.doesNotMatch(installBlock, /skipWaiting/);
 });
 
-test('package and CI pin the v1 release-candidate tooling profile', async () => {
+test('package and CI pin the current v1.1 release-candidate tooling profile', async () => {
   const pkg = JSON.parse(await read('package.json'));
   const ci = await read('.github/workflows/ci.yml');
   const release = await read('src/core/release.js');
   const rc = await read('src/core/rc-gate.js');
-  assert.equal(pkg.version,'1.0.0');
+  assert.equal(pkg.version,'1.1.0');
   assert.equal(pkg.engines.node,'22.x');
   assert.equal(pkg.devDependencies['@playwright/test'],'1.55.0');
   assert.equal(pkg.devDependencies['@axe-core/playwright'],'4.10.2');
-  for (const path of ['src/runtime-entry.js','src/v10-runtime.js','src/core/domain-coverage.js','src/core/family-conflicts.js','src/core/recovery-history.js']) assert.ok(pkg.scripts.check.includes(path));
+  for (const path of ['src/runtime-entry.js','src/v11-runtime.js','src/core/portability-map.js','src/core/family-workload.js','src/core/saved-search.js','src/core/recovery-schedule.js','src/core/runtime-compatibility.js']) assert.ok(pkg.scripts.check.includes(path));
   assert.match(ci, /@playwright\/test@1\.55\.0/);
   assert.match(ci, /@axe-core\/playwright@4\.10\.2/);
   assert.match(ci, /node-version: 22/);
-  assert.match(release, /APP_VERSION = '1\.0\.0'/);
-  assert.match(release, /c7cdab1c2b5aedf4952d9f276bef6d444b27713a/);
-  assert.match(rc, /growup-mychildren-v10/);
+  assert.match(release, /APP_VERSION = '1\.1\.0'/);
+  assert.match(release, /605c4948cbcc60164d8a34ba220558d39d8eeeb5/);
+  assert.match(rc, /growup-mychildren-v11/);
 });
 
 test('existing privacy and deployment gates remain present', async () => {
