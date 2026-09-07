@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { bindDevelopmentDomain, domainBindingOf } from '../src/core/domain-binding.js';
 import { familyPlanItemsToIcs } from '../src/core/calendar.js';
 import { buildSafeSearchIndex, searchSafeDevelopment } from '../src/core/local-search.js';
-import { evaluateReleaseCandidate } from '../src/core/rc-gate.js';
+import { evaluateReleaseCandidate, RC_PROFILE } from '../src/core/rc-gate.js';
 
 function sampleState(){
   return {
@@ -57,10 +57,10 @@ test('safe search omits health nutrition and portfolio notes',()=>{
   assert.equal(searchSafeDevelopment(state,'health note omitted').length,0);
 });
 
-test('RC consistency profile passes only matching configuration',()=>{
-  const pass=evaluateReleaseCandidate({appVersion:'1.0.0',dataSchemaVersion:5,serviceWorkerCache:'growup-mychildren-v10',nodeMajor:22,playwrightVersion:'1.55.0',axePlaywrightVersion:'4.10.2',rollbackCommit:'c7cdab1c2b5aedf4952d9f276bef6d444b27713a'});
+test('RC consistency profile passes only matching current configuration',()=>{
+  const pass=evaluateReleaseCandidate({appVersion:RC_PROFILE.appVersion,dataSchemaVersion:RC_PROFILE.dataSchemaVersion,serviceWorkerCache:RC_PROFILE.serviceWorkerCache,nodeMajor:RC_PROFILE.nodeMajor,playwrightVersion:RC_PROFILE.playwrightVersion,axePlaywrightVersion:RC_PROFILE.axePlaywrightVersion,rollbackCommit:RC_PROFILE.rollback.commit});
   assert.equal(pass.ready,true);
-  const fail=evaluateReleaseCandidate({appVersion:'1.0.0',dataSchemaVersion:5,serviceWorkerCache:'wrong',nodeMajor:20,playwrightVersion:'1.55.0',axePlaywrightVersion:'4.10.2',rollbackCommit:'wrong'});
+  const fail=evaluateReleaseCandidate({appVersion:RC_PROFILE.appVersion,dataSchemaVersion:RC_PROFILE.dataSchemaVersion,serviceWorkerCache:'wrong',nodeMajor:20,playwrightVersion:RC_PROFILE.playwrightVersion,axePlaywrightVersion:RC_PROFILE.axePlaywrightVersion,rollbackCommit:'wrong'});
   assert.equal(fail.ready,false);
   assert.ok(fail.failed.includes('nodeMajor'));
   assert.ok(fail.failed.includes('serviceWorkerCache'));
