@@ -4,6 +4,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { DEFAULT_PRINT_SECTIONS } from '../src/core/print-report.js';
 import { SAFE_DATASETS } from '../src/core/export.js';
 import { buildPortableArchive } from '../src/core/archive.js';
+import { auditEntriesToJson } from '../src/core/audit-explorer.js';
 
 async function sourceFiles(dirUrl) {
   const entries = await readdir(dirUrl,{withFileTypes:true});
@@ -30,7 +31,7 @@ test('runtime does not load external scripts or embed common secret material', a
   }
 });
 
-test('health remains opt-in for printable and interoperability outputs', async () => {
+test('health remains opt-in for printable interoperability and unencrypted archive outputs', async () => {
   assert.equal(DEFAULT_PRINT_SECTIONS.includes('health'),false);
   assert.equal(SAFE_DATASETS.includes('healthRecords'),false);
   assert.equal(SAFE_DATASETS.includes('nutritionLogs'),false);
@@ -40,11 +41,21 @@ test('health remains opt-in for printable and interoperability outputs', async (
   assert.equal('nutritionLogs' in archive.payload.children[0],false);
 });
 
-test('destructive user flows retain explicit confirmation checks', async () => {
+test('audit export rejects raw health and free-text fields even when audit log contains them', () => {
+  const output=auditEntriesToJson([{at:'2026-09-07T00:00:00Z',type:'health_saved',childId:'c',height:123.4,weight:24.1,note:'bí mật sức khỏe',healthRecords:[{height:123.4}]}]);
+  for(const forbidden of ['123.4','24.1','bí mật sức khỏe','healthRecords']) assert.equal(output.includes(forbidden),false);
+  assert.match(output,/health_saved/);
+});
+
+test('destructive and replacement user flows retain explicit confirmation checks', async () => {
   const app=await readFile(new URL('../src/app.js',import.meta.url),'utf8');
   const v6=await readFile(new URL('../src/v6.js',import.meta.url),'utf8');
   const v7=await readFile(new URL('../src/v7.js',import.meta.url),'utf8');
+  const v8=await readFile(new URL('../src/v8.js',import.meta.url),'utf8');
   assert.match(app,/confirm\(`Xóa hồ sơ/);
   assert.match(v6,/confirm\(`Xóa \$\{summary\.orphaned\}/);
   assert.match(v7,/confirm\(`Archive và xóa thủ công/);
+  assert.match(v8,/Khôi phục sẽ thay thế dữ liệu cục bộ hiện tại/);
+  assert.match(v8,/if\(!ok\)return/);
+  assert.match(v8,/Xóa mục kế hoạch gia đình này/);
 });
