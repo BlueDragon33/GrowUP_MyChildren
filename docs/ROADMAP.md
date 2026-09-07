@@ -70,10 +70,15 @@
 - Lượt 63: Multi-child family scheduling/resource planning. **Completed in v0.8.0 with time/commitment summaries in profile order and no score/rank/ability comparison.**
 - Lượt 64: Optional passphrase-encrypted portable backup. **Completed in v0.8.0 with PBKDF2-SHA-256 + AES-GCM-256, no stored passphrase, checksum verification and confirmed restore; real Chromium download/restore regression passed.**
 - Lượt 65: Release/rollback operational hardening. **Completed in v0.8.0 with centralized version metadata, changelog, stable v0.7 rollback point and user-approved service-worker activation.**
+- Lượt 66: Versioned domain binding for new Learning/Skill/Portfolio records. **Completed in v0.9.0 with domain ID + label snapshot + taxonomy version; legacy records remain unchanged.**
+- Lượt 67: Family-plan calendar bridge. **Completed in v0.9.0 with explicit per-item `.ics` selection and no child identity/notes/Health/Nutrition in the calendar payload.**
+- Lượt 68: Privacy-safe local search. **Completed in v0.9.0 using a fixed non-sensitive dataset allowlist; Health/Nutrition and free-text notes are intentionally not indexed.**
+- Lượt 69: Encrypted-backup compatibility inspector and recovery drill. **Completed in v0.9.0; diagnostics expose format/KDF/cipher metadata only, and the drill decrypts/checks in memory without restore.**
+- Lượt 70: Release-candidate operational gate. **Completed in v0.9.0 with Node 22.x, Playwright 1.55.0, Axe 4.10.2, SW cache v9, rollback to v0.8, 390px mobile regression and Axe/Chromium gate. Code head passed verify + 14/14 browser tests before final cleanup.**
 
 ## Next generated rounds
-- Lượt 66: Bind versioned development-domain IDs to new goals/skills/portfolio records while preserving legacy labels and historical compatibility.
-- Lượt 67: Family-plan calendar bridge so selected planning items can be exported to `.ics` without exposing unrelated child data.
-- Lượt 68: Privacy-safe local search/index across non-sensitive learning, portfolio, roadmap and planning metadata, with Health/Nutrition excluded by default.
-- Lượt 69: Encrypted-backup recovery drill and compatibility inspector, including explicit format/KDF/cipher diagnostics without exposing ciphertext contents or passphrases.
-- Lượt 70: Release-candidate operational gate covering service-worker/cache-version consistency, rollback runbook, browser/mobile regression and dependency/tooling reproducibility.
+- Lượt 71: Development-domain coverage dashboard showing bound/unbound record counts by dataset/domain, without child scoring or comparison.
+- Lượt 72: Family-plan conflict assistant that detects overlapping/same-day commitments and proposes local reschedule candidates without automatic calendar changes.
+- Lượt 73: Privacy-safe search deep links and advanced filters so users can navigate from a search result to its source page/record while preserving the current allowlist.
+- Lượt 74: Backup recovery-history checklist storing only last drill date, format and PASS/FAIL metadata; never passphrases, ciphertext or recovered payloads.
+- Lượt 75: Runtime consolidation and release hygiene: reduce layered v4–v9 compatibility/runtime duplication, remove dead modules, audit the active dependency graph and re-run full desktop/mobile/Axe regression.
