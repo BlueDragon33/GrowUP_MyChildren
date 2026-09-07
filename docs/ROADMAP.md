@@ -60,15 +60,20 @@
 - Lượt 53: Timeline month/quarter/year filters and period summaries. **Completed in v0.6.0 as a derived period explorer without altering raw history.**
 - Lượt 54: Keyboard/focus/accessibility hardening. **Completed in v0.6.0 with skip link, main landmark focus target, aria-current navigation, dialog semantics/focus and Escape-to-close.**
 - Lượt 55: Deployment verification gate. **Implemented in v0.6.0; the main deployment still fails at `Configure Pages` because repository Pages is not enabled, so public verification is skipped.**
-- Lượt 56: Local data consistency scanner. **Implemented in v0.7.0; detects duplicate IDs, malformed dates and dangling references without auto-fixing. Merge is gated by CI.**
-- Lượt 57: Data-retention/archive-policy UI. **Implemented in v0.7.0 as manual-only retention with preview, pre-removal safe archive and explicit confirmation; no background deletion. Merge is gated by CI.**
-- Lượt 58: Year-over-year development summaries. **Implemented in v0.7.0 as neutral recorded-data/activity counts, never a score or child ranking. Merge is gated by CI.**
-- Lượt 59: Printable development report. **Implemented in v0.7.0 with explicit section selection; health is unchecked by default and only appears when explicitly selected. Merge is gated by CI.**
-- Lượt 60: Pre-production accessibility/privacy audit gate. **Implemented in v0.7.0 with source privacy assertions, destructive-action regression and Axe/Chromium blocking on serious/critical accessibility violations. Merge requires the gate to PASS.**
+- Lượt 56: Local data consistency scanner. **Completed in v0.7.0; detects duplicate IDs, malformed dates and dangling references without auto-fixing.**
+- Lượt 57: Data-retention/archive-policy UI. **Completed in v0.7.0 as manual-only retention with preview, pre-removal safe archive and explicit confirmation; no background deletion.**
+- Lượt 58: Year-over-year development summaries. **Completed in v0.7.0 as neutral recorded-data/activity counts, never a score or child ranking.**
+- Lượt 59: Printable development report. **Completed in v0.7.0 with explicit section selection; health is unchecked by default and only appears when explicitly selected.**
+- Lượt 60: Pre-production accessibility/privacy audit gate. **Completed in v0.7.0; verify + 7/7 Chromium E2E/Axe passed after fixing real WCAG AA color-contrast violations before merge.**
+- Lượt 61: Local audit-log explorer and export. **Implemented in v0.8.0 with fixed metadata allowlist so raw health/free-text details are not exported; awaiting final CI/merge gate.**
+- Lượt 62: Versioned development-domain taxonomy/customization. **Implemented in v0.8.0 as settings-layer taxonomy version `2026.1`, without rewriting historical records or increasing data schema; awaiting final CI/merge gate.**
+- Lượt 63: Multi-child family scheduling/resource planning. **Implemented in v0.8.0 with time/commitment summaries in profile order and no score/rank/ability comparison; awaiting final CI/merge gate.**
+- Lượt 64: Optional passphrase-encrypted portable backup. **Implemented in v0.8.0 with PBKDF2-SHA-256 + AES-GCM-256, no stored passphrase, checksum verification and confirmed restore; awaiting final CI/merge gate.**
+- Lượt 65: Release/rollback operational hardening. **Implemented in v0.8.0 with centralized version metadata, changelog, stable v0.7 rollback point and user-approved service-worker activation; awaiting final CI/merge gate.**
 
 ## Next generated rounds
-- Lượt 61: Local audit-log explorer and export so the family can inspect important changes without exposing raw health content by default.
-- Lượt 62: Versioned development-domain taxonomy/customization so curriculum and outcome categories can evolve without rewriting historical records.
-- Lượt 63: Multi-child family scheduling/resource planning views that compare time commitments only, never academic ability or child rankings.
-- Lượt 64: Optional passphrase-encrypted portable backup using Web Crypto, with no stored passphrase and clear recovery limitations.
-- Lượt 65: Release/rollback operational hardening: in-app version banner, PWA update notice, changelog and a documented stable rollback point.
+- Lượt 66: Bind versioned development-domain IDs to new goals/skills/portfolio records while preserving legacy labels and historical compatibility.
+- Lượt 67: Family-plan calendar bridge so selected planning items can be exported to `.ics` without exposing unrelated child data.
+- Lượt 68: Privacy-safe local search/index across non-sensitive learning, portfolio, roadmap and planning metadata, with Health/Nutrition excluded by default.
+- Lượt 69: Encrypted-backup recovery drill and compatibility inspector, including explicit format/KDF/cipher diagnostics without exposing ciphertext contents or passphrases.
+- Lượt 70: Release-candidate operational gate covering service-worker/cache-version consistency, rollback runbook, browser/mobile regression and dependency/tooling reproducibility.
