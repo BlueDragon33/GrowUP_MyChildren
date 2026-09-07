@@ -10,8 +10,10 @@ import { RC_PROFILE, evaluateReleaseCandidate, RC_GATE_NOTE } from './core/rc-ga
 
 const STORAGE_KEY='growup_mychildren_v1';
 const RESUME_KEY='growup_v9_resume_nav';
+const RESUME_TITLES={learning:'Học tập',skills:'Kỹ năng',portfolio:'Portfolio'};
 let scheduled=false;
 let resumeApplied=false;
+let resumeScheduled=false;
 const observer=new MutationObserver(()=>queueMicrotask(enhanceV9));
 
 function readState(){try{return migrateState(JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"version":5,"children":[]}'));}catch{return migrateState({version:5,children:[]});}}
@@ -23,14 +25,27 @@ function dateLabel(value){if(!value)return '—';const d=new Date(`${value}T00:0
 function saveAndResume(state,type,details,page){sessionStorage.setItem(RESUME_KEY,page);saveState(appendAudit(state,type,details));location.reload();}
 
 function applyResumeNavigation(){
-  if(resumeApplied)return;
+  if(resumeApplied||resumeScheduled)return;
   const target=sessionStorage.getItem(RESUME_KEY);
-  if(!target)return;
-  const button=document.querySelector(`[data-nav="${target}"]`);
-  if(!button)return;
-  resumeApplied=true;
-  sessionStorage.removeItem(RESUME_KEY);
-  button.click();
+  const expectedTitle=RESUME_TITLES[target];
+  if(!target||!expectedTitle)return;
+  resumeScheduled=true;
+  let attempts=0;
+  const tryResume=()=>{
+    const currentTitle=document.querySelector('.topbar h1')?.textContent?.trim();
+    if(currentTitle===expectedTitle){
+      resumeApplied=true;
+      resumeScheduled=false;
+      sessionStorage.removeItem(RESUME_KEY);
+      return;
+    }
+    const button=document.querySelector(`[data-nav="${target}"]`);
+    if(button&&typeof button.onclick==='function')button.click();
+    attempts+=1;
+    if(attempts<60){requestAnimationFrame(tryResume);return;}
+    resumeScheduled=false;
+  };
+  requestAnimationFrame(tryResume);
 }
 
 function domainSelectHtml(state){
