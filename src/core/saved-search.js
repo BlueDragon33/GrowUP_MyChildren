@@ -33,4 +33,28 @@ export function removeSearchView(settings={},id=''){
   return {...settings,savedSafeSearchViews:savedSearchViews(settings).filter((item)=>item.id!==id)};
 }
 
-export const SAVED_SEARCH_NOTE='Chỉ lưu điều kiện tìm kiếm đã chuẩn hóa; không lưu danh sách kết quả, snippet hay nội dung nhạy cảm.';
+export function renameSearchView(settings={},id='',name=''){
+  const nextName=text(name,80);
+  if(!nextName)return settings;
+  return {...settings,savedSafeSearchViews:savedSearchViews(settings).map((item)=>item.id===id?{...item,name:nextName}:item)};
+}
+
+export function moveSearchView(settings={},id='',direction='up'){
+  const views=savedSearchViews(settings),index=views.findIndex((item)=>item.id===id);
+  if(index<0)return settings;
+  const target=direction==='down'?index+1:index-1;
+  if(target<0||target>=views.length)return settings;
+  const next=[...views];
+  [next[index],next[target]]=[next[target],next[index]];
+  return {...settings,savedSafeSearchViews:next};
+}
+
+export function resetSavedSearchViews(settings={}){
+  return {...settings,savedSafeSearchViews:[]};
+}
+
+export function privacySafeSearchDefaults(){
+  return {query:'',childId:'',datasets:[...SAFE_SEARCH_DATASETS],domainId:'',fromDate:'',toDate:'',limit:20};
+}
+
+export const SAVED_SEARCH_NOTE='Chỉ lưu điều kiện tìm kiếm đã chuẩn hóa; không lưu danh sách kết quả, snippet hay nội dung nhạy cảm. Reset mặc định chỉ xóa các view đã lưu và khôi phục phạm vi dataset an toàn.';

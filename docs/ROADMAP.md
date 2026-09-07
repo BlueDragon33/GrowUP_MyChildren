@@ -26,15 +26,16 @@
 - Lượt 61–65: privacy-safe audit export, versioned taxonomy, family planning, encrypted backup, release/rollback hardening. **Completed in v0.8.0.**
 - Lượt 66–70: versioned domain binding, selective family-plan `.ics`, privacy-safe search, recovery inspector/drill, reproducible RC gate. **Completed in v0.9.0.**
 - Lượt 71–75: taxonomy coverage, family-plan conflict assistant, safe-search deep links, recovery history and one-entrypoint runtime consolidation. **Completed in v1.0.0 with final verify + Chromium/Axe PASS.**
-- Lượt 76: Child-profile data portability map. **Implemented in v1.1.0 with explicit local-only / safe-export / encrypted-backup-only / future-cloud labels; no automatic cloud upload.**
-- Lượt 77: Family-plan workload windows. **Implemented in v1.1.0 for 7/14/30-day neutral summaries; no child ranking or automatic rescheduling.**
-- Lượt 78: Saved privacy-safe search views. **Implemented in v1.1.0; only normalized criteria are stored, never search result contents or unsafe datasets.**
-- Lượt 79: Recovery drill schedule/checklist metadata. **Implemented in v1.1.0 with optional local reminder candidate metadata; no passphrase storage and no automatic restore.**
-- Lượt 80: Runtime compatibility retirement evidence. **Implemented in v1.1.0 as selector/side-effect observation only; no v4–v9 module is removed without multi-flow regression evidence.**
+- Lượt 76–80: child data portability map, 7/14/30-day workload windows, saved safe-search views, recovery schedule/checklist and runtime compatibility observation. **Completed in v1.1.0 with final PR gate + CI hậu merge PASS.**
+- Lượt 81: Portability export wizard. **Implemented in v1.2.0 with mandatory unchanged preview before download, child/dataset/record counts and per-dataset field allowlists; Health/Nutrition/free-text ngoài allowlist are excluded. Awaiting final CI/merge gate.**
+- Lượt 82: Family workload calendar heatmap. **Implemented in v1.2.0 with neutral minute bands and keyboard/screen-reader text equivalent; no performance score/rank. Awaiting final CI/merge gate.**
+- Lượt 83: Saved-search management. **Implemented in v1.2.0 with rename/reorder and confirmed reset to privacy-safe defaults while storing criteria only. Awaiting final CI/merge gate.**
+- Lượt 84: Recovery drill reminder integration. **Implemented in v1.2.0 with explicit child target, existing reminder-list integration and source/date deduplication; local-only. Awaiting final CI/merge gate.**
+- Lượt 85: Compatibility evidence matrix. **Implemented in v1.2.0 with required Overview/Learning/Skills/Portfolio/mobile/Axe flows; no module can be retired on incomplete evidence or if active anywhere. Awaiting final CI/merge gate.**
 
 ## Next generated rounds
-- Lượt 81: Portability export wizard that previews exactly which safe datasets will leave the device before download.
-- Lượt 82: Family workload calendar heatmap using neutral time bands only, with keyboard-accessible text equivalent and no performance scoring.
-- Lượt 83: Saved-search management with rename/reorder and explicit one-click reset to privacy-safe defaults.
-- Lượt 84: Recovery drill due-state integration with existing reminder list, deduplicated by source/date and still local-only.
-- Lượt 85: Compatibility evidence matrix collected across Overview/Learning/Skills/Portfolio/mobile/Axe flows; retire only modules proven unused across all gates.
+- Lượt 86: Safe-export manifest/checksum so recipients can verify export integrity without revealing extra child data.
+- Lượt 87: Configurable family workload display bands stored locally, with neutral labels and hard guard against child scoring/ranking.
+- Lượt 88: Saved-search folders/pinning and duplicate detection while keeping all saved objects criteria-only.
+- Lượt 89: Recovery reminder lifecycle bridge for complete/reschedule/remove actions while preserving source/date lineage and explicit user control.
+- Lượt 90: Evidence-driven first legacy retirement candidate review; remove code only if full 6-flow matrix + static dependency graph + final browser/Axe gate prove it unused.

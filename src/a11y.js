@@ -16,6 +16,10 @@ function enhanceNavigation() {
   document.querySelectorAll('[data-nav]').forEach((button) => {
     button.setAttribute('aria-current', button.classList.contains('active') ? 'page' : 'false');
   });
+  const mobileNav = document.querySelector('#mobileNav');
+  if (mobileNav && !mobileNav.hasAttribute('aria-label') && !mobileNav.hasAttribute('aria-labelledby')) {
+    mobileNav.setAttribute('aria-label', 'Điều hướng chức năng');
+  }
 }
 
 function enhanceScrollableRegions() {

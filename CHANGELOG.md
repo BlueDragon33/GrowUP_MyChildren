@@ -2,6 +2,48 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
+## [1.2.0] - đang kiểm duyệt PR
+### Added
+- Lượt 81: Safe-export wizard với preview bắt buộc trước download, chọn hồ sơ/dataset, số bản ghi và allowlist trường cụ thể.
+- Lượt 82: Workload calendar theo tháng với band phút trung tính và mô tả văn bản tương đương cho bàn phím/trình đọc màn hình.
+- Lượt 83: Saved-search management gồm đổi tên, đổi thứ tự và reset có xác nhận về tiêu chí an toàn.
+- Lượt 84: Recovery schedule tích hợp vào reminder list với hồ sơ đích do người dùng chọn và deduplicate theo `source + date`.
+- Lượt 85: Compatibility evidence matrix yêu cầu đủ Overview/Learning/Skills/Portfolio/mobile/Axe trước khi xét retire module.
+
+### Changed
+- App version nâng lên `1.2.0`; data schema tiếp tục v5.
+- Service-worker cache nâng lên `growup-mychildren-v12`.
+- Runtime tiếp tục dùng một JS entrypoint + một CSS entrypoint; `v12-runtime.js`/`v12.css` là dependency nội bộ.
+- Rollback pin về main v1.1.0 commit `359ea99f041654108c517d5c16be5e819932bb64`.
+- Legacy module definitions có API read-only để browser gate thu evidence từ đúng selector runtime.
+
+### Security / Privacy
+- Safe export v2 bỏ Health/Nutrition và mọi trường ngoài allowlist; `Portfolio.note` không được đưa vào gói wizard.
+- Download bị khóa cho tới khi preview hợp lệ; thay đổi lựa chọn làm preview cũ mất hiệu lực.
+- Saved search vẫn chỉ lưu criteria, không cache result/snippet.
+- Recovery reminder không lưu passphrase và không tự restore; cùng source/date không tạo bản trùng.
+- Compatibility matrix không cho phép retire khi thiếu bất kỳ flow bắt buộc hoặc module active ở bất kỳ flow nào.
+
+### Gate
+- `verify` + Chromium E2E/Axe bắt buộc PASS trên final PR head trước merge.
+
+## [1.1.0] - 2026-09-07
+### Added
+- Lượt 76: Child-profile portability map phân loại local-only / safe-export / encrypted-backup-only / future-cloud-capable.
+- Lượt 77: Family workload windows 7/14/30 ngày với tổng thời lượng/lịch trung tính, không xếp hạng trẻ.
+- Lượt 78: Saved privacy-safe search views chỉ lưu criteria đã chuẩn hóa.
+- Lượt 79: Recovery drill schedule/checklist metadata và reminder candidate cục bộ.
+- Lượt 80: Runtime compatibility observation; chưa xóa legacy module khi chưa đủ bằng chứng nhiều flow.
+
+### Changed
+- App version `1.1.0`, schema v5, SW cache `growup-mychildren-v11`.
+- Rollback về v1.0.0 commit `605c4948cbcc60164d8a34ba220558d39d8eeeb5`.
+
+### Gate
+- PR #12 final head `ca3d6579d665ee7f5aef3ab9500277173247c8a3`: `verify` PASS và Chromium E2E/Axe PASS.
+- Main merge commit `359ea99f041654108c517d5c16be5e819932bb64`: CI hậu merge `verify` + `browser-e2e` đều PASS.
+- GitHub Pages vẫn fail riêng ở `Configure Pages` do repository setting, issue #2.
+
 ## [1.0.0] - 2026-09-07
 ### Added
 - Lượt 71: Development-domain coverage dashboard đếm bản ghi Learning/Skills/Portfolio đã hoặc chưa gắn taxonomy; không tạo điểm, rank, rating hay percentile cho trẻ.
@@ -24,8 +66,7 @@ Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từn
 - Browser regression kiểm trực tiếp rằng coverage không thêm các field `score/rank/rating/percentile` và recovery history chỉ còn đúng bốn field metadata an toàn.
 
 ### Gate
-- Pre-final code gate trên commit `98ca4dc9d520c46851333a1e18b14c46966b6b88`: `verify` PASS và Chromium E2E/Axe **18/18 PASS**.
-- PR #11 vẫn bắt buộc một CI nữa trên final documentation/code head trước merge; không bypass lỗi vì thay đổi chỉ là tài liệu.
+- Final candidate head `677ca11e69236624f72538581aeb289867b25d75`: `verify` PASS và Chromium E2E/Axe PASS trước merge PR #11.
 
 ### Rollback
 - Điểm rollback ổn định trước v1.0: v0.9.0 / commit `c7cdab1c2b5aedf4952d9f276bef6d444b27713a`.
@@ -59,42 +100,17 @@ Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từn
 - Full encrypted-backup download/decrypt/checksum/confirmed-restore regression từ v0.8 vẫn được chạy trong suite v0.9.
 
 ### Gate
-- `verify`: PASS trên code head `c279e3602232a8188f95bf9ac1c655f6439e13bf`.
-- Chromium E2E + Axe: **14/14 PASS** trên cùng code head, gồm mobile 390px, v9 domain binding, selective `.ics`, safe search, recovery inspector, v8 encrypted-backup roundtrip/restore và Axe trên toàn bộ panel v8+v9.
-- Một final CI run khác sẽ được yêu cầu trên head cleanup/tài liệu trước khi merge PR #10.
+- Chromium E2E + Axe: **14/14 PASS** trên final code head trước merge PR #10.
 
 ### Rollback
 - Điểm rollback ổn định trước v0.9: v0.8.0 / commit `241653d6fb12f021ebd20704144e47a5a12cc8fd`.
 
 ## [0.8.0] - 2026-09-07
-### Added
-- Lượt 61: Audit-log explorer và JSON/CSV export chỉ cho metadata theo allowlist; không xuất raw health/nutrition/free-text.
-- Lượt 62: Development-domain taxonomy có phiên bản, đổi nhãn/bật tắt/thêm miền tùy chỉnh mà không viết lại dữ liệu lịch sử.
-- Lượt 63: Multi-child family time planning, chỉ tổng hợp số lịch/phút/ngày có kế hoạch theo thứ tự hồ sơ; không score/rank trẻ.
-- Lượt 64: Backup tùy chọn mã hóa bằng passphrase với PBKDF2-SHA-256 + AES-GCM-256, checksum sau giải mã, không lưu passphrase.
-- Lượt 65: Version banner, changelog, PWA update có xác nhận và rollback point ổn định.
-
-### Changed
-- Service worker v8 không còn `skipWaiting()` tự động khi install; bản cập nhật chỉ kích hoạt sớm khi người dùng chủ động áp dụng.
-- `npm run verify` bao phủ toàn bộ runtime/core v0.8.
-- Custom taxonomy IDs được normalize idempotent để không sinh tiền tố `custom-custom-*` qua nhiều lần save/load.
-
-### Security / Privacy
-- Backup mã hóa có thể chứa toàn bộ dữ liệu, kể cả Health, nhưng ciphertext không chứa plaintext và chỉ khôi phục sau khi giải mã + checksum + xác nhận.
-- Audit export tiếp tục loại raw health data khỏi output theo mặc định cố định.
-- Passphrase không được ghi vào localStorage/sessionStorage hay backup envelope.
-
-### Gate
-- Unit/static/privacy `verify`: PASS sau khi sửa lỗi taxonomy ID normalization.
-- Chromium E2E + Axe: 9/9 PASS trên head có code v0.8, gồm family planning và encrypted backup download/restore thực tế.
-
-### Rollback
-- Điểm rollback ổn định trước v0.8: v0.7.0 / commit `adb345c5ec94ccb1933661bad06c8c6473e7ef36`.
+- Lượt 61–65: audit explorer, versioned taxonomy, family planning, encrypted backup và release hardening.
+- Unit/static/privacy + Chromium E2E/Axe PASS trước merge.
 
 ## [0.7.0]
 - Lượt 56–60: consistency scanner, manual retention, neutral year-over-year summary, printable report opt-in Health, privacy/destructive regression và Axe/Chromium gate.
-- Sửa các vi phạm WCAG AA color contrast do Axe phát hiện trước khi merge.
-- `verify` + 7/7 browser E2E/Axe PASS trước merge.
 
 ## [0.6.0]
 - Lượt 51–55: evidence repair, portable archive manifest SHA-256, timeline period filters, dialog/focus accessibility và Pages post-deploy verification.
