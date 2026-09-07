@@ -9,6 +9,10 @@ const LEGACY_MODULES=Object.freeze([
   {module:'v9-compat.js',selector:'[data-v9-compat]'}
 ]);
 
+export function legacyModuleDefinitions(){
+  return LEGACY_MODULES.map((entry)=>({...entry}));
+}
+
 export function compatibilityUsageSnapshot(root=document){
   return LEGACY_MODULES.map((entry)=>({module:entry.module,active:Boolean(root?.querySelector?.(entry.selector)),selector:entry.selector}));
 }
