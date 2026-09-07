@@ -8,4 +8,5 @@ import './v8.js';
 import './v9-runtime.js';
 import './v9-compat.js';
 import './v10-runtime.js';
+import './v11-runtime.js';
 import './a11y.js';
