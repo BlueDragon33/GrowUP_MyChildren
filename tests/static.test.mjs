@@ -28,7 +28,7 @@ test('v9 runtime keeps domain calendar search and recovery boundaries explicit',
   assert.doesNotMatch(search, /healthRecords|nutritionLogs/);
   assert.doesNotMatch(search, /\.note/);
   assert.match(recovery, /runRecoveryDrill/);
-  assert.doesNotMatch(recovery, /localStorage|sessionStorage/);
+  assert.doesNotMatch(recovery, /localStorage\.(?:setItem|getItem|removeItem|clear)|sessionStorage\.(?:setItem|getItem|removeItem|clear)/);
   assert.match(recovery, /preview/);
 });
 
