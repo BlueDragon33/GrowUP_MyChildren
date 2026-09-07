@@ -1,4 +1,5 @@
 import { SAFE_DATASETS } from './export.js';
+import { withSafeExportManifest } from './export-integrity.js';
 
 export const SAFE_EXPORT_FIELDS=Object.freeze({
   learningGoals:['id','title','subject','dueDate','completed','createdAt','developmentDomainId','developmentDomainLabelSnapshot','developmentTaxonomyVersion'],
@@ -44,7 +45,7 @@ export function buildSafeExportPackage(state={},selection={}){
   if(!preview.childCount) throw new Error('Chọn ít nhất một hồ sơ trẻ để xuất.');
   if(!preview.datasetCount) throw new Error('Chọn ít nhất một nhóm dữ liệu an toàn để xuất.');
   const children=array(state.children).filter((child)=>preview.children.some((item)=>item.id===child.id));
-  return {
+  const payload={
     format:'growup-safe-export-v2',
     generatedAt:new Date().toISOString(),
     healthIncluded:false,
@@ -56,6 +57,7 @@ export function buildSafeExportPackage(state={},selection={}){
       ...Object.fromEntries(preview.datasets.map(({dataset,fields})=>[dataset,array(child[dataset]).map((record)=>pick(record,fields))]))
     }))
   };
+  return withSafeExportManifest(payload);
 }
 
-export const EXPORT_WIZARD_NOTE='Preview hiển thị đúng hồ sơ, dataset, số bản ghi và allowlist trường trước khi tải. Health/Nutrition và free-text ngoài allowlist không được đưa vào gói safe export.';
+export const EXPORT_WIZARD_NOTE='Preview hiển thị đúng hồ sơ, dataset, số bản ghi và allowlist trường trước khi tải. Health/Nutrition và free-text ngoài allowlist không được đưa vào gói safe export; gói tải có manifest SHA-256 để kiểm tra toàn vẹn.';
