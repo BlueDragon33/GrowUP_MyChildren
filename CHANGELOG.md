@@ -2,7 +2,7 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
-## [0.8.0] - đang kiểm duyệt PR
+## [0.8.0] - 2026-09-07
 ### Added
 - Lượt 61: Audit-log explorer và JSON/CSV export chỉ cho metadata theo allowlist; không xuất raw health/nutrition/free-text.
 - Lượt 62: Development-domain taxonomy có phiên bản, đổi nhãn/bật tắt/thêm miền tùy chỉnh mà không viết lại dữ liệu lịch sử.
@@ -13,11 +13,16 @@ Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từn
 ### Changed
 - Service worker v8 không còn `skipWaiting()` tự động khi install; bản cập nhật chỉ kích hoạt sớm khi người dùng chủ động áp dụng.
 - `npm run verify` bao phủ toàn bộ runtime/core v0.8.
+- Custom taxonomy IDs được normalize idempotent để không sinh tiền tố `custom-custom-*` qua nhiều lần save/load.
 
 ### Security / Privacy
 - Backup mã hóa có thể chứa toàn bộ dữ liệu, kể cả Health, nhưng ciphertext không chứa plaintext và chỉ khôi phục sau khi giải mã + checksum + xác nhận.
 - Audit export tiếp tục loại raw health data khỏi output theo mặc định cố định.
 - Passphrase không được ghi vào localStorage/sessionStorage hay backup envelope.
+
+### Gate
+- Unit/static/privacy `verify`: PASS sau khi sửa lỗi taxonomy ID normalization.
+- Chromium E2E + Axe: 9/9 PASS trên head có code v0.8, gồm family planning và encrypted backup download/restore thực tế.
 
 ### Rollback
 - Điểm rollback ổn định trước v0.8: v0.7.0 / commit `adb345c5ec94ccb1933661bad06c8c6473e7ef36`.
