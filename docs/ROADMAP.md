@@ -1,26 +1,7 @@
 # Delivery roadmap
 
 ## Completed in Skeleton v1
-- Lượt 01: Repository initialization and branch policy.
-- Lượt 02: Static PWA application shell.
-- Lượt 03: Core longitudinal child data model.
-- Lượt 04: Child profile onboarding and selector.
-- Lượt 05: Age 3–18 development timeline.
-- Lượt 06: Learning goal engine.
-- Lượt 07: Skill tracking.
-- Lượt 08: Health records with calculation-only BMI.
-- Lượt 09: Physical activity tracking.
-- Lượt 10: Nutrition daily log.
-- Lượt 11: Habits and daily completion.
-- Lượt 12: Assessment summary without child ranking.
-- Lượt 13: Portfolio milestones.
-- Lượt 14: Backward-planning roadmap.
-- Lượt 15: Calendar and reminders.
-- Lượt 16: Local rules-based advisor.
-- Lượt 17: JSON backup / restore and profile deletion.
-- Lượt 18: Responsive UI and PWA offline shell.
-- Lượt 19: Automated checks and tests.
-- Lượt 20: GitHub Pages deployment workflow.
+- Lượt 01–20: repository/PWA shell, child model/profiles, 3–18 timeline, learning, skills, health, physical, nutrition, habits, assessment, portfolio, roadmap, reminders, local advisor, backup, responsive/offline and CI/Pages workflow.
 
 ## Planned platform rounds requiring external/platform capabilities
 - Lượt 21: Authentication and family roles.
@@ -36,49 +17,23 @@
 
 ## Auto-generated implementation rounds
 - Lượt 31: GitHub Pages enablement gate. **Blocked by repository Pages setting**; tracked in issue #2. Source workflow and post-deploy verification are ready.
-- Lượt 32: Schema v2 + backward migration from v1. **Completed in v0.2.0.**
-- Lượt 33: Longitudinal development cockpit. **Completed in v0.2.0.**
-- Lượt 34: Portable calendar bridge via `.ics` export. **Completed in v0.2.0.** Google authorization remains Lượt 24.
-- Lượt 35: Local-calendar date correctness. **Completed in v0.2.0.**
-- Lượt 36: Screen-privacy controls. **Completed in v0.3.0 as presentation privacy only; not encryption-at-rest.**
-- Lượt 37: Development-profile editor. **Completed in v0.3.0.**
-- Lượt 38: Attachment metadata layer. **Completed in v0.3.0; binary/cloud storage remains Lượt 26.**
-- Lượt 39: Provider-neutral integration interfaces. **Completed in v0.3.0; real authorization remains Lượt 21/22/24.**
-- Lượt 40: Static/PWA/accessibility smoke gate. **Completed in v0.3.0; browser E2E promoted to Lượt 50.**
-- Lượt 41: Family-role policy model. **Completed in v0.4.0 as local policy; real identity remains Lượt 21.**
-- Lượt 42: Reminder due-state + notification capability. **Completed in v0.4.0; push delivery remains Lượt 25.**
-- Lượt 43: Backup integrity manifest and safer restore. **Completed in v0.4.0 with SHA-256 checksum and preview.**
-- Lượt 44: Age-stage goal templates. **Completed in v0.4.0 as optional templates.**
-- Lượt 45: Longitudinal family JSON report. **Completed in v0.4.0; health excluded by default.**
-- Lượt 46: Unified developmental event timeline. **Completed in v0.5.0 as a derived view without duplicating source records; health events contain no measurements.**
-- Lượt 47: Evidence linking between learning goals and portfolio/attachment metadata. **Completed in v0.5.0 with validation and orphan detection.**
-- Lượt 48: Local family-policy editor safeguards. **Completed in v0.5.0; it cannot create a new owner and cannot remove the final owner.**
-- Lượt 49: Interoperability exports for selected non-sensitive datasets. **Completed in v0.5.0 for CSV/JSON; health is excluded from the default safe dataset allowlist.**
-- Lượt 50: Production-readiness browser gate. **Completed in v0.5.0: both `verify` and Chromium Playwright E2E passed before merge.**
-- Lượt 51: Evidence integrity repair tools. **Completed in v0.6.0 with orphan detection, summary and confirmed prune that never deletes source goal/portfolio/attachment records.**
-- Lượt 52: Portable archive manifest. **Completed in v0.6.0 with schema/app metadata, SHA-256 checksum, compatibility validation and health exclusion by default.**
-- Lượt 53: Timeline month/quarter/year filters and period summaries. **Completed in v0.6.0 as a derived period explorer without altering raw history.**
-- Lượt 54: Keyboard/focus/accessibility hardening. **Completed in v0.6.0 with skip link, main landmark focus target, aria-current navigation, dialog semantics/focus and Escape-to-close.**
-- Lượt 55: Deployment verification gate. **Implemented in v0.6.0; the main deployment still fails at `Configure Pages` because repository Pages is not enabled, so public verification is skipped.**
-- Lượt 56: Local data consistency scanner. **Completed in v0.7.0; detects duplicate IDs, malformed dates and dangling references without auto-fixing.**
-- Lượt 57: Data-retention/archive-policy UI. **Completed in v0.7.0 as manual-only retention with preview, pre-removal safe archive and explicit confirmation; no background deletion.**
-- Lượt 58: Year-over-year development summaries. **Completed in v0.7.0 as neutral recorded-data/activity counts, never a score or child ranking.**
-- Lượt 59: Printable development report. **Completed in v0.7.0 with explicit section selection; health is unchecked by default and only appears when explicitly selected.**
-- Lượt 60: Pre-production accessibility/privacy audit gate. **Completed in v0.7.0; verify + 7/7 Chromium E2E/Axe passed after fixing real WCAG AA color-contrast violations before merge.**
-- Lượt 61: Local audit-log explorer and export. **Completed in v0.8.0 with fixed metadata allowlist so raw health/free-text details are not exported.**
-- Lượt 62: Versioned development-domain taxonomy/customization. **Completed in v0.8.0 as settings-layer taxonomy version `2026.1`, without rewriting historical records or increasing data schema. Custom IDs are normalized idempotently.**
-- Lượt 63: Multi-child family scheduling/resource planning. **Completed in v0.8.0 with time/commitment summaries in profile order and no score/rank/ability comparison.**
-- Lượt 64: Optional passphrase-encrypted portable backup. **Completed in v0.8.0 with PBKDF2-SHA-256 + AES-GCM-256, no stored passphrase, checksum verification and confirmed restore; real Chromium download/restore regression passed.**
-- Lượt 65: Release/rollback operational hardening. **Completed in v0.8.0 with centralized version metadata, changelog, stable v0.7 rollback point and user-approved service-worker activation.**
-- Lượt 66: Versioned domain binding for new Learning/Skill/Portfolio records. **Completed in v0.9.0 with domain ID + label snapshot + taxonomy version; legacy records remain unchanged.**
-- Lượt 67: Family-plan calendar bridge. **Completed in v0.9.0 with explicit per-item `.ics` selection and no child identity/notes/Health/Nutrition in the calendar payload.**
-- Lượt 68: Privacy-safe local search. **Completed in v0.9.0 using a fixed non-sensitive dataset allowlist; Health/Nutrition and free-text notes are intentionally not indexed.**
-- Lượt 69: Encrypted-backup compatibility inspector and recovery drill. **Completed in v0.9.0; diagnostics expose format/KDF/cipher metadata only, and the drill decrypts/checks in memory without restore.**
-- Lượt 70: Release-candidate operational gate. **Completed in v0.9.0 with Node 22.x, Playwright 1.55.0, Axe 4.10.2, SW cache v9, rollback to v0.8, 390px mobile regression and Axe/Chromium gate. Code head passed verify + 14/14 browser tests before final cleanup.**
+- Lượt 32–35: schema migration, development cockpit, portable `.ics`, local-date correctness. **Completed in v0.2.0.**
+- Lượt 36–40: screen privacy, development profile editor, attachment metadata, provider-neutral integration interfaces, static/PWA smoke gate. **Completed in v0.3.0.**
+- Lượt 41–45: local family policy, reminder capability, backup integrity, age-stage templates, longitudinal family report. **Completed in v0.4.0.**
+- Lượt 46–50: unified timeline, evidence links, family policy safeguards, safe exports, Chromium production gate. **Completed in v0.5.0.**
+- Lượt 51–55: evidence repair, portable archive SHA-256, period filters, keyboard/focus hardening, deployment verification workflow. **Completed/implemented in v0.6.0; public Pages remains blocked by L31.**
+- Lượt 56–60: consistency scanner, manual retention, neutral yearly summary, printable report, privacy/accessibility Axe gate. **Completed in v0.7.0.**
+- Lượt 61–65: privacy-safe audit export, versioned taxonomy, family planning, encrypted backup, release/rollback hardening. **Completed in v0.8.0.**
+- Lượt 66–70: versioned domain binding, selective family-plan `.ics`, privacy-safe search, recovery inspector/drill, reproducible RC gate. **Completed in v0.9.0; verify + 14/14 Chromium E2E/Axe passed before merge.**
+- Lượt 71: Development-domain coverage dashboard. **Implemented in v1.0.0 with bound/unbound counts by dataset/domain only; no child score/rank/comparison.**
+- Lượt 72: Family-plan conflict assistant. **Implemented in v1.0.0 with same-day/overload detection and nearby lighter-date suggestions; no automatic calendar changes.**
+- Lượt 73: Privacy-safe search deep links and advanced filters. **Implemented in v1.0.0 with child/domain/date/dataset filters and source-page navigation/highlight while preserving the safe index allowlist.**
+- Lượt 74: Backup recovery-history checklist. **Implemented in v1.0.0; stores only timestamp, PASS/FAIL, format and schema metadata with bounded history.**
+- Lượt 75: Runtime consolidation and release hygiene. **Implemented in v1.0.0: HTML now loads one JS entrypoint and one CSS entrypoint; v4–v10 become internal compatibility dependencies; SW/package/release dependency gates updated. Final CI/Axe required before merge.**
 
 ## Next generated rounds
-- Lượt 71: Development-domain coverage dashboard showing bound/unbound record counts by dataset/domain, without child scoring or comparison.
-- Lượt 72: Family-plan conflict assistant that detects overlapping/same-day commitments and proposes local reschedule candidates without automatic calendar changes.
-- Lượt 73: Privacy-safe search deep links and advanced filters so users can navigate from a search result to its source page/record while preserving the current allowlist.
-- Lượt 74: Backup recovery-history checklist storing only last drill date, format and PASS/FAIL metadata; never passphrases, ciphertext or recovered payloads.
-- Lượt 75: Runtime consolidation and release hygiene: reduce layered v4–v9 compatibility/runtime duplication, remove dead modules, audit the active dependency graph and re-run full desktop/mobile/Axe regression.
+- Lượt 76: Child-profile data portability map showing which modules are local-only, safe-exportable, encrypted-backup-only or future-cloud-capable.
+- Lượt 77: Family-plan workload windows (7/14/30 days) with neutral capacity summaries and no child ranking.
+- Lượt 78: Saved privacy-safe search views and quick filters stored locally without caching result contents or sensitive datasets.
+- Lượt 79: Recovery drill schedule/checklist metadata with optional local reminder creation; still no passphrase storage or automatic restore.
+- Lượt 80: Runtime compatibility retirement plan: instrument active legacy modules, identify genuinely unused v4–v9 code paths, remove only evidence-proven dead paths, then run full desktop/mobile/Axe regression.

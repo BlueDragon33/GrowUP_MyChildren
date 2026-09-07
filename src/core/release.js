@@ -1,17 +1,17 @@
-export const APP_VERSION = '0.9.0';
+export const APP_VERSION = '1.0.0';
 export const DATA_SCHEMA_VERSION = 5;
 export const STABLE_ROLLBACK = Object.freeze({
-  version:'0.8.0',
-  commit:'241653d6fb12f021ebd20704144e47a5a12cc8fd',
-  note:'Bản v0.8 đã qua final verify + 9/9 Chromium E2E/Axe trước khi v0.9 bắt đầu.'
+  version:'0.9.0',
+  commit:'c7cdab1c2b5aedf4952d9f276bef6d444b27713a',
+  note:'Bản v0.9 đã qua verify + 14/14 Chromium E2E/Axe và CI hậu merge trước khi v1.0 bắt đầu.'
 });
 
 export const RELEASE_NOTES = Object.freeze([
+  { version:'1.0.0', title:'Coverage, conflict assistant, search deep links, recovery history & runtime consolidation', rounds:'71–75' },
   { version:'0.9.0', title:'Domain binding, family calendar bridge, safe search, recovery drill & RC gate', rounds:'66–70' },
   { version:'0.8.0', title:'Audit, taxonomy, family planning, encrypted backup & release hardening', rounds:'61–65' },
   { version:'0.7.0', title:'Consistency, retention, reporting & Axe privacy/accessibility gate', rounds:'56–60' },
-  { version:'0.6.0', title:'Evidence repair, archive integrity, timeline filters & accessibility', rounds:'51–55' },
-  { version:'0.5.0', title:'Timeline, evidence links, family policy, safe export & browser gate', rounds:'46–50' }
+  { version:'0.6.0', title:'Evidence repair, archive integrity, timeline filters & accessibility', rounds:'51–55' }
 ]);
 
 export function compareVersions(a='0.0.0',b='0.0.0') {

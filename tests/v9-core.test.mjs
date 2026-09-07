@@ -58,9 +58,9 @@ test('safe search omits health nutrition and portfolio notes',()=>{
 });
 
 test('RC consistency profile passes only matching configuration',()=>{
-  const pass=evaluateReleaseCandidate({appVersion:'0.9.0',dataSchemaVersion:5,serviceWorkerCache:'growup-mychildren-v9',nodeMajor:22,playwrightVersion:'1.55.0',axePlaywrightVersion:'4.10.2',rollbackCommit:'241653d6fb12f021ebd20704144e47a5a12cc8fd'});
+  const pass=evaluateReleaseCandidate({appVersion:'1.0.0',dataSchemaVersion:5,serviceWorkerCache:'growup-mychildren-v10',nodeMajor:22,playwrightVersion:'1.55.0',axePlaywrightVersion:'4.10.2',rollbackCommit:'c7cdab1c2b5aedf4952d9f276bef6d444b27713a'});
   assert.equal(pass.ready,true);
-  const fail=evaluateReleaseCandidate({appVersion:'0.9.0',dataSchemaVersion:5,serviceWorkerCache:'wrong',nodeMajor:20,playwrightVersion:'1.55.0',axePlaywrightVersion:'4.10.2',rollbackCommit:'wrong'});
+  const fail=evaluateReleaseCandidate({appVersion:'1.0.0',dataSchemaVersion:5,serviceWorkerCache:'wrong',nodeMajor:20,playwrightVersion:'1.55.0',axePlaywrightVersion:'4.10.2',rollbackCommit:'wrong'});
   assert.equal(fail.ready,false);
   assert.ok(fail.failed.includes('nodeMajor'));
   assert.ok(fail.failed.includes('serviceWorkerCache'));

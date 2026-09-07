@@ -1,18 +1,22 @@
 const SEARCH_DATASETS = Object.freeze(['learning','skills','portfolio','roadmap','familyPlan']);
+const PAGE_BY_DATASET = Object.freeze({learning:'learning',skills:'skills',portfolio:'portfolio',roadmap:'roadmap',familyPlan:'overview'});
 
 function array(value){return Array.isArray(value)?value:[];}
 function text(value,max=240){return typeof value==='string'?value.trim().slice(0,max):'';}
 function normalized(value){return text(value,500).toLocaleLowerCase('vi-VN').normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+function validDate(value){return /^\d{4}-\d{2}-\d{2}$/.test(String(value||''));}
 
 function item(dataset,child,source,title,subtitle,date=''){
   return {
     dataset,
+    pageKey:PAGE_BY_DATASET[dataset]||'overview',
     childId:child?.id || '',
     childName:text(child?.name,100),
     sourceId:text(source?.id,100),
     title:text(title,160),
     subtitle:text(subtitle,220),
-    date:/^\d{4}-\d{2}-\d{2}$/.test(String(date||''))?String(date):''
+    date:validDate(date)?String(date):'',
+    developmentDomainId:text(source?.developmentDomainId,80)
   };
 }
 
@@ -37,10 +41,16 @@ export function searchSafeDevelopment(state = {}, query = '', options = {}) {
   if(!q) return [];
   const datasets=new Set(array(options.datasets).filter((name)=>SEARCH_DATASETS.includes(name)));
   const childId=text(options.childId,100);
+  const domainId=text(options.domainId,80);
+  const fromDate=validDate(options.fromDate)?options.fromDate:'';
+  const toDate=validDate(options.toDate)?options.toDate:'';
   const limit=Math.min(100,Math.max(1,Number(options.limit)||30));
   return buildSafeSearchIndex(state)
     .filter((entry)=>!datasets.size || datasets.has(entry.dataset))
     .filter((entry)=>!childId || entry.childId===childId)
+    .filter((entry)=>!domainId || entry.developmentDomainId===domainId)
+    .filter((entry)=>!fromDate || !entry.date || entry.date>=fromDate)
+    .filter((entry)=>!toDate || !entry.date || entry.date<=toDate)
     .map((entry)=>{
       const haystack=normalized(`${entry.title} ${entry.subtitle} ${entry.childName}`);
       const pos=haystack.indexOf(q);
@@ -50,6 +60,17 @@ export function searchSafeDevelopment(state = {}, query = '', options = {}) {
     .sort((a,b)=>b.score-a.score || String(b.date).localeCompare(String(a.date)) || a.title.localeCompare(b.title,'vi'))
     .slice(0,limit)
     .map(({score,...entry})=>entry);
+}
+
+export function searchDeepLink(result = {}) {
+  const dataset=SEARCH_DATASETS.includes(result.dataset)?result.dataset:'';
+  if(!dataset) return null;
+  return {
+    pageKey:PAGE_BY_DATASET[dataset]||'overview',
+    childId:text(result.childId,100),
+    sourceId:text(result.sourceId,100),
+    dataset
+  };
 }
 
 export const SAFE_SEARCH_DATASETS = SEARCH_DATASETS;
