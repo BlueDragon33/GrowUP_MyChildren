@@ -2,6 +2,34 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
+## [1.0.0] - 2026-09-07
+### Added
+- Lượt 71: Development-domain coverage dashboard đếm bản ghi Learning/Skills/Portfolio đã hoặc chưa gắn taxonomy; không tạo điểm, rank, rating hay percentile cho trẻ.
+- Lượt 72: Family-plan conflict assistant phát hiện ngày có nhiều hoạt động/quá ngưỡng phút và đề xuất ngày lân cận còn dung lượng; không tự đổi lịch.
+- Lượt 73: Privacy-safe search mở rộng với filter child/domain/date/dataset và deep link về đúng hồ sơ, tab nguồn, bản ghi được highlight.
+- Lượt 74: Recovery-drill history có giới hạn, chỉ lưu `at`, `status`, `format`, `schemaVersion`.
+- Lượt 75: Runtime bootstrap hợp nhất còn một JavaScript entrypoint và một CSS entrypoint trong HTML.
+
+### Changed
+- App version nâng lên `1.0.0`; data schema tiếp tục v5, không cần migration mới cho Lượt 71–75.
+- Service-worker cache nâng lên `growup-mychildren-v10`.
+- `src/runtime-entry.js` và `src/runtime.css` trở thành entrypoint công khai; các lớp v4–v10 được nạp như dependency tương thích nội bộ theo thứ tự cố định.
+- Release/rollback profile giữ rollback ổn định về v0.9.0 commit `c7cdab1c2b5aedf4952d9f276bef6d444b27713a`.
+
+### Security / Privacy
+- Coverage là metadata vệ sinh dữ liệu, không phải thước đo phát triển hay thành tích.
+- Conflict assistant không so sánh ưu tiên giữa các trẻ và không ghi thay đổi lịch tự động.
+- Search deep-link không mở rộng safe index: Health, Nutrition, health notes và Portfolio notes vẫn bị loại.
+- Recovery history không lưu passphrase, ciphertext, salt, IV, preview chi tiết hay payload đã giải mã.
+- Browser regression kiểm trực tiếp rằng coverage không thêm các field `score/rank/rating/percentile` và recovery history chỉ còn đúng bốn field metadata an toàn.
+
+### Gate
+- Pre-final code gate trên commit `98ca4dc9d520c46851333a1e18b14c46966b6b88`: `verify` PASS và Chromium E2E/Axe **18/18 PASS**.
+- PR #11 vẫn bắt buộc một CI nữa trên final documentation/code head trước merge; không bypass lỗi vì thay đổi chỉ là tài liệu.
+
+### Rollback
+- Điểm rollback ổn định trước v1.0: v0.9.0 / commit `c7cdab1c2b5aedf4952d9f276bef6d444b27713a`.
+
 ## [0.9.0] - 2026-09-07
 ### Added
 - Lượt 66: Versioned development-domain binding cho bản ghi Learning/Skill/Portfolio mới với domain ID, label snapshot và taxonomy version; bản ghi lịch sử không bị viết lại.
