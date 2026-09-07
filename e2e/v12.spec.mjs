@@ -77,7 +77,9 @@ test('saved-search manager renames reorders and resets stored criteria',async({p
   const panel=page.locator('[data-v12="saved-search-admin"]');
   await panel.locator('[data-v12-rename-search="one"] input[name="name"]').fill('Math goals');
   await panel.locator('[data-v12-rename-search="one"] button[type="submit"]').click();
-  await expect(page.locator('[data-v12="saved-search-admin"]')).toContainText('Math goals');
+  await expect(page.locator('[data-v12-rename-search="one"] input[name="name"]')).toHaveValue('Math goals');
+  const renamed=await page.evaluate(()=>JSON.parse(localStorage.getItem('growup_mychildren_v1')).settings.savedSafeSearchViews.find((x)=>x.id==='one'));
+  expect(renamed.name).toBe('Math goals');
   await page.locator('[data-v12-move-search="two"][data-direction="up"]').click();
   let order=await page.evaluate(()=>JSON.parse(localStorage.getItem('growup_mychildren_v1')).settings.savedSafeSearchViews.map((x)=>x.id));
   expect(order).toEqual(['two','one']);
@@ -119,8 +121,10 @@ test('compatibility matrix collects overview learning skills portfolio mobile an
     await capture(flow);
   }
   await page.setViewportSize({width:390,height:844});
-  await page.locator('[data-nav="overview"]').last().click();
-  await expect(page.locator('#mobileNav')).toBeVisible();
+  const mobileNav=page.locator('#mobileNav');
+  await expect(mobileNav).toBeVisible();
+  await mobileNav.selectOption('overview');
+  await expect(page.locator('.topbar h1')).toHaveText('Tổng quan phát triển');
   await capture('mobile');
   const axeResults=await new AxeBuilder({page}).analyze();
   const blocking=axeResults.violations.filter((v)=>['serious','critical'].includes(v.impact));
