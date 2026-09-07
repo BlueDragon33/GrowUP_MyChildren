@@ -1,12 +1,13 @@
-export const APP_VERSION = '1.0.0';
+export const APP_VERSION = '1.1.0';
 export const DATA_SCHEMA_VERSION = 5;
 export const STABLE_ROLLBACK = Object.freeze({
-  version:'0.9.0',
-  commit:'c7cdab1c2b5aedf4952d9f276bef6d444b27713a',
-  note:'Bản v0.9 đã qua verify + 14/14 Chromium E2E/Axe và CI hậu merge trước khi v1.0 bắt đầu.'
+  version:'1.0.0',
+  commit:'605c4948cbcc60164d8a34ba220558d39d8eeeb5',
+  note:'Bản v1.0 đã qua verify + Chromium E2E/Axe trên final head và được merge sạch trước khi v1.1 bắt đầu.'
 });
 
 export const RELEASE_NOTES = Object.freeze([
+  { version:'1.1.0', title:'Portability map, workload windows, saved safe search, recovery schedule & compatibility evidence', rounds:'76–80' },
   { version:'1.0.0', title:'Coverage, conflict assistant, search deep links, recovery history & runtime consolidation', rounds:'71–75' },
   { version:'0.9.0', title:'Domain binding, family calendar bridge, safe search, recovery drill & RC gate', rounds:'66–70' },
   { version:'0.8.0', title:'Audit, taxonomy, family planning, encrypted backup & release hardening', rounds:'61–65' },

@@ -24,16 +24,17 @@
 - Lượt 51–55: evidence repair, portable archive SHA-256, period filters, keyboard/focus hardening, deployment verification workflow. **Completed/implemented in v0.6.0; public Pages remains blocked by L31.**
 - Lượt 56–60: consistency scanner, manual retention, neutral yearly summary, printable report, privacy/accessibility Axe gate. **Completed in v0.7.0.**
 - Lượt 61–65: privacy-safe audit export, versioned taxonomy, family planning, encrypted backup, release/rollback hardening. **Completed in v0.8.0.**
-- Lượt 66–70: versioned domain binding, selective family-plan `.ics`, privacy-safe search, recovery inspector/drill, reproducible RC gate. **Completed in v0.9.0; verify + 14/14 Chromium E2E/Axe passed before merge.**
-- Lượt 71: Development-domain coverage dashboard. **Implemented in v1.0.0 with bound/unbound counts by dataset/domain only; no child score/rank/comparison.**
-- Lượt 72: Family-plan conflict assistant. **Implemented in v1.0.0 with same-day/overload detection and nearby lighter-date suggestions; no automatic calendar changes.**
-- Lượt 73: Privacy-safe search deep links and advanced filters. **Implemented in v1.0.0 with child/domain/date/dataset filters and source-page navigation/highlight while preserving the safe index allowlist.**
-- Lượt 74: Backup recovery-history checklist. **Implemented in v1.0.0; stores only timestamp, PASS/FAIL, format and schema metadata with bounded history.**
-- Lượt 75: Runtime consolidation and release hygiene. **Implemented in v1.0.0: HTML now loads one JS entrypoint and one CSS entrypoint; v4–v10 become internal compatibility dependencies; SW/package/release dependency gates updated. Final CI/Axe required before merge.**
+- Lượt 66–70: versioned domain binding, selective family-plan `.ics`, privacy-safe search, recovery inspector/drill, reproducible RC gate. **Completed in v0.9.0.**
+- Lượt 71–75: taxonomy coverage, family-plan conflict assistant, safe-search deep links, recovery history and one-entrypoint runtime consolidation. **Completed in v1.0.0 with final verify + Chromium/Axe PASS.**
+- Lượt 76: Child-profile data portability map. **Implemented in v1.1.0 with explicit local-only / safe-export / encrypted-backup-only / future-cloud labels; no automatic cloud upload.**
+- Lượt 77: Family-plan workload windows. **Implemented in v1.1.0 for 7/14/30-day neutral summaries; no child ranking or automatic rescheduling.**
+- Lượt 78: Saved privacy-safe search views. **Implemented in v1.1.0; only normalized criteria are stored, never search result contents or unsafe datasets.**
+- Lượt 79: Recovery drill schedule/checklist metadata. **Implemented in v1.1.0 with optional local reminder candidate metadata; no passphrase storage and no automatic restore.**
+- Lượt 80: Runtime compatibility retirement evidence. **Implemented in v1.1.0 as selector/side-effect observation only; no v4–v9 module is removed without multi-flow regression evidence.**
 
 ## Next generated rounds
-- Lượt 76: Child-profile data portability map showing which modules are local-only, safe-exportable, encrypted-backup-only or future-cloud-capable.
-- Lượt 77: Family-plan workload windows (7/14/30 days) with neutral capacity summaries and no child ranking.
-- Lượt 78: Saved privacy-safe search views and quick filters stored locally without caching result contents or sensitive datasets.
-- Lượt 79: Recovery drill schedule/checklist metadata with optional local reminder creation; still no passphrase storage or automatic restore.
-- Lượt 80: Runtime compatibility retirement plan: instrument active legacy modules, identify genuinely unused v4–v9 code paths, remove only evidence-proven dead paths, then run full desktop/mobile/Axe regression.
+- Lượt 81: Portability export wizard that previews exactly which safe datasets will leave the device before download.
+- Lượt 82: Family workload calendar heatmap using neutral time bands only, with keyboard-accessible text equivalent and no performance scoring.
+- Lượt 83: Saved-search management with rename/reorder and explicit one-click reset to privacy-safe defaults.
+- Lượt 84: Recovery drill due-state integration with existing reminder list, deduplicated by source/date and still local-only.
+- Lượt 85: Compatibility evidence matrix collected across Overview/Learning/Skills/Portfolio/mobile/Axe flows; retire only modules proven unused across all gates.
