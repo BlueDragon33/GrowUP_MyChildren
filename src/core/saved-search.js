@@ -15,7 +15,9 @@ export function normalizeSavedSearch(view={}){
     domainId:text(view.domainId,80),
     fromDate:validDate(view.fromDate)?view.fromDate:'',
     toDate:validDate(view.toDate)?view.toDate:'',
-    limit:Math.min(100,Math.max(1,Number(view.limit)||20))
+    limit:Math.min(100,Math.max(1,Number(view.limit)||20)),
+    folder:text(view.folder,60),
+    pinned:Boolean(view.pinned)
   };
 }
 
@@ -57,4 +59,4 @@ export function privacySafeSearchDefaults(){
   return {query:'',childId:'',datasets:[...SAFE_SEARCH_DATASETS],domainId:'',fromDate:'',toDate:'',limit:20};
 }
 
-export const SAVED_SEARCH_NOTE='Chỉ lưu điều kiện tìm kiếm đã chuẩn hóa; không lưu danh sách kết quả, snippet hay nội dung nhạy cảm. Reset mặc định chỉ xóa các view đã lưu và khôi phục phạm vi dataset an toàn.';
+export const SAVED_SEARCH_NOTE='Chỉ lưu điều kiện tìm kiếm đã chuẩn hóa và metadata tổ chức folder/pinned; không lưu danh sách kết quả, snippet hay nội dung nhạy cảm. Reset mặc định chỉ xóa các view đã lưu và khôi phục phạm vi dataset an toàn.';
