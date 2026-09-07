@@ -90,13 +90,13 @@ test('encrypted backup roundtrip hides plaintext and rejects wrong password or t
   await assert.rejects(()=>decryptPortableBackup(tampered,passphrase),/Không thể giải mã backup/);
 });
 
-test('release metadata pins stable v0.7 rollback and compares versions', () => {
-  assert.equal(APP_VERSION,'0.8.0');
-  assert.equal(STABLE_ROLLBACK.version,'0.7.0');
-  assert.equal(STABLE_ROLLBACK.commit,'adb345c5ec94ccb1933661bad06c8c6473e7ef36');
-  assert.equal(compareVersions('0.8.0','0.7.9'),1);
-  assert.equal(compareVersions('0.8.0','0.8.0'),0);
-  const status=releaseStatus('0.7.0');
+test('release metadata advances current app version and pins previous stable rollback', () => {
+  assert.equal(APP_VERSION,'0.9.0');
+  assert.equal(STABLE_ROLLBACK.version,'0.8.0');
+  assert.equal(STABLE_ROLLBACK.commit,'241653d6fb12f021ebd20704144e47a5a12cc8fd');
+  assert.equal(compareVersions('0.9.0','0.8.9'),1);
+  assert.equal(compareVersions('0.9.0','0.9.0'),0);
+  const status=releaseStatus('0.8.0');
   assert.equal(status.hasNewRelease,true);
   assert.equal(status.dataSchemaVersion,5);
 });
