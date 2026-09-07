@@ -15,15 +15,20 @@ export const DEFAULT_DEVELOPMENT_DOMAINS = Object.freeze([
 
 function text(value, max = 80) { return typeof value === 'string' ? value.trim().slice(0,max) : ''; }
 function safeId(value) { return text(value,48).toLowerCase().replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''); }
+function customId(value) {
+  const normalized=safeId(String(value || ''));
+  if (!normalized) return '';
+  return normalized.startsWith('custom-') ? normalized : `custom-${normalized}`;
+}
 
 export function normalizeTaxonomyConfig(input = {}) {
   const labels = input.labels && typeof input.labels === 'object' && !Array.isArray(input.labels) ? input.labels : {};
   const disabled = Array.isArray(input.disabledDomainIds) ? input.disabledDomainIds.map(safeId).filter(Boolean) : [];
   const custom = Array.isArray(input.customDomains) ? input.customDomains.map((domain) => ({
-    id: `custom-${safeId(String(domain?.id || domain?.label || ''))}`,
+    id: customId(domain?.id || domain?.label || ''),
     label: text(domain?.label,60),
     description: text(domain?.description,180)
-  })).filter((domain) => domain.id !== 'custom-' && domain.label) : [];
+  })).filter((domain) => domain.id && domain.label) : [];
   return {
     taxonomyVersion: text(input.taxonomyVersion,24) || TAXONOMY_VERSION,
     labels: Object.fromEntries(Object.entries(labels).map(([id,label]) => [safeId(id),text(label,60)]).filter(([id,label]) => id && label)),
