@@ -7,6 +7,7 @@ v1.0.0 implements rounds 71–75 on top of stable v0.9. The focus is taxonomy ma
 - Counts Learning, Skills and Portfolio records that are bound/unbound to taxonomy domains.
 - Summaries can group counts by dataset and domain.
 - The feature intentionally does not calculate performance percentage, developmental score or child rank.
+- Browser regression verifies that rendering coverage does not add `score`, `rank`, `rating` or `percentile` fields to learning records.
 
 ## Lượt 72 — Family-plan conflict assistant
 - Detects days containing multiple family-plan items and days exceeding a configurable daily planned-minute threshold.
@@ -24,6 +25,7 @@ v1.0.0 implements rounds 71–75 on top of stable v0.9. The focus is taxonomy ma
 - Stores a bounded checklist of recovery-drill metadata under settings.
 - Allowed stored fields: timestamp, PASS/FAIL, encrypted-backup format and schema version.
 - Passphrase, ciphertext, salt, IV, decrypted payload and detailed preview are never persisted by the history module.
+- Browser regression verifies the stored history object contains exactly `at`, `format`, `schemaVersion`, `status`; warning copy may still name prohibited fields to explain the privacy boundary.
 
 ## Lượt 75 — Runtime consolidation
 Before v1.0, `index.html` loaded many JS and CSS layers directly. v1.0 changes the bootstrap to:
@@ -48,6 +50,8 @@ The entrypoints import active compatibility layers internally in a defined order
 - Chromium E2E covers v10 coverage/conflict panels, advanced search deep links and record highlight, recovery-history rendering and 390px mobile layout.
 - Axe overview audit waits for v8, v9 and v10 panels before checking serious/critical violations.
 - Existing encrypted backup, destructive-action, privacy, v9 calendar/search/recovery and earlier regression tests remain in the suite.
+- Pre-final code gate on commit `98ca4dc9d520c46851333a1e18b14c46966b6b88`: `verify` PASS; Chromium E2E/Axe 18/18 PASS in Actions run `34082670754`.
+- Two earlier v10 browser failures were test false-positives: the tests rejected explanatory warning words (`xếp hạng`, `ciphertext`) even though the UI used those words only to state what is not stored/calculated. The corrected tests now validate persisted-data invariants instead of warning copy.
 
 ## Safety/privacy boundaries
 - Coverage and conflict summaries are operational metadata, not child-development judgments.
@@ -59,4 +63,4 @@ The entrypoints import active compatibility layers internally in a defined order
 GitHub Pages remains blocked separately at repository configuration (`Settings → Pages → Source: GitHub Actions`), tracked by issue #2. This does not block source/CI completion.
 
 ## Merge policy
-PR #11 must pass `verify` and Chromium E2E/Axe on the final documentation/code head. No failure is bypassed because a change is documentation-only.
+PR #11 must pass `verify` and Chromium E2E/Axe on the final documentation/code head. No failure is bypassed because a change is documentation-only. The GitHub Actions run attached to the final PR head is the merge evidence; documentation does not need another post-pass commit merely to copy that run number.
