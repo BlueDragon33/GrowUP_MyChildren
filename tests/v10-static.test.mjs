@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { recoveryHistory } from '../src/core/recovery-history.js';
 
 const read=(path)=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 
@@ -37,11 +38,12 @@ test('service worker and package agree on v1 runtime modules and cache',async()=
   assert.match(rc,/growup-mychildren-v10/);
 });
 
-test('v10 privacy boundaries avoid health indexing and recovery secret storage',async()=>{
+test('v10 privacy boundaries keep safe search and recovery-history outputs constrained',async()=>{
   const search=await read('src/core/local-search.js');
-  const history=await read('src/core/recovery-history.js');
   const conflicts=await read('src/core/family-conflicts.js');
   assert.doesNotMatch(search,/healthRecords|nutritionLogs|\.note/);
-  assert.doesNotMatch(history,/passphrase|ciphertext|salt|\biv\b|payload/);
   assert.doesNotMatch(conflicts,/score|rank|auto.*calendar/i);
+  const history=recoveryHistory({recoveryDrillHistory:[{at:'2026-09-07T01:00:00.000Z',status:'PASS',format:'fmt',schemaVersion:5,extra:'omit'}]});
+  assert.deepEqual(Object.keys(history[0]).sort(),['at','format','schemaVersion','status']);
+  assert.equal('extra' in history[0],false);
 });
