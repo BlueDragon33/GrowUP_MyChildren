@@ -46,3 +46,15 @@ test('recovery history stores metadata only and applies retention limit',()=>{
   const serialized=JSON.stringify(history);
   for(const forbidden of ['passphrase','ciphertext','payload','salt','iv']) assert.equal(serialized.includes(forbidden),false);
 });
+
+test('recovery history skips corrupt legacy timestamps instead of throwing',()=>{
+  const settings={recoveryDrillHistory:[
+    {at:'not-a-date',status:'PASS',format:'bad',schemaVersion:5},
+    {at:'2026-09-07T00:30:00Z',status:'PASS',format:'good',schemaVersion:5}
+  ]};
+  const next=appendRecoveryHistory(settings,{success:false,format:'new',schemaVersion:5},{limit:4,now:new Date('2026-09-07T04:00:00Z')});
+  assert.equal(next.recoveryDrillHistory.length,2);
+  assert.equal(next.recoveryDrillHistory[0].format,'new');
+  assert.equal(next.recoveryDrillHistory[1].format,'good');
+  assert.deepEqual(recoveryHistory(settings).map((entry)=>entry.format),['good']);
+});
