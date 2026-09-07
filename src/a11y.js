@@ -18,6 +18,14 @@ function enhanceNavigation() {
   });
 }
 
+function enhanceScrollableRegions() {
+  document.querySelectorAll('.timeline').forEach((timeline) => {
+    if (!timeline.hasAttribute('tabindex')) timeline.tabIndex = 0;
+    if (!timeline.hasAttribute('role')) timeline.setAttribute('role', 'region');
+    if (!timeline.hasAttribute('aria-label')) timeline.setAttribute('aria-label', 'Timeline phát triển từ 3 đến 18 tuổi');
+  });
+}
+
 function enhanceDialog(anchorSelector, closeSelector, titleId) {
   const anchor = document.querySelector(anchorSelector);
   if (!anchor) return;
@@ -57,6 +65,7 @@ export function enhanceAccessibility() {
     scheduled = false;
     ensureSkipLink();
     enhanceNavigation();
+    enhanceScrollableRegions();
     enhanceDialogs();
   });
 }
