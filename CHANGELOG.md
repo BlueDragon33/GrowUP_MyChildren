@@ -2,6 +2,32 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
+## [1.4.0] - đang kiểm duyệt PR
+### Added
+- Lượt 91: Safe-export verification receipt history tối đa 50 mục, chỉ lưu `at`, `format`, `algorithm`, `checksumResult`.
+- Lượt 92: Workload preset cục bộ gồm Gọn/Tiêu chuẩn/Mở rộng và nút reset mặc định; toàn bộ nhãn/tham số trung tính.
+- Lượt 93: Saved Search criteria package có format/version, export JSON, preview-before-apply, loại dataset ngoài allowlist và bỏ criteria trùng.
+- Lượt 94: Recovery calendar bridge tạo `.ics` chỉ từ reminder người dùng tích chọn, giữ source/origin-date lineage bằng `X-GROWUP-*` metadata.
+- Lượt 95: Legacy retirement dry-run JSON report chứa evidence/dependency/proposed-diff metadata nhưng không áp dụng removal.
+
+### Changed
+- App version nâng lên `1.4.0`; data schema tiếp tục v5.
+- Service-worker cache nâng lên `growup-mychildren-v14`.
+- Runtime vẫn chỉ có một JavaScript entrypoint + một CSS entrypoint; `v14-runtime.js`/`v14.css` là dependency nội bộ sau v13 và trước accessibility layer.
+- Rollback pin về stable v1.3 main commit `51e4a80609d40915106663e983dbfa1202fee228`.
+- Axe overview gate được mở rộng để chờ và quét cả panel v13–v14 trước khi đánh giá serious/critical violations.
+
+### Security / Privacy
+- Verification receipt không lưu raw checksum, expected/actual checksum, file name, file payload, preview, child payload hoặc free-text từ safe export.
+- Workload presets không chứa childId, score/rank hoặc logic đánh giá hiệu suất/sức khỏe.
+- Saved Search package chỉ dùng criteria đã chuẩn hóa; `results`, `snippet`, Health/Nutrition dataset không được lưu/khôi phục.
+- Recovery `.ics` không đưa tên trẻ, passphrase, backup payload và không thực hiện background/Google Calendar write.
+- Retirement dry-run luôn `removalsApplied:false`, `safeToRemoveAutomatically:false`; actual removal bắt buộc là commit riêng qua full exact-head gate.
+
+### Gate
+- `verify` + Chromium E2E/Axe serious/critical bắt buộc PASS trên cùng exact final PR head trước merge.
+- GitHub Pages tiếp tục là blocker repository setting riêng tại issue #2 và không thay thế source-release gate.
+
 ## [1.3.0] - 2026-09-08
 ### Added
 - Lượt 86: Safe-export integrity manifest dùng SHA-256 và bộ kiểm tra checksum cục bộ, không mở rộng allowlist dữ liệu trẻ.
