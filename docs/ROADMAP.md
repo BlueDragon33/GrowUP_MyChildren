@@ -38,10 +38,15 @@
 - Lượt 93: Portable Saved Search criteria package. **Completed in stable v1.4.0 with format/version validation, preview-before-apply, safe dataset normalization, duplicate skipping and criteria-only persistence; no cached result/snippet payload.**
 - Lượt 94: Recovery lifecycle calendar bridge. **Completed in stable v1.4.0 as explicit-selection `.ics` export preserving source/origin-date lineage metadata; no background calendar write, Google authorization, auto restore, child name or backup payload.**
 - Lượt 95: Legacy retirement dry-run package. **Completed in stable v1.4.0 as report-only evidence/dependency/proposed-diff metadata; no removal is applied. PR #16 exact final head `dd78abd320779b0f1f37fce74b3d32ccb7ce6272`, CI run `34175696805` PASS both gates; merged main `612a9a8783a6bf02617f2725a4f53c7bb6114b9c`, post-merge CI `34175820489` PASS both gates. Pages run `34175820460` remains separately blocked at Configure Pages by L31.**
+- Lượt 96: Verification receipt management. **Implemented in v1.5.0 with local filter/export/confirmed-clear; receipt package remains bounded metadata-only and excludes raw checksums, source payload and child data. Awaiting final PR gate.**
+- Lượt 97: Custom workload preset library. **Implemented in v1.5.0 with strict neutral-name/label validation, local-only storage and previewed import/export; child-linked keys and scoring/performance/health semantics are rejected. Awaiting final PR gate.**
+- Lượt 98: Saved-search criteria integrity. **Implemented in v1.5.0 with SHA-256 manifest, tamper detection and metadata-only import verification receipts; safe-search normalization still strips results/snippets and unsafe datasets. Awaiting final PR gate.**
+- Lượt 99: Recovery `.ics` reconciliation preview. **Implemented in v1.5.0 as read-only local-file comparison of id/date/completed/originDate; no external calendar access and no apply/change API. Awaiting final PR gate.**
+- Lượt 100: Bounded six-flow compatibility evidence persistence. **Implemented in v1.5.0 with max 120 metadata records, dedupe by module+flow, runtime capture for Overview/Learning/Skills/Portfolio/mobile and Axe evidence only after actual Axe PASS in browser regression; retirement remains non-destructive. Awaiting final PR gate.**
 
 ## Next generated rounds
-- Lượt 96: Verification receipt management with local filter/export/confirmed-clear while keeping the exported receipt file metadata-only and bounded.
-- Lượt 97: Custom workload preset library with strict neutral-label validation, local-only storage and previewed import/export; no child-linked preset or scoring semantics.
-- Lượt 98: Saved-search criteria package integrity manifest/checksum plus import verification receipt, without adding result/snippet or unsafe datasets.
-- Lượt 99: Recovery `.ics` reconciliation preview that compares a user-selected local file against current recovery reminder metadata without external calendar read/write or automatic changes.
-- Lượt 100: Bounded six-flow compatibility evidence persistence so retirement dry-runs can use real accumulated Overview/Learning/Skills/Portfolio/mobile/Axe metadata; still no automatic legacy removal.
+- Lượt 101: Metadata-only verification receipt package integrity/checksum and duplicate-safe receipt import preview, without child payload or raw source checksum persistence.
+- Lượt 102: Custom workload preset integrity manifest plus conflict-resolution preview for duplicate names/IDs, still local-only and neutral.
+- Lượt 103: Saved Search integrity receipt management (filter/export/confirmed-clear) with bounded metadata-only history.
+- Lượt 104: Recovery reconciliation report export containing only comparison metadata and explicit user-selected rows; still no apply or external calendar write.
+- Lượt 105: Compatibility evidence package export/import with schema/flow validation and checksum, preserving module/flow/active/timestamp metadata only; actual legacy removal remains a separate exact-head full-gate operation.
