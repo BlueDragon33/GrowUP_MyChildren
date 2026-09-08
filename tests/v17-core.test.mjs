@@ -18,7 +18,8 @@ test('L106 receipt imports record metadata delta and undo only the last imported
   const applied=applyReceiptImportWithHistory(base,pkg,'2026-09-08T03:00:00.000Z');
   assert.equal(applied.changed,true);assert.equal(applied.added,1);
   const history=receiptImportHistory(applied.settings);assert.equal(history.length,1);assert.equal(history[0].added.length,1);
-  const serialized=JSON.stringify(history);assert.equal(serialized.includes('checksum'),false);assert.equal(serialized.includes('payload'),false);
+  assert.deepEqual(Object.keys(history[0].added[0]).sort(),['algorithm','at','checksumResult','format']);
+  const serialized=JSON.stringify(history);for(const forbidden of ['"expected"','"actual"','"manifest"','"payload"'])assert.equal(serialized.includes(forbidden),false);
   const undone=undoLastReceiptImport(applied.settings);assert.equal(undone.changed,true);assert.equal(undone.removed,1);assert.equal(undone.settings.safeExportVerificationReceipts.length,1);assert.equal(receiptImportHistory(undone.settings).length,0);
 });
 
@@ -53,7 +54,7 @@ test('L109 Recovery reconciliation signed report verifies and records metadata-o
 test('L110 compatibility evidence import audit excludes Axe, supports safe undo, and reports freshness',()=>{
   const pkg=buildCompatibilityEvidencePackage({compatibilityEvidenceRecords:[{module:'legacy.js',flow:'overview',observed:true,active:false,at:'2026-09-08T01:00:00.000Z'},{module:'legacy.js',flow:'axe',observed:true,active:false,at:'2026-09-08T01:01:00.000Z'}]});
   const applied=applyCompatibilityEvidenceImportWithHistory({},pkg,'2026-09-08T06:00:00.000Z');assert.equal(applied.changed,true);assert.equal(applied.axeRecheckRequired,1);
-  const history=compatibilityEvidenceImportHistory(applied.settings);assert.equal(history.length,1);assert.equal(history[0].deltas.length,1);assert.equal(history[0].deltas[0].after.flow,'overview');assert.equal(JSON.stringify(history).includes('"flow":"axe"'),false);
+  const history=compatibilityEvidenceImportHistory(applied.settings);assert.equal(history.length,1);assert.equal(history[0].deltas.length,1);assert.equal(history[0].deltas[0].before,null);assert.equal(history[0].deltas[0].after.flow,'overview');assert.equal(JSON.stringify(history).includes('"flow":"axe"'),false);
   const freshness=compatibilityEvidenceFreshnessSummary(applied.settings,'2026-09-20T00:00:00.000Z',30);assert.equal(freshness.modules.length,1);assert.equal(freshness.modules[0].flows.overview.status,'fresh');assert.equal(freshness.modules[0].flows.axe.status,'missing');assert.equal(freshness.modules[0].axeRecheckRequired,true);
   const undone=undoLastCompatibilityEvidenceImport(applied.settings);assert.equal(undone.changed,true);assert.equal(undone.reverted,1);assert.equal(undone.settings.compatibilityEvidenceRecords.length,0);assert.equal(compatibilityEvidenceImportHistory(undone.settings).length,0);
 });
