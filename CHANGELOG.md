@@ -98,7 +98,7 @@ Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từn
 - Rollback về v1.0.0 commit `605c4948cbcc60164d8a34ba220558d39d8eeeb5`.
 
 ### Gate
-- PR #12 final head `ca3d6579d665ee7f5aef98e8e71b452d0d0915a1`: `verify` PASS và Chromium E2E/Axe PASS.
+- PR #12 final head `ca3d6579d665ee7f5aef3ab9500277173247c8a3`: `verify` PASS và Chromium E2E/Axe PASS.
 - Main merge commit `359ea99f041654108c517d5c16be5e819932bb64`: CI hậu merge `verify` + `browser-e2e` đều PASS.
 - GitHub Pages vẫn fail riêng ở `Configure Pages` do repository setting, issue #2.
 
