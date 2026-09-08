@@ -33,7 +33,16 @@ function evidenceAuditPanel(state){const history=compatibilityEvidenceImportHist
 
 function retireOldImportPaths(){
   const pairs=[['#v16ReceiptIntegrityImportForm','#v16ReceiptIntegrityStatus','Import apply đã chuyển sang Lượt 106 để luôn có history/undo.'],['#v16PresetIntegrityImportForm','#v16PresetIntegrityStatus','Import apply đã chuyển sang Lượt 107 để luôn có conflict audit/undo.'],['#v16EvidenceImportForm','#v16EvidenceStatus','Import apply đã chuyển sang Lượt 110 để luôn có audit/undo và giữ Axe local-only.']];
-  for(const [formSel,statusSel,message] of pairs){const form=document.querySelector(formSel),status=document.querySelector(statusSel);if(form&&!form.hidden)form.hidden=true;if(status&&status.textContent!==message)status.textContent=message;}
+  for(const [formSel,statusSel,message] of pairs){
+    const form=document.querySelector(formSel),status=document.querySelector(statusSel);
+    if(form){
+      form.hidden=true;
+      form.setAttribute('aria-hidden','true');
+      form.style.setProperty('display','none','important');
+      form.querySelectorAll('input,select,textarea,button,fieldset').forEach((control)=>{control.disabled=true;control.setAttribute('tabindex','-1');});
+    }
+    if(status&&status.textContent!==message)status.textContent=message;
+  }
 }
 function addPanels(){const main=document.querySelector('.main');if(!main||activePage()!=='overview'||document.querySelector('[data-v17="receipt-history"]'))return;const state=readState();main.insertAdjacentHTML('beforeend',`<div class="v16-grid" data-v17-grid>${managedReceiptPanel(state)}${managedPresetPanel(state)}${savedReceiptIntegrityPanel()}${recoveryIntegrityPanel(state)}${evidenceAuditPanel(state)}</div>`);}
 function enhanceV17(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;retireOldImportPaths();addPanels();});}
