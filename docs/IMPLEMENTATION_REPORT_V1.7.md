@@ -8,14 +8,14 @@ v1.7 tiếp tục hardening luồng import/export metadata local-first của Gro
 - Import mới đi qua managed path và ghi bounded local history của đúng metadata delta đã thực sự thêm.
 - History chỉ giữ `at`, `format`, `algorithm`, `checksumResult` và package format; không lưu expected/actual checksum, manifest/payload nguồn hoặc dữ liệu trẻ.
 - Undo chỉ gỡ đúng receipt metadata thuộc lần import gần nhất; mục khác không bị chạm tới.
-- Runtime ẩn apply form v1.6 cũ để không thể bỏ qua history/undo path.
+- Runtime khóa apply form v1.6 cũ để không thể bỏ qua history/undo path.
 
 ## Lượt 107 — Workload preset import audit + safe undo
 - Preset package vẫn phải qua SHA-256 và preview xung đột trước apply.
-- Audit ghi chiến lược `skip`/`rename`, quyết định conflict và chữ ký của preset trung tính đã thực sự thêm.
+- Audit ghi chiến lược `skip`/`rename`, source ID/name → resolved ID/name, quyết định conflict và chữ ký của preset trung tính đã thực sự thêm.
 - Undo chỉ xóa preset nếu preset hiện tại vẫn đúng chữ ký lúc import; preset người dùng đã sửa sau import được giữ lại.
 - Không lưu childId, Health/Nutrition hoặc score/rank/performance semantics.
-- Runtime ẩn apply form v1.6 cũ để mọi preset import đi qua audit/undo path.
+- Runtime khóa apply form v1.6 cũ để mọi preset import đi qua audit/undo path.
 
 ## Lượt 108 — Saved Search receipt package integrity + duplicate-safe import
 - Package receipt management được bọc thêm SHA-256 manifest.
@@ -36,6 +36,16 @@ v1.7 tiếp tục hardening luồng import/export metadata local-first của Gro
 - Freshness summary mặc định 30 ngày, hiển thị missing/stale flow và Axe local recheck requirement.
 - Freshness chỉ là cảnh báo/evidence quality; không tự kích hoạt retirement và không có legacy deletion path.
 
+## Runtime migration boundary
+Ba form apply import v1.6 đã được retire khỏi tương tác người dùng để không thể bypass managed v1.7 path:
+- `hidden=true`
+- `aria-hidden=true`
+- `display:none !important`
+- toàn bộ `input/select/textarea/button/fieldset` bị `disabled`
+- control bị loại khỏi tab order bằng `tabindex=-1`
+
+E2E v16 xác minh đường cũ thực sự không còn tương tác được; E2E v17 thực hiện import/apply/undo thật trên managed path thay vì chỉ kiểm core bằng unit test.
+
 ## Release profile
 - App: `1.7.0`
 - Data schema: `5`
@@ -48,6 +58,8 @@ v1.7 tiếp tục hardening luồng import/export metadata local-first của Gro
 
 ## Stop-on-error đã thực hiện
 CI đầu của PR #22 phát hiện 5 lỗi: ba assertion còn ghim v1.6, một assertion L106 nhầm `checksumResult` với raw checksum và một null-delta bug trong compatibility import history. Merge bị dừng. Null normalization được sửa tại core; release/RC profile và tests được đồng bộ lên v1.7; assertion privacy được đổi sang kiểm đúng các raw field bị cấm thay vì cấm tên metadata `checksumResult` hợp lệ.
+
+Sau khi bổ sung browser coverage v1.7, Chromium gate tiếp tục phát hiện 2 regression v16: form import cũ có thuộc tính `hidden` nhưng CSS `.form` vẫn khiến browser coi chúng là hiển thị. Merge tiếp tục bị khóa. Runtime được sửa tại nguyên nhân bằng retirement mạnh (`display:none !important` + `aria-hidden` + disable controls + loại khỏi tab order), không xóa test và không hạ accessibility gate.
 
 ## Gate bắt buộc
 Final PR head phải cùng một SHA PASS cả:
