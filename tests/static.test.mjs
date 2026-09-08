@@ -31,31 +31,31 @@ test('v9 runtime keeps domain calendar search and recovery boundaries explicit',
   assert.doesNotMatch(recovery, /localStorage\.(?:setItem|getItem|removeItem|clear)|sessionStorage\.(?:setItem|getItem|removeItem|clear)/);
 });
 
-test('service worker caches active v12 runtime and waits for explicit update approval', async () => {
+test('service worker caches active v13 runtime and waits for explicit update approval', async () => {
   const sw = await read('sw.js');
-  for (const asset of ['runtime-entry.js','runtime.css','v12-runtime.js','export-wizard.js','workload-calendar.js','saved-search.js','recovery-reminder.js','compatibility-evidence.js','v9-runtime.js','v9-compat.js']) assert.ok(sw.includes(asset));
-  assert.match(sw, /growup-mychildren-v12/);
+  for (const asset of ['runtime-entry.js','runtime.css','v12-runtime.js','v13-runtime.js','export-wizard.js','workload-calendar.js','saved-search.js','recovery-reminder.js','compatibility-evidence.js','export-integrity.js','workload-band-settings.js','saved-search-organizer.js','recovery-reminder-lifecycle.js','retirement-review.js','v9-runtime.js','v9-compat.js']) assert.ok(sw.includes(asset));
+  assert.match(sw, /growup-mychildren-v13/);
   assert.match(sw, /event\.data\?\.type === 'SKIP_WAITING'/);
   const installBlock = sw.match(/self\.addEventListener\('install',[\s\S]*?\n\}\);/)?.[0] || '';
   assert.doesNotMatch(installBlock, /skipWaiting/);
 });
 
-test('package and CI pin the current v1.2 release-candidate tooling profile', async () => {
+test('package and CI pin the current v1.3 release-candidate tooling profile', async () => {
   const pkg = JSON.parse(await read('package.json'));
   const ci = await read('.github/workflows/ci.yml');
   const release = await read('src/core/release.js');
   const rc = await read('src/core/rc-gate.js');
-  assert.equal(pkg.version,'1.2.0');
+  assert.equal(pkg.version,'1.3.0');
   assert.equal(pkg.engines.node,'22.x');
   assert.equal(pkg.devDependencies['@playwright/test'],'1.55.0');
   assert.equal(pkg.devDependencies['@axe-core/playwright'],'4.10.2');
-  for (const path of ['src/runtime-entry.js','src/v12-runtime.js','src/core/export-wizard.js','src/core/workload-calendar.js','src/core/saved-search.js','src/core/recovery-reminder.js','src/core/compatibility-evidence.js']) assert.ok(pkg.scripts.check.includes(path));
+  for (const path of ['src/runtime-entry.js','src/v12-runtime.js','src/v13-runtime.js','src/core/export-wizard.js','src/core/workload-calendar.js','src/core/saved-search.js','src/core/recovery-reminder.js','src/core/compatibility-evidence.js','src/core/export-integrity.js','src/core/workload-band-settings.js','src/core/saved-search-organizer.js','src/core/recovery-reminder-lifecycle.js','src/core/retirement-review.js']) assert.ok(pkg.scripts.check.includes(path));
   assert.match(ci, /@playwright\/test@1\.55\.0/);
   assert.match(ci, /@axe-core\/playwright@4\.10\.2/);
   assert.match(ci, /node-version: 22/);
-  assert.match(release, /APP_VERSION = '1\.2\.0'/);
-  assert.match(release, /359ea99f041654108c517d5c16be5e819932bb64/);
-  assert.match(rc, /growup-mychildren-v12/);
+  assert.match(release, /APP_VERSION = '1\.3\.0'/);
+  assert.match(release, /483a6a9e9225da2641348686bcbe8e331ea9e821/);
+  assert.match(rc, /growup-mychildren-v13/);
 });
 
 test('existing privacy and deployment gates remain present', async () => {
