@@ -1,8 +1,8 @@
 const CACHE = 'growup-mychildren-v110';
 const ASSETS = [
   './', './index.html', './app.webmanifest', './assets/icon.svg',
-  './src/runtime.css', './src/styles.css', './src/enhancements.css', './src/v4.css', './src/v5.css', './src/v6.css', './src/v7.css', './src/v8.css', './src/v9.css', './src/v10.css', './src/v11.css', './src/v12.css', './src/v13.css', './src/v14.css', './src/v15.css', './src/v16.css',
-  './src/runtime-entry.js', './src/app.js', './src/enhancements.js', './src/v4.js', './src/v5.js', './src/v6.js', './src/v7.js', './src/v8.js', './src/v9-runtime.js', './src/v9-compat.js', './src/v10-runtime.js', './src/v11-runtime.js', './src/v12-runtime.js', './src/v13-runtime.js', './src/v14-runtime.js', './src/v15-runtime.js', './src/v16-runtime.js', './src/v16-guard.js', './src/v17-runtime.js', './src/v18-runtime.js', './src/v19-runtime.js', './src/v110-runtime.js', './src/a11y.js',
+  './src/runtime.css', './src/styles.css', './src/enhancements.css', './src/v4.css', './src/v5.css', './src/v6.css', './src/v7.css', './src/v8.css', './src/v9.css', './src/v10.css', './src/v11.css', './src/v12.css', './src/v13.css', './src/v14.css', './src/v15.css', './src/v16.css', './src/premium-ui.css',
+  './src/runtime-entry.js', './src/app.js', './src/enhancements.js', './src/v4.js', './src/v5.js', './src/v6.js', './src/v7.js', './src/v8.js', './src/v9-runtime.js', './src/v9-compat.js', './src/v10-runtime.js', './src/v11-runtime.js', './src/v12-runtime.js', './src/v13-runtime.js', './src/v14-runtime.js', './src/v15-runtime.js', './src/v16-runtime.js', './src/v16-guard.js', './src/v17-runtime.js', './src/v18-runtime.js', './src/v19-runtime.js', './src/v110-runtime.js', './src/premium-ui.js', './src/a11y.js',
   './src/core/model.js', './src/core/store.js', './src/core/schema.js', './src/core/analytics.js',
   './src/core/calendar.js', './src/core/attachments.js', './src/core/integrations.js', './src/core/privacy.js',
   './src/core/roles.js', './src/core/reminders.js', './src/core/backup.js', './src/core/templates.js', './src/core/report.js',
