@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFile } from 'node:fs/promises';
-import { buildWorkloadPresetImportAuditPackage } from '../src/core/workload-preset-import-audit-package-integrity.js';
 import { buildIntegritySavedSearchReceiptPackage } from '../src/core/saved-search-receipt-package-integrity.js';
 
 async function child(page){await page.goto('/');await page.locator('#emptyAddChild').click();await page.locator('#childForm input[name="name"]').fill('V18 Child');await page.locator('#childForm input[name="dateOfBirth"]').fill('2018-01-01');await page.locator('#childForm button.primary').click();await expect(page.locator('[data-v18="receipt-history-package"]')).toBeVisible();}
@@ -32,6 +31,6 @@ test('L114 recovery receipt filter and confirmed-clear remain active while unsig
 });
 
 test('L115 freshness policy creates review-only gate and v18 overview passes Axe',async({page})=>{
-  await child(page);await page.evaluate(()=>{const s=JSON.parse(localStorage.getItem('growup_mychildren_v1'));s.settings.compatibilityEvidenceRecords=[{module:'legacy-review.js',flow:'overview',observed:true,active:false,at:'2026-08-01T00:00:00.000Z'}];localStorage.setItem('growup_mychildren_v1',JSON.stringify(s));});await reload(page);await page.locator('#v18FreshnessForm input[name="freshDays"]').fill('14');await page.locator('#v18FreshnessForm button[type="submit"]').click();await expect(page.locator('[data-v18="freshness-policy"]')).toContainText('legacy-review.js');await expect(page.locator('#v18FreshnessStatus')).toContainText('retirementAllowed=false');const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('growup_mychildren_v1'));expect(state.settings.compatibilityEvidenceFreshnessPolicy.freshDays).toBe(14);expect(state.settings.compatibilityEvidenceRecords.some((item)=>item.module==='legacy-review.js')).toBe(true);
+  await child(page);await page.evaluate(()=>{const s=JSON.parse(localStorage.getItem('growup_mychildren_v1'));s.settings.compatibilityEvidenceRecords=[{module:'legacy-review.js',flow:'overview',observed:true,active:false,at:'2026-08-01T00:00:00.000Z'}];localStorage.setItem('growup_mychildren_v1',JSON.stringify(s));});await reload(page);await page.locator('#v18FreshnessForm input[name="freshDays"]').fill('14');await page.locator('#v18FreshnessForm button[type="submit"]').click();await expect(page.locator('[data-v18="freshness-policy"]')).toContainText('legacy-review.js');await expect(page.locator('#v18FreshnessStatus')).toContainText('retirementAllowed=false');const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('growup_mychildren_v1')));expect(state.settings.compatibilityEvidenceFreshnessPolicy.freshDays).toBe(14);expect(state.settings.compatibilityEvidenceRecords.some((item)=>item.module==='legacy-review.js')).toBe(true);
   const results=await new AxeBuilder({page}).analyze();expect(results.violations.filter((v)=>['serious','critical'].includes(v.impact))).toEqual([]);
 });
