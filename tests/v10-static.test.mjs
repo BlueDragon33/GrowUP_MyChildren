@@ -15,27 +15,27 @@ test('index exposes exactly one javascript and one stylesheet entrypoint',async(
 
 test('runtime entry imports compatibility layers once and in release order',async()=>{
   const runtime=await read('src/runtime-entry.js');
-  const expected=['./app.js','./enhancements.js','./v4.js','./v5.js','./v6.js','./v7.js','./v8.js','./v9-runtime.js','./v9-compat.js','./v10-runtime.js','./v11-runtime.js','./v12-runtime.js','./v13-runtime.js','./a11y.js'];
+  const expected=['./app.js','./enhancements.js','./v4.js','./v5.js','./v6.js','./v7.js','./v8.js','./v9-runtime.js','./v9-compat.js','./v10-runtime.js','./v11-runtime.js','./v12-runtime.js','./v13-runtime.js','./v14-runtime.js','./a11y.js'];
   for(const path of expected) assert.equal((runtime.match(new RegExp(path.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length,1,`${path} should be imported exactly once`);
 });
 
 test('runtime css imports each active stylesheet once',async()=>{
   const css=await read('src/runtime.css');
-  for(const name of ['styles.css','enhancements.css','v4.css','v5.css','v6.css','v7.css','v8.css','v9.css','v10.css','v11.css','v12.css','v13.css']) assert.equal((css.match(new RegExp(name.replace('.','\\.'),'g'))||[]).length,1);
+  for(const name of ['styles.css','enhancements.css','v4.css','v5.css','v6.css','v7.css','v8.css','v9.css','v10.css','v11.css','v12.css','v13.css','v14.css']) assert.equal((css.match(new RegExp(name.replace('.','\\.'),'g'))||[]).length,1);
 });
 
-test('service worker and package agree on v1.3 runtime modules and cache',async()=>{
+test('service worker and package agree on v1.4 runtime modules and cache',async()=>{
   const sw=await read('sw.js');
   const pkg=JSON.parse(await read('package.json'));
   const release=await read('src/core/release.js');
   const rc=await read('src/core/rc-gate.js');
-  assert.equal(pkg.version,'1.3.0');
-  assert.match(sw,/growup-mychildren-v13/);
-  for(const path of ['runtime-entry.js','runtime.css','v12-runtime.js','v13-runtime.js','export-wizard.js','workload-calendar.js','saved-search.js','recovery-reminder.js','compatibility-evidence.js','export-integrity.js','workload-band-settings.js','saved-search-organizer.js','recovery-reminder-lifecycle.js','retirement-review.js']) assert.ok(sw.includes(path));
-  for(const path of ['src/runtime-entry.js','src/v12-runtime.js','src/v13-runtime.js','src/core/export-wizard.js','src/core/workload-calendar.js','src/core/saved-search.js','src/core/recovery-reminder.js','src/core/compatibility-evidence.js','src/core/export-integrity.js','src/core/workload-band-settings.js','src/core/saved-search-organizer.js','src/core/recovery-reminder-lifecycle.js','src/core/retirement-review.js']) assert.ok(pkg.scripts.check.includes(path));
-  assert.match(release,/APP_VERSION = '1\.3\.0'/);
-  assert.match(release,/483a6a9e9225da2641348686bcbe8e331ea9e821/);
-  assert.match(rc,/growup-mychildren-v13/);
+  assert.equal(pkg.version,'1.4.0');
+  assert.match(sw,/growup-mychildren-v14/);
+  for(const path of ['runtime-entry.js','runtime.css','v13-runtime.js','v14-runtime.js','export-verification-history.js','workload-presets.js','saved-search-package.js','recovery-calendar-bridge.js','retirement-dry-run.js']) assert.ok(sw.includes(path));
+  for(const path of ['src/runtime-entry.js','src/v13-runtime.js','src/v14-runtime.js','src/core/export-verification-history.js','src/core/workload-presets.js','src/core/saved-search-package.js','src/core/recovery-calendar-bridge.js','src/core/retirement-dry-run.js']) assert.ok(pkg.scripts.check.includes(path));
+  assert.match(release,/APP_VERSION = '1\.4\.0'/);
+  assert.match(release,/51e4a80609d40915106663e983dbfa1202fee228/);
+  assert.match(rc,/growup-mychildren-v14/);
 });
 
 test('v10 privacy boundaries keep safe search and recovery-history outputs constrained',async()=>{
