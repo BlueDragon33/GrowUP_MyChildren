@@ -1,12 +1,13 @@
-export const APP_VERSION = '1.9.0';
+export const APP_VERSION = '1.10.0';
 export const DATA_SCHEMA_VERSION = 5;
 export const STABLE_ROLLBACK = Object.freeze({
-  version:'1.8.0',
-  commit:'c0cfca3cdf261b462932a480ef56637efbf0d44e',
-  note:'Bản v1.8 stable đã hoàn tất Lượt 111–115 và post-merge main CI PASS cả verify + Chromium/Axe trước khi v1.9 bắt đầu.'
+  version:'1.9.0',
+  commit:'7740f7ec90992811fd0ea66b0654086dcc25d116',
+  note:'Bản v1.9 stable đã hoàn tất Lượt 116–120 và post-merge main CI PASS cả verify + Chromium/Axe trước khi v1.10 bắt đầu.'
 });
 
 export const RELEASE_NOTES = Object.freeze([
+  { version:'1.10.0', title:'Signed verification receipts, portable preset audit review, Saved Search verify receipts, Recovery receipt management & Axe freshness evidence', rounds:'121–125' },
   { version:'1.9.0', title:'Verification receipt management, preset audit filters, Saved Search history portability, Recovery receipt integrity & explicit Axe recheck workflow', rounds:'116–120' },
   { version:'1.8.0', title:'Import-history portability, preset audit review, Saved Search receipt undo, Recovery receipt management & evidence freshness policy', rounds:'111–115' },
   { version:'1.7.0', title:'Managed import history/undo, Saved Search receipt integrity, Recovery report verification & compatibility evidence freshness', rounds:'106–110' },
