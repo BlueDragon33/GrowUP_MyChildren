@@ -40,11 +40,11 @@ test('encrypted backup roundtrip preserves state and format',async()=>{
   assert.equal(restored.payload.children[0].name,'Test Child');
 });
 
-test('release metadata advances to v1.2 and pins v1.1 rollback',()=>{
-  assert.equal(APP_VERSION,'1.2.0');
-  assert.equal(STABLE_ROLLBACK.version,'1.1.0');
-  assert.equal(STABLE_ROLLBACK.commit,'359ea99f041654108c517d5c16be5e819932bb64');
-  assert.equal(compareVersions('1.2.0','1.1.9'),1);
-  assert.equal(compareVersions('1.2.0','1.2.0'),0);
-  assert.equal(releaseStatus('1.1.0').hasNewRelease,true);
+test('release metadata advances to v1.3 and pins v1.2 rollback',()=>{
+  assert.equal(APP_VERSION,'1.3.0');
+  assert.equal(STABLE_ROLLBACK.version,'1.2.0');
+  assert.equal(STABLE_ROLLBACK.commit,'483a6a9e9225da2641348686bcbe8e331ea9e821');
+  assert.equal(compareVersions('1.3.0','1.2.9'),1);
+  assert.equal(compareVersions('1.3.0','1.3.0'),0);
+  assert.equal(releaseStatus('1.2.0').hasNewRelease,true);
 });
