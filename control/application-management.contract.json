@@ -1,0 +1,55 @@
+{
+  "contractVersion": 1,
+  "application": {
+    "id": "growup-mychildren",
+    "name": "GrowUP MyChildren",
+    "tier": "client",
+    "repository": "BlueDragon33/GrowUP_MyChildren"
+  },
+  "boundary": {
+    "independentRuntime": true,
+    "pwaOffline": true,
+    "embeddedInApplicationManagement": false,
+    "childRecordsInControlPlane": false,
+    "healthRecordsInControlPlane": false,
+    "sharedDatabaseWithOtherClients": false
+  },
+  "readiness": {
+    "runtime": "available",
+    "privacyLocalFirst": "available",
+    "pwa": "available",
+    "localAudit": "available",
+    "deviceRegistry": "missing",
+    "deviceGateway": "missing",
+    "adminApi": "missing",
+    "remoteAuditApi": "missing",
+    "configurationReviewApi": "missing"
+  },
+  "requiredDeviceContract": {
+    "namespace": "GU-",
+    "identity": "p256-public-key-fingerprint",
+    "classes": ["desktop", "tablet", "phone"],
+    "accessAndEditSeparated": true
+  },
+  "controlPlaneAllowlist": [
+    "device code and class",
+    "access status",
+    "edit permission",
+    "app version and health status",
+    "privacy-safe audit metadata",
+    "configuration proposals intentionally submitted for review"
+  ],
+  "controlPlaneDenylist": [
+    "child profile data",
+    "health records",
+    "nutrition records",
+    "free-text private notes",
+    "portfolio evidence",
+    "local backup contents"
+  ],
+  "policy": {
+    "applicationManagementMayInventOperationsWithoutBackend": false,
+    "applicationManagementMayReadChildData": false,
+    "applicationManagementMayReadHealthData": false
+  }
+}
