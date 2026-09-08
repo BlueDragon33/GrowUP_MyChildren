@@ -58,10 +58,15 @@
 - Lượt 113: Saved Search receipt import history with rollback-safe undo. **Completed in stable v1.8.0 with bounded exact-delta history/undo; direct v17 apply form is retired so managed path cannot be bypassed.**
 - Lượt 114: Recovery reconciliation verification-receipt management. **Completed in stable v1.8.0 with filter/export/confirmed-clear over metadata-only receipts; report payload/raw checksum remain excluded.**
 - Lượt 115: Compatibility evidence freshness policy and stale-evidence review gate. **Completed in stable v1.8.0 with bounded fresh-day policy, missing/stale review and explicit `retirementAllowed:false`/`actionsApplied:false`; Axe still requires actual local rerun. PR #23 exact final head `7fe1d358dc0fe32486ead63a74e087ba5799336c`, CI run `34216959939` PASS verify + Chromium/Axe; merged main `c0cfca3cdf261b462932a480ef56637efbf0d44e`, post-merge CI run `34217171141` PASS both gates. Pages run `34217171172` fails separately at `Configure Pages`; Upload/Deploy/Verify are skipped by L31/issue #2.**
+- Lượt 116: Receipt import-history package verification receipt management. **Implemented in v1.9 candidate with bounded metadata-only verify history/filter/export/confirmed-clear; source history package is never restored.**
+- Lượt 117: Preset audit review filters/comparison summaries. **Implemented in v1.9 candidate as read-only neutral review over strategy/status/conflict/source→resolved metadata; no preset mutation or scoring semantics.**
+- Lượt 118: Saved Search receipt import-history portability integrity. **Implemented in v1.9 candidate with SHA-256 export/verify/review; criteria/result/snippet are excluded and undo remains local to L113 managed state.**
+- Lượt 119: Recovery verification-receipt package integrity/verification. **Implemented in v1.9 candidate with SHA-256 plus bounded metadata-only verification history; unsigned v1.8 export is retired while filter/confirmed-clear remains, with no report/calendar mutation.**
+- Lượt 120: Compatibility freshness review export/integrity + explicit local Axe recheck. **Implemented in v1.9 candidate with signed review, pending recheck requests and PASS recording only after `source=actual-local-axe`; always `retirementAllowed:false`/`actionsApplied:false`. Candidate code head `f193cef00eef3ed2e6072414c5d6da0d8719b879`, CI run `34219471956` PASS `verify` + Chromium/Axe. Stable status still requires exact final docs head gate + merge + post-merge gate.**
 
 ## Next generated rounds
-- Lượt 116: Receipt import-history package verification receipt management, metadata-only and bounded; no source package restoration.
-- Lượt 117: Preset audit review filters and comparison summaries that remain read-only and neutral; no scoring semantics.
-- Lượt 118: Saved Search receipt import-history portability package with SHA-256 while keeping undo local to managed state.
-- Lượt 119: Recovery verification-receipt package integrity/verification with metadata-only history and no report/calendar mutation.
-- Lượt 120: Compatibility freshness review export/integrity plus explicit local Axe recheck workflow; no automatic legacy retirement.
+- Lượt 121: Receipt import-history verification-receipt package SHA-256 integrity and read-only verification; no source-history restoration.
+- Lượt 122: Workload preset audit-review portability package with integrity manifest and neutral comparison metadata only.
+- Lượt 123: Saved Search receipt import-history package verification receipt management, bounded metadata-only and no history restore/import.
+- Lượt 124: Recovery verification-package verification receipt management with filter/export/confirmed-clear; no report/calendar mutation.
+- Lượt 125: Axe recheck request/history management plus freshness re-evaluation evidence export; actual Axe PASS remains browser-generated and legacy retirement remains manual/separate.
