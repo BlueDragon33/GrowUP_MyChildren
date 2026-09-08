@@ -16,7 +16,7 @@ test('starting screen has no serious or critical automated accessibility violati
   await expectNoBlockingA11yIssues(page,'starting screen');
 });
 
-test('populated development overview including v8-v12 tools has no serious or critical automated accessibility violations', async ({ page }) => {
+test('populated development overview including v8-v14 tools has no serious or critical automated accessibility violations', async ({ page }) => {
   await page.goto('/');
   await page.locator('#emptyAddChild').click();
   await page.locator('#childForm input[name="name"]').fill('Bé Audit');
@@ -30,5 +30,7 @@ test('populated development overview including v8-v12 tools has no serious or cr
   for (const panel of ['coverage','conflicts','recovery-history','runtime']) await expect(page.locator(`[data-v10="${panel}"]`)).toBeVisible();
   for (const panel of ['portability','workload','saved-search','recovery-schedule','compatibility']) await expect(page.locator(`[data-v11="${panel}"]`)).toBeVisible();
   for (const panel of ['export-wizard','workload-calendar','saved-search-admin','recovery-reminder','compatibility-evidence']) await expect(page.locator(`[data-v12="${panel}"]`)).toBeVisible();
-  await expectNoBlockingA11yIssues(page,'populated overview with v8-v12 tools');
+  for (const panel of ['export-integrity','workload-bands','saved-search-organizer','recovery-lifecycle','retirement-review']) await expect(page.locator(`[data-v13="${panel}"]`)).toBeVisible();
+  for (const panel of ['verification-history','workload-presets','saved-search-package','recovery-calendar','retirement-dry-run']) await expect(page.locator(`[data-v14="${panel}"]`)).toBeVisible();
+  await expectNoBlockingA11yIssues(page,'populated overview with v8-v14 tools');
 });
