@@ -25,19 +25,19 @@ export function verifyCompatibilityEvidencePackage(pkg={}){
 }
 
 export function previewCompatibilityEvidenceImport(pkg={},settings={}){
-  const verification=verifyCompatibilityEvidencePackage(pkg);if(!verification.valid)return {valid:false,reason:'invalid-integrity',accepted:[],duplicates:0,rejected:0,total:array(pkg?.records).length};
-  const existing=storedCompatibilityEvidence(settings),seen=new Set(existing.map(fingerprint)),accepted=[];let duplicates=0,rejected=0;
+  const verification=verifyCompatibilityEvidencePackage(pkg);if(!verification.valid)return {valid:false,reason:'invalid-integrity',accepted:[],duplicates:0,rejected:0,axeRecheckRequired:0,total:array(pkg?.records).length};
+  const existing=storedCompatibilityEvidence(settings),seen=new Set(existing.map(fingerprint)),accepted=[];let duplicates=0,rejected=0,axeRecheckRequired=0;
   for(const raw of array(pkg.records).slice(0,240)){
-    const record=normalizeRawRecord(raw);if(!record){rejected+=1;continue;}const key=fingerprint(record);if(seen.has(key)){duplicates+=1;continue;}seen.add(key);accepted.push(record);
+    const record=normalizeRawRecord(raw);if(!record){rejected+=1;continue;}if(record.flow==='axe'){axeRecheckRequired+=1;continue;}const key=fingerprint(record);if(seen.has(key)){duplicates+=1;continue;}seen.add(key);accepted.push(record);
   }
-  return {valid:true,reason:null,accepted,total:array(pkg.records).length,duplicates,rejected,coveredFlows:[...new Set(accepted.map((item)=>item.flow))]};
+  return {valid:true,reason:null,accepted,total:array(pkg.records).length,duplicates,rejected,axeRecheckRequired,coveredFlows:[...new Set(accepted.map((item)=>item.flow))]};
 }
 
 export function applyCompatibilityEvidenceImport(settings={},pkg={}){
   const preview=previewCompatibilityEvidenceImport(pkg,settings);if(!preview.valid)return {settings,changed:false,added:0,reason:preview.reason};
-  if(!preview.accepted.length)return {settings,changed:false,added:0,duplicates:preview.duplicates,rejected:preview.rejected,reason:'nothing-to-import'};
+  if(!preview.accepted.length)return {settings,changed:false,added:0,duplicates:preview.duplicates,rejected:preview.rejected,axeRecheckRequired:preview.axeRecheckRequired,reason:'nothing-to-import'};
   const next=recordCompatibilityEvidence(settings,preview.accepted);
-  return {settings:next,changed:true,added:preview.accepted.length,duplicates:preview.duplicates,rejected:preview.rejected,reason:'imported'};
+  return {settings:next,changed:true,added:preview.accepted.length,duplicates:preview.duplicates,rejected:preview.rejected,axeRecheckRequired:preview.axeRecheckRequired,reason:'imported'};
 }
 
-export const COMPATIBILITY_EVIDENCE_PACKAGE_NOTE='Evidence package chỉ chứa module/flow/observed/active/timestamp đã chuẩn hóa, có SHA-256 và validation đủ 6 tên flow hợp lệ. Import không tạo Axe evidence giả, không chứa selector/DOM payload/child data và không thực hiện legacy removal; retirement vẫn là thao tác riêng qua exact-head full gate.';
+export const COMPATIBILITY_EVIDENCE_PACKAGE_NOTE='Evidence package chỉ chứa module/flow/observed/active/timestamp đã chuẩn hóa, có SHA-256 và validation tên flow. Flow Axe được phép export để đối chiếu nhưng không được import vào retirement evidence; thiết bị đích phải chạy lại Axe thực sự. Package không chứa selector/DOM payload/child data và không thực hiện legacy removal.';
