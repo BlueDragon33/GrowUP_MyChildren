@@ -31,11 +31,11 @@ export function previewIntegrityWorkloadPresetImport(pkg={},settings={},options=
   const strategy=options.conflictStrategy==='rename'?'rename':'skip',existing=customWorkloadPresets(settings),usedIds=new Set(existing.map((item)=>item.id)),usedNames=new Set(existing.map((item)=>lower(item.name))),items=[];let rejected=0,conflicts=0;
   for(const raw of array(pkg.presets).slice(0,100)){
     const checked=validateCustomWorkloadPreset(raw);if(!checked.valid){rejected+=1;items.push({status:'rejected',reason:checked.reasons[0]||'invalid-preset'});continue;}
-    const rawId=text(raw.id,80)||'preset-import',nameConflict=usedNames.has(lower(checked.name)),idConflict=usedIds.has(rawId),hasConflict=nameConflict||idConflict;
+    const rawId=text(raw.id,80)||'preset-import',sourceName=checked.name,nameConflict=usedNames.has(lower(sourceName)),idConflict=usedIds.has(rawId),hasConflict=nameConflict||idConflict;
     if(hasConflict)conflicts+=1;
-    if(hasConflict&&strategy==='skip'){items.push({status:'conflict-skip',id:rawId,name:checked.name,nameConflict,idConflict});continue;}
-    const id=idConflict?uniqueId(rawId,usedIds):rawId,name=nameConflict?uniqueName(checked.name,usedNames):checked.name;
-    usedIds.add(id);usedNames.add(lower(name));items.push({status:hasConflict?'resolved':'accepted',id,name,config:checked.config,nameConflict,idConflict});
+    if(hasConflict&&strategy==='skip'){items.push({status:'conflict-skip',sourceId:rawId,sourceName,id:rawId,name:sourceName,nameConflict,idConflict});continue;}
+    const id=idConflict?uniqueId(rawId,usedIds):rawId,name=nameConflict?uniqueName(sourceName,usedNames):sourceName;
+    usedIds.add(id);usedNames.add(lower(name));items.push({status:hasConflict?'resolved':'accepted',sourceId:rawId,sourceName,id,name,config:checked.config,nameConflict,idConflict});
   }
   const acceptedItems=items.filter((item)=>item.status==='accepted'||item.status==='resolved').slice(0,Math.max(0,MAX_PRESETS-existing.length));
   return {valid:true,reason:null,strategy,items,accepted:acceptedItems.length,acceptedItems,rejected,conflicts,total:array(pkg.presets).length};
