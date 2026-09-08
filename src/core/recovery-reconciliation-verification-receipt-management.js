@@ -3,7 +3,7 @@ import { recoveryReconciliationReportVerificationReceipts } from './recovery-rec
 export const RECOVERY_RECONCILIATION_VERIFICATION_RECEIPT_PACKAGE_FORMAT='growup-recovery-reconciliation-verification-receipts-v1';
 
 function text(value,max=80){return typeof value==='string'?value.trim().slice(0,max):'';}
-function iso(value){const d=new Date(value);return Number.isNaN(d.getTime())?null:d.toISOString();}
+function iso(value){if(value===null||value===undefined||value==='')return null;const d=new Date(value);return Number.isNaN(d.getTime())?null:d.toISOString();}
 function criteriaOf(criteria={}){const from=iso(criteria.from),to=iso(criteria.to);return {result:criteria.result==='valid'||criteria.result==='invalid'?criteria.result:'all',format:text(criteria.format,80),from,to};}
 function matches(item,criteria){if(criteria.result!=='all'&&item.result!==criteria.result)return false;if(criteria.format&&item.format!==criteria.format)return false;const at=new Date(item.at).getTime();if(criteria.from&&at<new Date(criteria.from).getTime())return false;if(criteria.to&&at>new Date(criteria.to).getTime())return false;return true;}
 
