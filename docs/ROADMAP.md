@@ -27,15 +27,16 @@
 - Lượt 66–70: versioned domain binding, selective family-plan `.ics`, privacy-safe search, recovery inspector/drill, reproducible RC gate. **Completed in v0.9.0.**
 - Lượt 71–75: taxonomy coverage, family-plan conflict assistant, safe-search deep links, recovery history and one-entrypoint runtime consolidation. **Completed in v1.0.0 with final verify + Chromium/Axe PASS.**
 - Lượt 76–80: child data portability map, 7/14/30-day workload windows, saved safe-search views, recovery schedule/checklist and runtime compatibility observation. **Completed in v1.1.0 with final PR gate + CI hậu merge PASS.**
-- Lượt 81: Portability export wizard. **Implemented in v1.2.0 with mandatory unchanged preview before download, child/dataset/record counts and per-dataset field allowlists; Health/Nutrition/free-text ngoài allowlist are excluded. Awaiting final CI/merge gate.**
-- Lượt 82: Family workload calendar heatmap. **Implemented in v1.2.0 with neutral minute bands and keyboard/screen-reader text equivalent; no performance score/rank. Awaiting final CI/merge gate.**
-- Lượt 83: Saved-search management. **Implemented in v1.2.0 with rename/reorder and confirmed reset to privacy-safe defaults while storing criteria only. Awaiting final CI/merge gate.**
-- Lượt 84: Recovery drill reminder integration. **Implemented in v1.2.0 with explicit child target, existing reminder-list integration and source/date deduplication; local-only. Awaiting final CI/merge gate.**
-- Lượt 85: Compatibility evidence matrix. **Implemented in v1.2.0 with required Overview/Learning/Skills/Portfolio/mobile/Axe flows; no module can be retired on incomplete evidence or if active anywhere. Awaiting final CI/merge gate.**
+- Lượt 81–85: safe-export wizard, neutral workload calendar, saved-search management, recovery reminder integration and six-flow compatibility evidence matrix. **Completed in stable v1.2.0; PR #13 final head `4c169fe104bdd766c628fa5454a43c18224fc066`, CI run `34133139602`, verify + Chromium/Axe PASS; merged main `483a6a9e9225da2641348686bcbe8e331ea9e821`.**
+- Lượt 86: Safe-export manifest/checksum. **Implemented in v1.3.0 with SHA-256 manifest and local verification; safe-export allowlists/privacy exclusions remain unchanged. Awaiting final PR head gate.**
+- Lượt 87: Configurable family workload display bands. **Implemented in v1.3.0 as local-only neutral minute thresholds/labels; no score/rank/performance classification. Awaiting final PR head gate.**
+- Lượt 88: Saved-search folders/pinning/duplicate detection. **Implemented in v1.3.0 while persisting normalized criteria only; no result/snippet cache. Awaiting final PR head gate.**
+- Lượt 89: Recovery reminder lifecycle. **Implemented in v1.3.0 with explicit complete/reschedule/remove operations, source/date lineage and metadata-only lifecycle history. Awaiting final PR head gate.**
+- Lượt 90: Evidence-driven legacy retirement review. **Implemented in v1.3.0 as review-only: full six-flow evidence plus runtime dependency graph are required; referenced/incomplete modules remain `retain`; no automatic deletion. Awaiting final PR head gate.**
 
 ## Next generated rounds
-- Lượt 86: Safe-export manifest/checksum so recipients can verify export integrity without revealing extra child data.
-- Lượt 87: Configurable family workload display bands stored locally, with neutral labels and hard guard against child scoring/ranking.
-- Lượt 88: Saved-search folders/pinning and duplicate detection while keeping all saved objects criteria-only.
-- Lượt 89: Recovery reminder lifecycle bridge for complete/reschedule/remove actions while preserving source/date lineage and explicit user control.
-- Lượt 90: Evidence-driven first legacy retirement candidate review; remove code only if full 6-flow matrix + static dependency graph + final browser/Axe gate prove it unused.
+- Lượt 91: Safe-export verification receipt history storing only timestamp, format, algorithm and checksum result; never persist exported child payload or free-text preview.
+- Lượt 92: Family workload display presets and reset workflow kept local-only, neutral and reversible; presets must not encode child performance or ranking semantics.
+- Lượt 93: Portable saved-search criteria package with schema/version validation and duplicate-safe import preview; never include cached search results/snippets.
+- Lượt 94: Recovery lifecycle calendar bridge for explicit user-selected reminder events, preserving lineage and preventing automatic restore or background calendar writes.
+- Lượt 95: Legacy retirement dry-run package: candidate diff/dependency evidence report only; any actual removal remains a separate commit requiring full verify + Chromium/Axe on the exact removal head.
