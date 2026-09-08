@@ -1,11 +1,11 @@
 export const RC_PROFILE = Object.freeze({
-  appVersion:'1.9.0',
+  appVersion:'1.10.0',
   dataSchemaVersion:5,
-  serviceWorkerCache:'growup-mychildren-v19',
+  serviceWorkerCache:'growup-mychildren-v110',
   nodeMajor:22,
   playwrightVersion:'1.55.0',
   axePlaywrightVersion:'4.10.2',
-  rollback:{version:'1.8.0',commit:'c0cfca3cdf261b462932a480ef56637efbf0d44e'}
+  rollback:{version:'1.9.0',commit:'7740f7ec90992811fd0ea66b0654086dcc25d116'}
 });
 
 export function evaluateReleaseCandidate(input = {}) {
