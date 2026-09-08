@@ -2,6 +2,34 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
+## [1.6.0] - 2026-09-08
+### Added
+- Lượt 101: Safe-export verification receipt package có SHA-256 manifest, integrity-before-preview/import và duplicate-safe metadata import.
+- Lượt 102: Custom workload preset package có SHA-256, preview xung đột name/ID và lựa chọn rõ ràng `skip` hoặc `rename` thay vì ghi đè im lặng.
+- Lượt 103: Saved Search integrity receipt management gồm lọc, export metadata-only và confirmed-clear local history.
+- Lượt 104: Recovery reconciliation report chỉ xuất các dòng comparison do người dùng tích chọn; đổi file `.ics` làm preview cũ mất hiệu lực.
+- Lượt 105: Compatibility evidence package có SHA-256 và validation module/flow/observed/active/timestamp; Axe evidence nhập từ package không được tin cậy và phải chạy lại cục bộ.
+
+### Changed
+- App version nâng lên `1.6.0`; data schema tiếp tục v5.
+- Service-worker cache nâng lên `growup-mychildren-v16`.
+- Runtime tiếp tục đúng một JavaScript entrypoint + một CSS entrypoint; `v16-runtime.js`, `v16-guard.js` và `v16.css` là dependency nội bộ sau v15 và trước accessibility layer.
+- Rollback pin về stable v1.5 final main commit `5f626b9b22cd3a6021cde2a7c9b41fd072e016d4`.
+- Axe overview gate được mở rộng để chờ và quét panel v16 trước khi đánh giá serious/critical violations.
+
+### Security / Privacy
+- Receipt package chỉ import/persist `at`, `format`, `algorithm`, valid/invalid; không lưu raw/expected/actual source checksum, child payload hay free-text nguồn.
+- Preset sau conflict resolution chỉ persist `id`, `name`, `config`; validation child-linked keys và score/rank/performance/health semantics vẫn bắt buộc.
+- Saved Search receipt package không chứa criteria payload, result/snippet hoặc Health/Nutrition data.
+- Recovery report không chứa child name, reminder title hay raw ICS và không có apply/external calendar write path.
+- Compatibility evidence package chỉ chứa metadata; imported Axe flow bị loại và phải được tái tạo bằng actual local Axe PASS; không có legacy removal path.
+
+### Gate
+- PR #20 exact final head `704509d83df38f3c0497b55adb2e5bf27d5a111c`, CI run `34202531673`: `verify` PASS và Chromium browser E2E + Axe serious/critical PASS; Playwright diagnostics upload PASS.
+- Không assertion hoặc Axe rule nào bị bỏ/giảm để lấy PASS.
+- Merged stable code main commit `1e0fb588baa4a83c91a445930214ef4165431d2c`; post-merge CI run `34202894669`: `verify` + `browser-e2e` đều PASS.
+- Pages run `34202894688` fail riêng tại `Configure Pages`; Upload/Deploy/Verify bị skip do repository setting issue #2, không phải source regression.
+
 ## [1.5.0] - 2026-09-08
 ### Added
 - Lượt 96: Verification receipt management gồm lọc theo kết quả/format/khoảng ngày, xuất package metadata-only và xóa lịch sử sau xác nhận rõ ràng.
