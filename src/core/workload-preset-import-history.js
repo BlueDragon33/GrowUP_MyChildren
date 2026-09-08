@@ -28,7 +28,7 @@ export function applyWorkloadPresetImportWithHistory(settings={},pkg={},options=
   const applied=applyIntegrityWorkloadPresetImport(settings,pkg,{conflictStrategy:strategy});
   if(!applied.changed)return {...applied,historyRecorded:false};
   const after=customWorkloadPresets(applied.settings),addedIds=new Set(preview.acceptedItems.slice(0,applied.added).map((item)=>item.id)),added=after.filter((item)=>addedIds.has(item.id)).map((item)=>({id:item.id,name:item.name,signature:presetSignature(item)}));
-  const decisions=preview.items.map((item)=>normalizeDecision({status:item.status,sourceId:item.id,sourceName:item.name,resolvedId:item.status==='accepted'||item.status==='resolved'?item.id:null,resolvedName:item.status==='accepted'||item.status==='resolved'?item.name:null,nameConflict:item.nameConflict,idConflict:item.idConflict}));
+  const decisions=preview.items.map((item)=>normalizeDecision({status:item.status,sourceId:item.sourceId,sourceName:item.sourceName,resolvedId:item.status==='accepted'||item.status==='resolved'?item.id:null,resolvedName:item.status==='accepted'||item.status==='resolved'?item.name:null,nameConflict:item.nameConflict,idConflict:item.idConflict}));
   const when=iso(at),history=workloadPresetImportHistory(settings),entry={id:entryId(when,history.length+1),at:when,strategy,decisions,added};
   return {...applied,settings:{...applied.settings,workloadPresetImportHistory:[...history,entry].slice(-MAX_HISTORY)},historyRecorded:true,historyEntry:entry};
 }
@@ -42,4 +42,4 @@ export function undoLastWorkloadPresetImport(settings={}){
   return {settings:{...settings,customWorkloadPresets:remaining,workloadPresetImportHistory:history.slice(0,-1)},changed:true,removed,preservedModified,reason:preservedModified?'partial-undo-preserved-modified':'undone',historyEntry:last};
 }
 
-export const WORKLOAD_PRESET_IMPORT_HISTORY_NOTE='Lịch sử import preset chỉ giữ audit metadata về chiến lược skip/rename, quyết định xung đột và chữ ký của preset trung tính đã thêm. Undo chỉ xóa preset vẫn còn đúng chữ ký lúc import; preset đã được người dùng sửa sau đó được giữ lại. Không lưu childId, score/rank/performance/health semantics hay package nguồn.';
+export const WORKLOAD_PRESET_IMPORT_HISTORY_NOTE='Lịch sử import preset chỉ giữ audit metadata về chiến lược skip/rename, quyết định xung đột trước→sau và chữ ký của preset trung tính đã thêm. Undo chỉ xóa preset vẫn còn đúng chữ ký lúc import; preset đã được người dùng sửa sau đó được giữ lại. Không lưu childId, score/rank/performance/health semantics hay package nguồn.';
