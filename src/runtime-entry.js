@@ -12,4 +12,5 @@ import './v11-runtime.js';
 import './v12-runtime.js';
 import './v13-runtime.js';
 import './v14-runtime.js';
+import './v15-runtime.js';
 import './a11y.js';
