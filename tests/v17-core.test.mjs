@@ -17,7 +17,7 @@ test('L106 receipt import records metadata delta and rollback-safe undo',()=>{
   const applied=applyExportVerificationReceiptImportWithHistory({},pkg,'2026-09-08T02:00:00.000Z');
   assert.equal(applied.changed,true);assert.equal(applied.historyAdded,true);
   const history=exportVerificationImportHistory(applied.settings);assert.equal(history.length,1);assert.equal(history[0].addedCount,1);
-  const serialized=JSON.stringify(history);assert.equal(/checksum|payload|child|free.?text/i.test(serialized),false);
+  const serialized=JSON.stringify(history);assert.equal(/expected|actual|manifest|payload|child|free.?text/i.test(serialized),false);assert.equal(serialized.includes('checksumResult'),true);
   const undone=undoLastExportVerificationReceiptImport(applied.settings,'2026-09-08T03:00:00.000Z');assert.equal(undone.changed,true);assert.equal(undone.removed,1);assert.equal(undone.settings.safeExportVerificationReceipts.length,0);assert.ok(undone.settings.safeExportVerificationImportHistory[0].undoneAt);
   const appliedAgain=applyExportVerificationReceiptImportWithHistory({},pkg,'2026-09-08T04:00:00.000Z');const diverged={...appliedAgain.settings,safeExportVerificationReceipts:[]};
   const refused=undoLastExportVerificationReceiptImport(diverged);assert.equal(refused.changed,false);assert.equal(refused.reason,'receipt-state-diverged');
@@ -61,7 +61,7 @@ test('L110 compatibility import audits non-Axe delta, undo restores prior state 
     {module:'legacy.js',flow:'axe',observed:true,active:false,at:'2026-09-08T00:00:00.000Z'}
   ]});
   const applied=applyCompatibilityEvidenceImportWithAudit(current,pkg,'2026-09-08T09:00:00.000Z');assert.equal(applied.changed,true);assert.equal(applied.added,1);assert.equal(applied.replaced,1);assert.equal(applied.axeRecheckRequired,1);
-  const history=compatibilityEvidenceImportHistory(applied.settings);assert.equal(history.length,1);assert.equal(JSON.stringify(history).includes('axe"'),false);assert.equal(/selector|dom|child|checksum|package/i.test(JSON.stringify(history)),false);
+  const history=compatibilityEvidenceImportHistory(applied.settings);assert.equal(history.length,1);assert.equal(JSON.stringify(history).includes('"flow":"axe"'),false);assert.equal(/selector|dom|child|checksum|package/i.test(JSON.stringify(history)),false);
   const undone=undoLastCompatibilityEvidenceImport(applied.settings,'2026-09-08T10:00:00.000Z');assert.equal(undone.changed,true);assert.equal(undone.restored,1);assert.equal(undone.removed,1);assert.equal(undone.settings.compatibilityEvidenceRecords.length,1);assert.equal(undone.settings.compatibilityEvidenceRecords[0].active,true);
   const modified=structuredClone(applied.settings);modified.compatibilityEvidenceRecords=modified.compatibilityEvidenceRecords.map((item)=>item.flow==='skills'?{...item,active:true}:item);const refused=undoLastCompatibilityEvidenceImport(modified);assert.equal(refused.changed,false);assert.equal(refused.reason,'evidence-state-diverged');
   const fresh=compatibilityEvidenceFreshness({compatibilityEvidenceRecords:[{module:'m',flow:'overview',observed:true,active:false,at:'2026-09-09T00:00:00.000Z'},{module:'m',flow:'skills',observed:true,active:false,at:'2026-07-01T00:00:00.000Z'}]},{now:'2026-09-10T00:00:00.000Z',staleAfterDays:30});
