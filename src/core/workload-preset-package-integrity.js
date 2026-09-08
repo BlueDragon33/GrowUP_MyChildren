@@ -43,7 +43,7 @@ export function previewIntegrityWorkloadPresetImport(pkg={},settings={},options=
 
 export function applyIntegrityWorkloadPresetImport(settings={},pkg={},options={}){
   const preview=previewIntegrityWorkloadPresetImport(pkg,settings,options);if(!preview.valid)return {settings,changed:false,added:0,reason:preview.reason};
-  const current=customWorkloadPresets(settings),incoming=preview.acceptedItems;
+  const current=customWorkloadPresets(settings),incoming=preview.acceptedItems.map((item)=>({id:item.id,name:item.name,config:item.config}));
   return {settings:{...settings,customWorkloadPresets:[...current,...incoming].slice(0,MAX_PRESETS)},changed:incoming.length>0,added:incoming.length,rejected:preview.rejected,conflicts:preview.conflicts,strategy:preview.strategy,reason:incoming.length?'imported':'nothing-to-import'};
 }
 
