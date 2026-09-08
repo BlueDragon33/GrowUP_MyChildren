@@ -55,9 +55,13 @@ v1.8 tiếp tục hardening các luồng metadata local-first của GrowUP My Ch
 ## Stop-on-error đã thực hiện
 CI đầu của PR #23 phát hiện L114 double-normalization bug: criteria đã chuẩn hóa với `from/to = null` được chuẩn hóa lần hai; JavaScript `new Date(null)` biến `null` thành Unix epoch 1970 và làm package filter sai. Merge bị khóa. Core được sửa để `null`, `undefined` và chuỗi rỗng luôn giữ nghĩa “không giới hạn ngày”; regression L114 tiếp tục giữ assertion package/filter để tránh tái phát.
 
-## Gate bắt buộc
-Final PR head phải cùng một SHA PASS cả:
-1. `verify`
-2. Chromium E2E + Axe serious/critical
+## Stable gate evidence
+- PR #23 exact final head: `7fe1d358dc0fe32486ead63a74e087ba5799336c`.
+- Pre-merge CI run `34216959939`: `verify` PASS; Chromium E2E + Axe serious/critical PASS; Playwright diagnostics PASS.
+- Merged `main`: `c0cfca3cdf261b462932a480ef56637efbf0d44e`.
+- Post-merge CI run `34217171141`: `verify` PASS và `browser-e2e` PASS trên chính merge commit.
+- Pages run `34217171172` fail riêng tại `Configure Pages`; `Upload static site`, `Deploy` và `Verify deployed PWA` đều skipped do L31/issue #2. Đây không phải source regression.
+- Không hạ Axe rule, không bỏ assertion và không dùng run của SHA cũ để thay final gate.
 
-Không hạ Axe rule, không bỏ assertion và không merge dựa trên run của SHA cũ. Sau merge phải kiểm lại cả hai job trên `main`. GitHub Pages vẫn là deployment gate riêng bị chặn bởi L31/issue #2 và không được dùng thay source gate.
+## Trạng thái
+v1.8.0 được coi là stable sau khi PR exact head và merge commit trên `main` đều PASS hai source gate bắt buộc. GitHub Pages vẫn là deployment blocker độc lập theo L31/issue #2.
