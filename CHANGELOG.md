@@ -2,6 +2,41 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
+## [1.9.0] - 2026-09-08
+### Added
+- Lượt 116: Receipt import-history package verification receipt management với bounded metadata-only history, filter/export/confirmed-clear; verify không restore source history package.
+- Lượt 117: Workload preset import-audit review filter theo strategy/status/conflict và comparison summary trung tính; luôn read-only, không sửa preset.
+- Lượt 118: Saved Search receipt import-history portability package có SHA-256 manifest, verify/review read-only và giữ undo cục bộ ở managed state L113.
+- Lượt 119: Recovery verification-receipt package integrity SHA-256 và verification history metadata-only tối đa 50 mục; không mutate report/reminder/calendar.
+- Lượt 120: Compatibility freshness review package SHA-256 và explicit Axe recheck request workflow; PASS chỉ được ghi sau actual local Axe run và pending request tương ứng.
+
+### Changed
+- App version nâng lên `1.9.0`; data schema tiếp tục v5.
+- Service-worker cache nâng lên `growup-mychildren-v19`.
+- Runtime vẫn chỉ có một public JavaScript entrypoint `src/runtime-entry.js` và một public stylesheet `src/runtime.css`; `v19-runtime.js` được nạp trước accessibility layer.
+- Rollback pin về stable v1.8 code merge `c0cfca3cdf261b462932a480ef56637efbf0d44e`.
+- Verify form L111 cũ bị retire để L116 luôn ghi managed verification receipt history.
+- Unsigned Recovery receipt export L114 cũ bị retire để L119 dùng integrity package SHA-256; L114 filter/confirmed-clear vẫn giữ hoạt động.
+- Browser regression mở rộng bằng `e2e/v19.spec.mjs`; regression v1.8 được cập nhật để xác nhận các đường cũ đã retire thay vì thao tác bypass path.
+
+### Security / Privacy
+- L116 receipt chỉ giữ `at/format/algorithm/result/importCount/receiptCount`, tối đa 50 mục; không raw source package, manifest nguồn, expected/actual checksum hoặc child payload.
+- L117 review không đọc preset config/internal signature và không sinh score/rank/performance/health semantics.
+- L118 package không chứa criteria/result/snippet, Health/Nutrition, raw checksum, raw source package hoặc internal history id.
+- L119 history chỉ giữ `at/format/algorithm/result/receiptCount`; không report payload, child name, reminder title, raw ICS/raw checksum.
+- L120 signed review luôn `retirementAllowed:false`/`actionsApplied:false`; UI không có đường tự đánh dấu Axe PASS và không có automatic legacy retirement.
+
+### Fixed during gate
+- Candidate đầu `b891946117ade3123f609de7d869753d55f2d0f9` PASS `verify` nhưng browser fail vì hai regression v1.8 vẫn click form verify L111 và unsigned export L114 đã được v1.9 retire có chủ đích.
+- Không mở lại đường cũ. Regression v1.8 được sửa để giữ test chức năng còn hợp lệ và xác nhận hidden/disabled migration boundary; replacement path L116/L119 vẫn được kiểm đầy đủ trong v19 E2E.
+- Một lỗi cú pháp phát sinh trong patch regression được phát hiện trước final gate và sửa ở head `f193cef00eef3ed2e6072414c5d6da0d8719b879`.
+- Không assertion privacy/integrity nào bị hạ và không Axe rule nào bị bỏ/giảm.
+
+### Gate
+- Candidate code head `f193cef00eef3ed2e6072414c5d6da0d8719b879`, CI run `34219471956`: `verify` PASS và Chromium browser E2E + Axe serious/critical PASS; diagnostics preservation PASS.
+- Merge chỉ được phép sau khi exact final PR head có đầy đủ docs PASS lại cả `verify` và Chromium/Axe trên cùng SHA; sau merge `main` phải PASS lại cả hai source jobs.
+- GitHub Pages vẫn là deployment blocker riêng L31/issue #2 và không được dùng thay source CI gate.
+
 ## [1.8.0] - 2026-09-08
 ### Added
 - Lượt 111: Receipt import-history portability package có SHA-256 manifest, verify/review read-only và chỉ mang metadata history/receipt an toàn.
@@ -114,7 +149,7 @@ Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từn
 ### Gate
 - PR #18 exact final head `654eefa19ea4408c1bfcfe94c87faac92c33784d`, CI run `34177381954`: `verify` PASS và Chromium browser E2E + Axe serious/critical PASS; Playwright diagnostics upload PASS.
 - Không assertion hoặc Axe rule nào bị bỏ/giảm để lấy PASS.
-- Merged stable code main commit `38f129c0d66118c53af03efd4846f51b6d6674d3`; post-merge CI run `34177525276`: `verify` + `browser-e2e` đều PASS.
+- Merged stable main commit `38f129c0d66118c53af03efd4846f51b6d6674d3`; post-merge CI run `34177525276`: `verify` + `browser-e2e` đều PASS.
 - Pages run `34177525318` fail riêng tại `Configure Pages`; Upload/Deploy/Verify bị skip do repository setting issue #2, không phải source regression.
 
 ## [1.4.0] - 2026-09-08
