@@ -40,11 +40,10 @@ test('L107 preset managed import audits rename and undo restores prior library',
   page.once('dialog',(dialog)=>dialog.accept());await page.locator('#v17UndoPreset').click();await expect(page.locator('#v17PresetStatus')).toContainText('Chưa có lịch sử');settings=await page.evaluate(()=>JSON.parse(localStorage.getItem('growup_mychildren_v1')).settings);expect(settings.customWorkloadPresets).toHaveLength(1);expect(settings.workloadPresetImportHistory).toEqual([]);
 });
 
-test('L108 Saved Search receipt package exports SHA-256 and imports duplicate-safe metadata',async({page})=>{
+test('L108 Saved Search receipt package export remains SHA-256 while direct v17 apply is retired by v1.8',async({page})=>{
   await child(page);await page.evaluate(()=>{const s=JSON.parse(localStorage.getItem('growup_mychildren_v1'));s.settings.savedSearchPackageVerificationReceipts=[{at:'2026-09-08T01:00:00.000Z',format:'saved-v17',algorithm:'SHA-256',result:'valid'}];localStorage.setItem('growup_mychildren_v1',JSON.stringify(s));});await reload(page);
   const download=page.waitForEvent('download');await page.locator('#v17ExportSavedReceipts').click();const file=await download;const text=await readFile(await file.path(),'utf8');const pkg=JSON.parse(text);expect(pkg.manifest.algorithm).toBe('SHA-256');expect(pkg.receipts).toHaveLength(1);expect(text).not.toMatch(/expected|actual|snippet/);
-  await page.evaluate(()=>{const s=JSON.parse(localStorage.getItem('growup_mychildren_v1'));s.settings.savedSearchPackageVerificationReceipts=[];localStorage.setItem('growup_mychildren_v1',JSON.stringify(s));});await reload(page);
-  await page.locator('#v17SavedReceiptImportForm input[name="file"]').setInputFiles({name:'saved-receipts.json',mimeType:'application/json',buffer:Buffer.from(text)});await page.locator('#v17SavedReceiptImportForm button[type="submit"]').click();await expect(page.locator('#v17ApplySavedReceipt')).toBeEnabled();await page.locator('#v17ApplySavedReceipt').click();await expect(page.locator('[data-v17="saved-receipt-integrity"]')).toBeVisible();const receipts=await page.evaluate(()=>JSON.parse(localStorage.getItem('growup_mychildren_v1')).settings.savedSearchPackageVerificationReceipts);expect(receipts).toHaveLength(1);expect(Object.keys(receipts[0]).sort()).toEqual(['algorithm','at','format','result']);
+  await expect(page.locator('#v17SavedReceiptImportForm')).toBeHidden();const disabled=await page.locator('#v17SavedReceiptImportForm input, #v17SavedReceiptImportForm button').evaluateAll((nodes)=>nodes.every((node)=>node.disabled));expect(disabled).toBe(true);await expect(page.locator('[data-v18="saved-receipt-history"]')).toBeVisible();
 });
 
 test('L109 signed recovery report verifies locally without reminder mutation',async({page})=>{

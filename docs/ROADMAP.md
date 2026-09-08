@@ -20,7 +20,7 @@
 - Lượt 32–35: schema migration, development cockpit, portable `.ics`, local-date correctness. **Completed in v0.2.0.**
 - Lượt 36–40: screen privacy, development profile editor, attachment metadata, provider-neutral integration interfaces, static/PWA smoke gate. **Completed in v0.3.0.**
 - Lượt 41–45: local family policy, reminder capability, backup integrity, age-stage templates, longitudinal family report. **Completed in v0.4.0.**
-- Lượt 46–50: unified timeline, evidence links, family policy safeguards, safe exports, Chromium production gate. **Completed in v0.5.0.**
+- Lượt 46–50: unified development timeline, evidence links, family policy safeguards, safe exports, Chromium production gate. **Completed in v0.5.0.**
 - Lượt 51–55: evidence repair, portable archive SHA-256, period filters, keyboard/focus hardening, deployment verification workflow. **Completed/implemented in v0.6.0; public Pages remains blocked by L31.**
 - Lượt 56–60: consistency scanner, manual retention, neutral yearly summary, printable report, privacy/accessibility Axe gate. **Completed in v0.7.0.**
 - Lượt 61–65: privacy-safe audit export, versioned taxonomy, family planning, encrypted backup, release/rollback hardening. **Completed in v0.8.0.**
@@ -53,10 +53,15 @@
 - Lượt 108: Saved Search integrity receipt package SHA-256 and duplicate-safe receipt import. **Completed in stable v1.7.0 with integrity-before-preview/apply and bounded metadata-only persistence.**
 - Lượt 109: Recovery reconciliation report integrity manifest and local verification receipt. **Completed in stable v1.7.0 as report-only SHA-256 verification; receipt keeps only timestamp/format/algorithm/result/rowCount and cannot mutate reminders/calendars.**
 - Lượt 110: Compatibility evidence import audit/undo and freshness summary. **Completed in stable v1.7.0 for non-Axe deltas only; Axe remains local-rerun-only, freshness is advisory and actual legacy retirement remains separate. PR #22 exact final head `8c4bef435da4209d9cc6c0d69897fe6365b8b055`, CI run `34215399018` PASS verify + Chromium/Axe; merged main `d59680e4e1bcd122f6adc14ed9a21ede8db26cd7`, post-merge CI run `34215640236` PASS both gates. Pages run `34215640207` remains separately blocked at `Configure Pages` by L31/issue #2.**
+- Lượt 111: Managed receipt import-history package export with SHA-256 and metadata-only portability. **Implemented in v1.8 candidate as export/verify/review read-only; package excludes raw source package, source manifest, expected/actual checksum, internal history id and child payload.**
+- Lượt 112: Workload preset import-audit package export/integrity and read-only conflict review. **Implemented in v1.8 candidate with source→resolved metadata; package excludes preset config, internal signature, raw package and child-linked scoring semantics.**
+- Lượt 113: Saved Search receipt import history with rollback-safe undo. **Implemented in v1.8 candidate with bounded exact-delta history/undo; direct v17 apply form is retired so managed path cannot be bypassed.**
+- Lượt 114: Recovery reconciliation verification-receipt management. **Implemented in v1.8 candidate with filter/export/confirmed-clear over metadata-only receipts; report payload/raw checksum remain excluded.**
+- Lượt 115: Compatibility evidence freshness policy and stale-evidence review gate. **Implemented in v1.8 candidate with bounded fresh-day policy, missing/stale review and explicit `retirementAllowed:false`/`actionsApplied:false`; Axe still requires actual local rerun. Final stable evidence requires PR #23 exact-head verify + Chromium/Axe PASS and post-merge main recheck.**
 
 ## Next generated rounds
-- Lượt 111: Managed receipt import-history package export with SHA-256 and metadata-only portability; no raw source package or checksum values.
-- Lượt 112: Workload preset import-audit package export/integrity and read-only review of conflict decisions; no child-linked scoring semantics.
-- Lượt 113: Saved Search receipt import history with rollback-safe undo for the last managed receipt import, bounded to metadata-only deltas.
-- Lượt 114: Recovery reconciliation verification-receipt management with filter/export/confirmed-clear while keeping report payload and raw checksum out of history.
-- Lượt 115: Compatibility evidence freshness policy configuration and stale-evidence review gate; Axe must still be regenerated locally and no automatic legacy removal is introduced.
+- Lượt 116: Receipt import-history package verification receipt management, metadata-only and bounded; no source package restoration.
+- Lượt 117: Preset audit review filters and comparison summaries that remain read-only and neutral; no scoring semantics.
+- Lượt 118: Saved Search receipt import-history portability package with SHA-256 while keeping undo local to managed state.
+- Lượt 119: Recovery verification-receipt package integrity/verification with metadata-only history and no report/calendar mutation.
+- Lượt 120: Compatibility freshness review export/integrity plus explicit local Axe recheck workflow; no automatic legacy retirement.

@@ -2,6 +2,37 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
+## [1.8.0] - 2026-09-08
+### Added
+- Lượt 111: Receipt import-history portability package có SHA-256 manifest, verify/review read-only và chỉ mang metadata history/receipt an toàn.
+- Lượt 112: Workload preset import-audit package có SHA-256, review source→resolved conflict decisions và không chứa preset config/internal signature.
+- Lượt 113: Saved Search receipt managed import history với exact-delta undo; direct v17 apply path bị retire để không bypass history.
+- Lượt 114: Recovery reconciliation verification-receipt management gồm filter, metadata-only export và confirmed-clear.
+- Lượt 115: Compatibility evidence freshness policy local-only và stale/missing review gate; Axe vẫn phải tái tạo bằng actual local rerun.
+
+### Changed
+- App version nâng lên `1.8.0`; data schema tiếp tục v5.
+- Service-worker cache nâng lên `growup-mychildren-v18`.
+- Runtime tiếp tục đúng một JavaScript entrypoint + một CSS entrypoint; `v18-runtime.js` được nạp sau v17 và trước accessibility layer.
+- Rollback pin về stable v1.7 merge `d59680e4e1bcd122f6adc14ed9a21ede8db26cd7` đã PASS hậu merge cả `verify` và Chromium/Axe.
+- `#v17SavedReceiptImportForm` được retirement bằng `hidden`, `aria-hidden`, `display:none !important`, disabled controls và loại khỏi tab order; export L108 vẫn được giữ.
+- Browser regression mở rộng bằng `v18.spec.mjs` cho export/verify/review, managed import/undo, receipt management, freshness policy và Axe serious/critical.
+
+### Security / Privacy
+- L111 package không chứa raw source package, source manifest, expected/actual checksum, internal history id, child payload hoặc free-text.
+- L112 package không chứa preset config, internal signature, raw import package, childId hoặc score/rank/performance/health semantics.
+- L113 history chỉ persist Saved Search receipt metadata delta; không lưu criteria/result/snippet/Health/Nutrition hay raw checksum.
+- L114 export/clear chỉ làm việc trên `at/format/algorithm/result/rowCount`; report payload, child name, reminder title, raw ICS và raw checksum bị loại.
+- L115 luôn `retirementAllowed:false` và `actionsApplied:false`; policy không xóa module, không đổi active state và không tin Axe evidence nhập từ file.
+
+### Fixed during gate
+- CI đầu PR #23 phát hiện L114 double-normalization: `null` date bound bị `new Date(null)` biến thành Unix epoch, làm package filter sai. Core được sửa để `null/undefined/empty` luôn có nghĩa “không giới hạn ngày”; assertion regression được giữ nguyên.
+
+### Gate
+- PR #23 dùng stop-on-error; mọi verify/browser failure đều chặn merge.
+- Final merge chỉ được phép khi cùng một exact PR head PASS cả `verify` và Chromium E2E + Axe serious/critical, sau đó `main` phải PASS lại cả hai job.
+- GitHub Pages vẫn là deployment gate riêng bị chặn bởi L31/issue #2 và không được dùng thay source gate.
+
 ## [1.7.0] - 2026-09-08
 ### Added
 - Lượt 106: Managed verification-receipt import history với bounded metadata delta và undo chỉ cho lần import gần nhất.
