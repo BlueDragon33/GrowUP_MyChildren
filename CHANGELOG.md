@@ -2,7 +2,7 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
-## [1.3.0] - đang kiểm duyệt PR #14
+## [1.3.0] - 2026-09-08
 ### Added
 - Lượt 86: Safe-export integrity manifest dùng SHA-256 và bộ kiểm tra checksum cục bộ, không mở rộng allowlist dữ liệu trẻ.
 - Lượt 87: Workload display bands tùy chỉnh ngưỡng phút/nhãn trung tính, lưu local-only và không tạo score/rank.
@@ -25,9 +25,10 @@ Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từn
 - Legacy module chỉ có thể thành candidate khi đủ 6 flow evidence, inactive ở mọi flow và runtime graph không còn import; v1.3 không tự động remove.
 
 ### Gate
-- PR #14 chỉ được merge khi **cùng exact final head** PASS cả `verify` và Chromium E2E + Axe serious/critical.
-- Lỗi browser trước gate được xác định là assertion E2E vô tình bắt chữ `candidate` trong phần chú thích; assertion đã được sửa để kiểm trực tiếp decision của từng module, không bỏ/giảm Axe rule.
-- GitHub Pages vẫn là blocker repository setting riêng tại issue #2; không dùng trạng thái Pages để thay thế source CI gate.
+- PR #14 exact final head `9e9a17be87eec23919ba2a8ac50416cae196f91f`, CI run `34174215483`: `verify` PASS và Chromium browser E2E + Axe serious/critical PASS.
+- Lỗi browser trước final gate là assertion E2E vô tình bắt chữ `candidate` trong phần chú thích; assertion được sửa để kiểm trực tiếp decision từng module, không bỏ/giảm Axe rule.
+- Merged stable main commit `9244e094c00c4d620a6ceaac6ced7de8f8dabdbc`; post-merge CI run `34174310765`: `verify` + `browser-e2e` đều PASS.
+- Pages run `34174310745` vẫn fail riêng ở bước `Configure Pages` do repository setting, issue #2; deploy/verify Pages bị skip và không được dùng làm bằng chứng thay thế source gate.
 
 ## [1.2.0] - 2026-09-07
 ### Added
