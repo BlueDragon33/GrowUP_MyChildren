@@ -28,11 +28,11 @@
 - Lượt 71–75: taxonomy coverage, family-plan conflict assistant, safe-search deep links, recovery history and one-entrypoint runtime consolidation. **Completed in v1.0.0 with final verify + Chromium/Axe PASS.**
 - Lượt 76–80: child data portability map, 7/14/30-day workload windows, saved safe-search views, recovery schedule/checklist and runtime compatibility observation. **Completed in v1.1.0 with final PR gate + CI hậu merge PASS.**
 - Lượt 81–85: safe-export wizard, neutral workload calendar, saved-search management, recovery reminder integration and six-flow compatibility evidence matrix. **Completed in stable v1.2.0; PR #13 final head `4c169fe104bdd766c628fa5454a43c18224fc066`, CI run `34133139602`, verify + Chromium/Axe PASS; merged main `483a6a9e9225da2641348686bcbe8e331ea9e821`.**
-- Lượt 86: Safe-export manifest/checksum. **Implemented in v1.3.0 with SHA-256 manifest and local verification; safe-export allowlists/privacy exclusions remain unchanged. Awaiting final PR head gate.**
-- Lượt 87: Configurable family workload display bands. **Implemented in v1.3.0 as local-only neutral minute thresholds/labels; no score/rank/performance classification. Awaiting final PR head gate.**
-- Lượt 88: Saved-search folders/pinning/duplicate detection. **Implemented in v1.3.0 while persisting normalized criteria only; no result/snippet cache. Awaiting final PR head gate.**
-- Lượt 89: Recovery reminder lifecycle. **Implemented in v1.3.0 with explicit complete/reschedule/remove operations, source/date lineage and metadata-only lifecycle history. Awaiting final PR head gate.**
-- Lượt 90: Evidence-driven legacy retirement review. **Implemented in v1.3.0 as review-only: full six-flow evidence plus runtime dependency graph are required; referenced/incomplete modules remain `retain`; no automatic deletion. Awaiting final PR head gate.**
+- Lượt 86: Safe-export manifest/checksum. **Completed in stable v1.3.0 with SHA-256 manifest and local verification; safe-export allowlists/privacy exclusions remain unchanged.**
+- Lượt 87: Configurable family workload display bands. **Completed in stable v1.3.0 as local-only neutral minute thresholds/labels; no score/rank/performance classification.**
+- Lượt 88: Saved-search folders/pinning/duplicate detection. **Completed in stable v1.3.0 while persisting normalized criteria only; no result/snippet cache.**
+- Lượt 89: Recovery reminder lifecycle. **Completed in stable v1.3.0 with explicit complete/reschedule/remove operations, source/date lineage and metadata-only lifecycle history.**
+- Lượt 90: Evidence-driven legacy retirement review. **Completed in stable v1.3.0 as review-only: full six-flow evidence plus runtime dependency graph are required; referenced/incomplete modules remain `retain`; no automatic deletion. PR #14 final head `9e9a17be87eec23919ba2a8ac50416cae196f91f`, CI run `34174215483` PASS both gates; merged main `9244e094c00c4d620a6ceaac6ced7de8f8dabdbc`, post-merge CI `34174310765` PASS both gates. Pages run `34174310745` remains separately blocked at Configure Pages by L31.**
 
 ## Next generated rounds
 - Lượt 91: Safe-export verification receipt history storing only timestamp, format, algorithm and checksum result; never persist exported child payload or free-text preview.
