@@ -19,4 +19,5 @@ import './v17-runtime.js';
 import './v18-runtime.js';
 import './v19-runtime.js';
 import './v110-runtime.js';
+import './premium-ui.js';
 import './a11y.js';
