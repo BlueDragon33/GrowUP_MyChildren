@@ -1,12 +1,13 @@
-export const APP_VERSION = '1.5.0';
+export const APP_VERSION = '1.6.0';
 export const DATA_SCHEMA_VERSION = 5;
 export const STABLE_ROLLBACK = Object.freeze({
-  version:'1.4.0',
-  commit:'be5dbb338a0795dcbf6615702c0e4ebee72785d3',
-  note:'Bản v1.4 đã qua final PR gate, merge code, docs finalize và CI hậu merge trên main trước khi v1.5 bắt đầu.'
+  version:'1.5.0',
+  commit:'5f626b9b22cd3a6021cde2a7c9b41fd072e016d4',
+  note:'Bản v1.5 đã qua final PR gate, merge code, docs finalize và CI hậu merge trên main trước khi v1.6 bắt đầu.'
 });
 
 export const RELEASE_NOTES = Object.freeze([
+  { version:'1.6.0', title:'Receipt package integrity, workload preset conflict preview, Saved Search receipt management, Recovery reconciliation report & compatibility evidence package', rounds:'101–105' },
   { version:'1.5.0', title:'Verification receipt management, custom workload preset library, Saved Search integrity, Recovery ICS reconciliation & persistent six-flow compatibility evidence', rounds:'96–100' },
   { version:'1.4.0', title:'Export verification receipts, workload presets, saved-search package, recovery calendar bridge & retirement dry-run', rounds:'91–95' },
   { version:'1.3.0', title:'Safe export integrity, configurable workload bands, saved-search organizer, recovery lifecycle & legacy retirement review', rounds:'86–90' },
