@@ -2,7 +2,34 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
-## [1.2.0] - đang kiểm duyệt PR
+## [1.3.0] - đang kiểm duyệt PR #14
+### Added
+- Lượt 86: Safe-export integrity manifest dùng SHA-256 và bộ kiểm tra checksum cục bộ, không mở rộng allowlist dữ liệu trẻ.
+- Lượt 87: Workload display bands tùy chỉnh ngưỡng phút/nhãn trung tính, lưu local-only và không tạo score/rank.
+- Lượt 88: Saved-search organizer gồm folder, ghim và phát hiện criteria trùng; vẫn chỉ lưu tiêu chí tìm kiếm.
+- Lượt 89: Recovery reminder lifecycle cho hoàn thành/mở lại, đổi ngày và xóa có chủ đích, đồng thời giữ lineage nguồn/ngày tối thiểu.
+- Lượt 90: Legacy retirement review kết hợp evidence matrix với runtime dependency graph; chỉ review, không tự xóa module.
+
+### Changed
+- App version nâng lên `1.3.0`; data schema tiếp tục v5.
+- Service-worker cache nâng lên `growup-mychildren-v13`.
+- Runtime tiếp tục đúng một JavaScript entrypoint + một CSS entrypoint; v13 được nạp như dependency nội bộ sau v12 và trước lớp accessibility.
+- Rollback pin về stable v1.2.0 main commit `483a6a9e9225da2641348686bcbe8e331ea9e821`.
+- Regression test release/static được đồng bộ với profile v1.3 nhưng giữ nguyên privacy/PWA/encryption/destructive-action gates.
+
+### Security / Privacy
+- Checksum không đưa thêm Health/Nutrition/free-text bị loại vào safe-export package.
+- Workload bands chỉ mô tả thời lượng và nhãn gia đình cấu hình; không suy luận hiệu suất hoặc so sánh trẻ.
+- Saved-search folder/pin không lưu snippet/result payload.
+- Recovery lifecycle history không chứa passphrase, ciphertext hay payload restore.
+- Legacy module chỉ có thể thành candidate khi đủ 6 flow evidence, inactive ở mọi flow và runtime graph không còn import; v1.3 không tự động remove.
+
+### Gate
+- PR #14 chỉ được merge khi **cùng exact final head** PASS cả `verify` và Chromium E2E + Axe serious/critical.
+- Lỗi browser trước gate được xác định là assertion E2E vô tình bắt chữ `candidate` trong phần chú thích; assertion đã được sửa để kiểm trực tiếp decision của từng module, không bỏ/giảm Axe rule.
+- GitHub Pages vẫn là blocker repository setting riêng tại issue #2; không dùng trạng thái Pages để thay thế source CI gate.
+
+## [1.2.0] - 2026-09-07
 ### Added
 - Lượt 81: Safe-export wizard với preview bắt buộc trước download, chọn hồ sơ/dataset, số bản ghi và allowlist trường cụ thể.
 - Lượt 82: Workload calendar theo tháng với band phút trung tính và mô tả văn bản tương đương cho bàn phím/trình đọc màn hình.
@@ -25,7 +52,9 @@ Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từn
 - Compatibility matrix không cho phép retire khi thiếu bất kỳ flow bắt buộc hoặc module active ở bất kỳ flow nào.
 
 ### Gate
-- `verify` + Chromium E2E/Axe bắt buộc PASS trên final PR head trước merge.
+- PR #13 final head `4c169fe104bdd766c628fa5454a43c18224fc066`, CI run `34133139602`: `verify` PASS và Chromium browser E2E + Axe PASS.
+- Merged stable main commit `483a6a9e9225da2641348686bcbe8e331ea9e821`.
+- GitHub Pages vẫn là blocker riêng ở `Configure Pages`/repository setting, issue #2.
 
 ## [1.1.0] - 2026-09-07
 ### Added
