@@ -77,7 +77,7 @@ document.addEventListener('submit',async(event)=>{
     event.preventDefault();const file=new FormData(event.target).get('file'),status=document.querySelector('#v15SearchIntegrityStatus'),apply=document.querySelector('#v15ApplySearchIntegrityImport');pendingSearchIntegrityPackage=null;apply.disabled=true;
     let parsed,verification;try{parsed=JSON.parse(await file.text());verification=verifySavedSearchCriteriaPackageIntegrity(parsed);}catch{verification={valid:false,format:'invalid-json',algorithm:'SHA-256'};}
     const state=readState();state.settings=recordSavedSearchPackageVerificationReceipt(state.settings||{},verification);auditedSave(state,'saved_search_package_integrity_checked',{format:verification.format||'unknown',valid:Boolean(verification.valid)});
-    if(!verification.valid){status.textContent='Checksum/manifest không hợp lệ. Import bị khóa.';rerenderPanel('[data-v15="saved-search-integrity"]',savedSearchIntegrityPanel(readState()));return;}
+    if(!verification.valid){status.textContent='Checksum/manifest không hợp lệ. Import bị khóa.';return;}
     const preview=previewSavedSearchCriteriaImport(parsed,state.settings||{});if(!preview.valid){status.textContent='Criteria package không đúng format/version.';return;}pendingSearchIntegrityPackage=parsed;apply.disabled=false;status.textContent=`Checksum hợp lệ · ${preview.accepted} view có thể thêm · ${preview.duplicates} trùng · ${preview.strippedUnsafeDatasetEntries} dataset entry không an toàn đã loại.`;return;
   }
   if(event.target.id==='v15RecoveryReconcileForm'){
