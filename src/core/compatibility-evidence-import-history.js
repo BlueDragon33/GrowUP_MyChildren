@@ -10,7 +10,7 @@ function array(value){return Array.isArray(value)?value:[];}
 function text(value,max=80){return typeof value==='string'?value.trim().slice(0,max):'';}
 function iso(value){const d=new Date(value);return Number.isNaN(d.getTime())?new Date().toISOString():d.toISOString();}
 function key(record){return `${record.module}\u0000${record.flow}`;}
-function normalizeRecord(record={}){const module=text(record.module,80),flow=COMPATIBILITY_REQUIRED_FLOWS.includes(record.flow)?record.flow:'',date=new Date(record.at);if(!module||!flow||flow==='axe'||record.observed!==true||typeof record.active!=='boolean'||Number.isNaN(date.getTime()))return null;return {module,flow,observed:true,active:record.active,at:date.toISOString()};}
+function normalizeRecord(record={}){const value=record&&typeof record==='object'?record:{};const module=text(value.module,80),flow=COMPATIBILITY_REQUIRED_FLOWS.includes(value.flow)?value.flow:'',date=new Date(value.at);if(!module||!flow||flow==='axe'||value.observed!==true||typeof value.active!=='boolean'||Number.isNaN(date.getTime()))return null;return {module,flow,observed:true,active:value.active,at:date.toISOString()};}
 function sameRecord(a,b){return Boolean(a&&b&&a.module===b.module&&a.flow===b.flow&&a.observed===b.observed&&a.active===b.active&&a.at===b.at);}
 function historyId(at,index=0){return `compat-import-${String(at).replace(/[^0-9]/g,'').slice(0,17)}-${index}`;}
 
