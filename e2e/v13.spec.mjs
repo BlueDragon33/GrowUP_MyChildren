@@ -93,7 +93,10 @@ test('legacy retirement review retains referenced modules and mobile Axe has no 
   await createChild(page,'Retirement Review Child');
   const review=page.locator('[data-v13="retirement-review"]');
   await expect(review).toContainText('runtime còn import');
-  await expect(review).not.toContainText('candidate');
+  const decisions=await review.locator('#v13RetirementResult span').allTextContents();
+  expect(decisions.length).toBeGreaterThan(0);
+  expect(decisions.every((text)=>text.trim().endsWith('retain'))).toBe(true);
+  expect(decisions.some((text)=>/\bcandidate\b/.test(text))).toBe(false);
   await page.setViewportSize({width:390,height:844});
   await expect(page.locator('#mobileNav')).toBeVisible();
   const width=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
