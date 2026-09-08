@@ -1,8 +1,8 @@
-const CACHE = 'growup-mychildren-v13';
+const CACHE = 'growup-mychildren-v14';
 const ASSETS = [
   './', './index.html', './app.webmanifest', './assets/icon.svg',
-  './src/runtime.css', './src/styles.css', './src/enhancements.css', './src/v4.css', './src/v5.css', './src/v6.css', './src/v7.css', './src/v8.css', './src/v9.css', './src/v10.css', './src/v11.css', './src/v12.css', './src/v13.css',
-  './src/runtime-entry.js', './src/app.js', './src/enhancements.js', './src/v4.js', './src/v5.js', './src/v6.js', './src/v7.js', './src/v8.js', './src/v9-runtime.js', './src/v9-compat.js', './src/v10-runtime.js', './src/v11-runtime.js', './src/v12-runtime.js', './src/v13-runtime.js', './src/a11y.js',
+  './src/runtime.css', './src/styles.css', './src/enhancements.css', './src/v4.css', './src/v5.css', './src/v6.css', './src/v7.css', './src/v8.css', './src/v9.css', './src/v10.css', './src/v11.css', './src/v12.css', './src/v13.css', './src/v14.css',
+  './src/runtime-entry.js', './src/app.js', './src/enhancements.js', './src/v4.js', './src/v5.js', './src/v6.js', './src/v7.js', './src/v8.js', './src/v9-runtime.js', './src/v9-compat.js', './src/v10-runtime.js', './src/v11-runtime.js', './src/v12-runtime.js', './src/v13-runtime.js', './src/v14-runtime.js', './src/a11y.js',
   './src/core/model.js', './src/core/store.js', './src/core/schema.js', './src/core/analytics.js',
   './src/core/calendar.js', './src/core/attachments.js', './src/core/integrations.js', './src/core/privacy.js',
   './src/core/roles.js', './src/core/reminders.js', './src/core/backup.js', './src/core/templates.js', './src/core/report.js',
@@ -13,7 +13,7 @@ const ASSETS = [
   './src/core/domain-binding.js', './src/core/local-search.js', './src/core/recovery-inspector.js', './src/core/rc-gate.js',
   './src/core/domain-coverage.js', './src/core/family-conflicts.js', './src/core/recovery-history.js',
   './src/core/portability-map.js', './src/core/family-workload.js', './src/core/saved-search.js', './src/core/recovery-schedule.js', './src/core/runtime-compatibility.js',
-  './src/core/export-wizard.js', './src/core/export-integrity.js', './src/core/workload-calendar.js', './src/core/workload-band-settings.js', './src/core/recovery-reminder.js', './src/core/recovery-reminder-lifecycle.js', './src/core/saved-search-organizer.js', './src/core/compatibility-evidence.js', './src/core/retirement-review.js',
+  './src/core/export-wizard.js', './src/core/export-integrity.js', './src/core/export-verification-history.js', './src/core/workload-calendar.js', './src/core/workload-band-settings.js', './src/core/workload-presets.js', './src/core/recovery-reminder.js', './src/core/recovery-reminder-lifecycle.js', './src/core/recovery-calendar-bridge.js', './src/core/saved-search-organizer.js', './src/core/saved-search-package.js', './src/core/compatibility-evidence.js', './src/core/retirement-review.js', './src/core/retirement-dry-run.js',
   './src/core/insights.js'
 ];
 self.addEventListener('install', (event) => {
