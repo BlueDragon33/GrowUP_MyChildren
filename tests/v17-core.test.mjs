@@ -23,12 +23,13 @@ test('L106 receipt imports record metadata delta and undo only the last imported
   const undone=undoLastReceiptImport(applied.settings);assert.equal(undone.changed,true);assert.equal(undone.removed,1);assert.equal(undone.settings.safeExportVerificationReceipts.length,1);assert.equal(receiptImportHistory(undone.settings).length,0);
 });
 
-test('L107 preset import history records conflict strategy and undo preserves presets changed after import',()=>{
+test('L107 preset import history records source-to-resolved conflict audit and undo preserves presets changed after import',()=>{
   const source={customWorkloadPresets:[preset('same','Cuối tuần')]};
   const pkg=buildIntegrityWorkloadPresetPackage(source);
   const applied=applyWorkloadPresetImportWithHistory(source,pkg,{conflictStrategy:'rename'},'2026-09-08T04:00:00.000Z');
   assert.equal(applied.changed,true);assert.equal(applied.added,1);
-  const history=workloadPresetImportHistory(applied.settings);assert.equal(history.length,1);assert.equal(history[0].strategy,'rename');assert.equal(history[0].added.length,1);assert.equal(history[0].decisions.some((item)=>item.status==='resolved'),true);
+  const history=workloadPresetImportHistory(applied.settings);assert.equal(history.length,1);assert.equal(history[0].strategy,'rename');assert.equal(history[0].added.length,1);
+  const resolved=history[0].decisions.find((item)=>item.status==='resolved');assert.ok(resolved);assert.equal(resolved.sourceId,'same');assert.equal(resolved.sourceName,'Cuối tuần');assert.notEqual(resolved.resolvedId,resolved.sourceId);assert.notEqual(resolved.resolvedName,resolved.sourceName);assert.equal(resolved.idConflict,true);assert.equal(resolved.nameConflict,true);
   const importedId=history[0].added[0].id;
   const modified=structuredClone(applied.settings);modified.customWorkloadPresets=modified.customWorkloadPresets.map((item)=>item.id===importedId?{...item,name:'Đã chỉnh sau import'}:item);
   const undone=undoLastWorkloadPresetImport(modified);assert.equal(undone.changed,true);assert.equal(undone.removed,0);assert.equal(undone.preservedModified,1);assert.equal(undone.settings.customWorkloadPresets.some((item)=>item.id===importedId),true);assert.equal(workloadPresetImportHistory(undone.settings).length,0);
