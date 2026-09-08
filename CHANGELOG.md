@@ -2,6 +2,34 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
+## [1.5.0] - 2026-09-08
+### Added
+- Lượt 96: Verification receipt management gồm lọc theo kết quả/format/khoảng ngày, xuất package metadata-only và xóa lịch sử sau xác nhận rõ ràng.
+- Lượt 97: Custom workload preset library local-only với kiểm tra nhãn trung tính nghiêm ngặt, apply/remove, export và preview-before-import.
+- Lượt 98: Saved Search criteria package integrity dùng SHA-256 manifest, phát hiện tamper và receipt xác minh metadata-only.
+- Lượt 99: Recovery `.ics` reconciliation preview chỉ so sánh `id/date/completed/originDate`, không có thao tác apply.
+- Lượt 100: Bounded six-flow compatibility evidence store lưu metadata module/flow/active/timestamp; flow Axe chỉ được ghi sau actual Axe PASS trong browser regression.
+
+### Changed
+- App version nâng lên `1.5.0`; data schema tiếp tục v5.
+- Service-worker cache nâng lên `growup-mychildren-v15`.
+- Runtime tiếp tục đúng một JavaScript entrypoint + một CSS entrypoint; `v15-runtime.js`/`v15.css` là dependency nội bộ sau v14 và trước accessibility layer.
+- Rollback pin về stable v1.4 main commit `be5dbb338a0795dcbf6615702c0e4ebee72785d3`.
+- Axe overview gate được mở rộng để chờ và quét cả panel v15 trước khi đánh giá serious/critical violations.
+
+### Security / Privacy
+- Receipt export không chứa raw/expected/actual checksum, source file payload, child data, Health/Nutrition hoặc free-text từ gói nguồn.
+- Custom workload preset có khóa gắn trẻ hoặc ngôn ngữ score/rank/rating/percentile/thành tích/sức khỏe bị từ chối thay vì âm thầm chấp nhận.
+- Saved Search integrity không nới criteria allowlist: `results`, `snippet` và Health/Nutrition dataset vẫn bị loại trước khi persist.
+- Recovery reconciliation chỉ đọc file `.ics` người dùng chọn và không sửa reminder, không đọc/ghi lịch ngoài, không tự restore.
+- Compatibility evidence store tối đa 120 record metadata-only, dedupe theo module+flow; runtime không giả lập Axe evidence và retirement vẫn không tự xóa legacy module.
+
+### Gate
+- PR #18 exact final head `654eefa19ea4408c1bfcfe94c87faac92c33784d`, CI run `34177381954`: `verify` PASS và Chromium browser E2E + Axe serious/critical PASS; Playwright diagnostics upload PASS.
+- Không assertion hoặc Axe rule nào bị bỏ/giảm để lấy PASS.
+- Merged stable code main commit `38f129c0d66118c53af03efd4846f51b6d6674d3`; post-merge CI run `34177525276`: `verify` + `browser-e2e` đều PASS.
+- Pages run `34177525318` fail riêng tại `Configure Pages`; Upload/Deploy/Verify bị skip do repository setting issue #2, không phải source regression.
+
 ## [1.4.0] - 2026-09-08
 ### Added
 - Lượt 91: Safe-export verification receipt history tối đa 50 mục, chỉ lưu `at`, `format`, `algorithm`, `checksumResult`.
