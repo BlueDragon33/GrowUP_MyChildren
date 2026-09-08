@@ -31,31 +31,32 @@ test('v9 runtime keeps domain calendar search and recovery boundaries explicit',
   assert.doesNotMatch(recovery, /localStorage\.(?:setItem|getItem|removeItem|clear)|sessionStorage\.(?:setItem|getItem|removeItem|clear)/);
 });
 
-test('service worker caches active v16 runtime and waits for explicit update approval', async () => {
+test('service worker caches active v17 runtime and waits for explicit update approval', async () => {
   const sw = await read('sw.js');
-  for (const asset of ['runtime-entry.js','runtime.css','v15-runtime.js','v16-runtime.js','export-verification-package-integrity.js','workload-preset-package-integrity.js','saved-search-integrity-receipt-management.js','recovery-reconciliation-report.js','compatibility-evidence-package.js','v9-runtime.js','v9-compat.js']) assert.ok(sw.includes(asset));
-  assert.match(sw, /growup-mychildren-v16/);
+  for (const asset of ['runtime-entry.js','runtime.css','v15-runtime.js','v16-runtime.js','v17-runtime.js','export-verification-package-integrity.js','receipt-import-history.js','workload-preset-package-integrity.js','workload-preset-import-history.js','saved-search-integrity-receipt-management.js','saved-search-receipt-package-integrity.js','recovery-reconciliation-report.js','recovery-reconciliation-report-integrity.js','compatibility-evidence-package.js','compatibility-evidence-import-history.js','v9-runtime.js','v9-compat.js']) assert.ok(sw.includes(asset));
+  assert.match(sw, /growup-mychildren-v17/);
   assert.match(sw, /event\.data\?\.type === 'SKIP_WAITING'/);
   const installBlock = sw.match(/self\.addEventListener\('install',[\s\S]*?\n\}\);/)?.[0] || '';
   assert.doesNotMatch(installBlock, /skipWaiting/);
 });
 
-test('package and CI pin the current v1.6 release-candidate tooling profile', async () => {
+test('package and CI pin the current v1.7 release-candidate tooling profile', async () => {
   const pkg = JSON.parse(await read('package.json'));
   const ci = await read('.github/workflows/ci.yml');
   const release = await read('src/core/release.js');
   const rc = await read('src/core/rc-gate.js');
-  assert.equal(pkg.version,'1.6.0');
+  assert.equal(pkg.version,'1.7.0');
   assert.equal(pkg.engines.node,'22.x');
   assert.equal(pkg.devDependencies['@playwright/test'],'1.55.0');
   assert.equal(pkg.devDependencies['@axe-core/playwright'],'4.10.2');
-  for (const path of ['src/runtime-entry.js','src/v15-runtime.js','src/v16-runtime.js','src/core/export-verification-package-integrity.js','src/core/workload-preset-package-integrity.js','src/core/saved-search-integrity-receipt-management.js','src/core/recovery-reconciliation-report.js','src/core/compatibility-evidence-package.js']) assert.ok(pkg.scripts.check.includes(path));
+  for (const path of ['src/runtime-entry.js','src/v15-runtime.js','src/v16-runtime.js','src/v17-runtime.js','src/core/export-verification-package-integrity.js','src/core/receipt-import-history.js','src/core/workload-preset-package-integrity.js','src/core/workload-preset-import-history.js','src/core/saved-search-integrity-receipt-management.js','src/core/saved-search-receipt-package-integrity.js','src/core/recovery-reconciliation-report.js','src/core/recovery-reconciliation-report-integrity.js','src/core/compatibility-evidence-package.js','src/core/compatibility-evidence-import-history.js']) assert.ok(pkg.scripts.check.includes(path));
   assert.match(ci, /@playwright\/test@1\.55\.0/);
   assert.match(ci, /@axe-core\/playwright@4\.10\.2/);
   assert.match(ci, /node-version: 22/);
-  assert.match(release, /APP_VERSION = '1\.6\.0'/);
-  assert.match(release, /5f626b9b22cd3a6021cde2a7c9b41fd072e016d4/);
-  assert.match(rc, /growup-mychildren-v16/);
+  assert.match(release, /APP_VERSION = '1\.7\.0'/);
+  assert.match(release, /4e579b512b6fff64161350b7ca5df51b17375f1e/);
+  assert.match(rc, /growup-mychildren-v17/);
+  assert.match(rc, /4e579b512b6fff64161350b7ca5df51b17375f1e/);
 });
 
 test('existing privacy and deployment gates remain present', async () => {
