@@ -2,6 +2,34 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
+## [1.7.0] - 2026-09-08
+### Added
+- Lượt 106: Managed verification-receipt import history với bounded metadata delta và undo chỉ cho lần import gần nhất.
+- Lượt 107: Workload preset import audit ghi chiến lược `skip`/`rename`, source→resolved conflict metadata và signature-safe undo giữ lại preset đã được sửa sau import.
+- Lượt 108: Saved Search verification-receipt package có SHA-256, integrity-before-preview/apply và duplicate-safe metadata import.
+- Lượt 109: Recovery reconciliation signed report có SHA-256 và local verification receipt metadata-only; report vẫn hoàn toàn read-only đối với reminder/calendar.
+- Lượt 110: Compatibility evidence import audit/undo cho non-Axe records và freshness summary; Axe evidence nhập từ package vẫn bị loại và phải chạy lại cục bộ.
+
+### Changed
+- App version nâng lên `1.7.0`; data schema tiếp tục v5.
+- Service-worker cache nâng lên `growup-mychildren-v17`.
+- Runtime tiếp tục đúng một JavaScript entrypoint + một CSS entrypoint; `v17-runtime.js` là dependency nội bộ sau `v16-guard.js` và trước accessibility layer.
+- Rollback pin về stable v1.6 main commit `4e579b512b6fff64161350b7ca5df51b17375f1e`.
+- Ba apply form import v1.6 cũ được retirement ở runtime: `display:none !important`, `aria-hidden=true`, toàn bộ control bị disable và loại khỏi tab order để không thể bypass managed history/audit của v1.7.
+- Browser regression được mở rộng bằng `v17.spec.mjs` để chạy thao tác import/apply/undo thật thay vì chỉ unit-test core.
+
+### Security / Privacy
+- Receipt import history không lưu raw package, expected/actual checksum, child payload hay free-text nguồn.
+- Preset audit chỉ lưu metadata preset trung tính đã validation; không lưu childId, score/rank/performance/health semantics hoặc raw package.
+- Saved Search receipt import chỉ persist `at`, `format`, `algorithm`, valid/invalid và không lưu criteria/result/snippet/Health/Nutrition.
+- Recovery verification receipt chỉ giữ timestamp/format/algorithm/result/rowCount; không lưu report payload, child name, reminder title, raw ICS hoặc raw checksum.
+- Compatibility evidence history chỉ giữ non-Axe module/flow/observed/active/timestamp delta; Axe không được import/undo từ package và freshness không tự kích hoạt legacy removal.
+
+### Gate
+- PR #22 dùng stop-on-error: verify/browser failures đều chặn merge; assertion/Axe rule không bị bỏ hoặc hạ mức để lấy PASS.
+- Final merge chỉ được phép khi cùng một exact PR head PASS cả `verify` và Chromium browser E2E + Axe serious/critical, sau đó `main` phải PASS lại cả hai job.
+- GitHub Pages vẫn là deployment gate riêng bị chặn bởi repository setting issue #2; Pages không được dùng thay source gate.
+
 ## [1.6.0] - 2026-09-08
 ### Added
 - Lượt 101: Safe-export verification receipt package có SHA-256 manifest, integrity-before-preview/import và duplicate-safe metadata import.
