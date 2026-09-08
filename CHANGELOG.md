@@ -2,7 +2,7 @@
 
 Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từng bản ổn định đã/đang qua CI gate.
 
-## [1.4.0] - đang kiểm duyệt PR
+## [1.4.0] - 2026-09-08
 ### Added
 - Lượt 91: Safe-export verification receipt history tối đa 50 mục, chỉ lưu `at`, `format`, `algorithm`, `checksumResult`.
 - Lượt 92: Workload preset cục bộ gồm Gọn/Tiêu chuẩn/Mở rộng và nút reset mặc định; toàn bộ nhãn/tham số trung tính.
@@ -25,8 +25,10 @@ Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từn
 - Retirement dry-run luôn `removalsApplied:false`, `safeToRemoveAutomatically:false`; actual removal bắt buộc là commit riêng qua full exact-head gate.
 
 ### Gate
-- `verify` + Chromium E2E/Axe serious/critical bắt buộc PASS trên cùng exact final PR head trước merge.
-- GitHub Pages tiếp tục là blocker repository setting riêng tại issue #2 và không thay thế source-release gate.
+- PR #16 exact final head `dd78abd320779b0f1f37fce74b3d32ccb7ce6272`, CI run `34175696805`: `verify` PASS và Chromium browser E2E + Axe serious/critical PASS; Playwright diagnostics upload PASS.
+- Không assertion hoặc Axe rule nào bị bỏ/giảm để lấy PASS.
+- Merged stable main commit `612a9a8783a6bf02617f2725a4f53c7bb6114b9c`; post-merge CI run `34175820489`: `verify` + `browser-e2e` đều PASS.
+- Pages run `34175820460` fail riêng tại `Configure Pages`; Upload/Deploy/Verify bị skip do repository setting issue #2, không phải source regression.
 
 ## [1.3.0] - 2026-09-08
 ### Added
@@ -96,7 +98,7 @@ Các thay đổi đáng chú ý của GrowUP My Children được ghi theo từn
 - Rollback về v1.0.0 commit `605c4948cbcc60164d8a34ba220558d39d8eeeb5`.
 
 ### Gate
-- PR #12 final head `ca3d6579d665ee7f5aef3ab9500277173247c8a3`: `verify` PASS và Chromium E2E/Axe PASS.
+- PR #12 final head `ca3d6579d665ee7f5aef98e8e71b452d0d0915a1`: `verify` PASS và Chromium E2E/Axe PASS.
 - Main merge commit `359ea99f041654108c517d5c16be5e819932bb64`: CI hậu merge `verify` + `browser-e2e` đều PASS.
 - GitHub Pages vẫn fail riêng ở `Configure Pages` do repository setting, issue #2.
 
