@@ -16,7 +16,7 @@ test('starting screen has no serious or critical automated accessibility violati
   await expectNoBlockingA11yIssues(page,'starting screen');
 });
 
-test('populated development overview including v8-v15 tools has no serious or critical automated accessibility violations', async ({ page }) => {
+test('populated development overview including v8-v16 tools has no serious or critical automated accessibility violations', async ({ page }) => {
   await page.goto('/');
   await page.locator('#emptyAddChild').click();
   await page.locator('#childForm input[name="name"]').fill('Bé Audit');
@@ -33,5 +33,6 @@ test('populated development overview including v8-v15 tools has no serious or cr
   for (const panel of ['export-integrity','workload-bands','saved-search-organizer','recovery-lifecycle','retirement-review']) await expect(page.locator(`[data-v13="${panel}"]`)).toBeVisible();
   for (const panel of ['verification-history','workload-presets','saved-search-package','recovery-calendar','retirement-dry-run']) await expect(page.locator(`[data-v14="${panel}"]`)).toBeVisible();
   for (const panel of ['receipt-management','preset-library','saved-search-integrity','recovery-reconcile','compatibility-store']) await expect(page.locator(`[data-v15="${panel}"]`)).toBeVisible();
-  await expectNoBlockingA11yIssues(page,'populated overview with v8-v15 tools');
+  for (const panel of ['receipt-integrity','preset-integrity','saved-search-receipts','recovery-report','evidence-package']) await expect(page.locator(`[data-v16="${panel}"]`)).toBeVisible();
+  await expectNoBlockingA11yIssues(page,'populated overview with v8-v16 tools');
 });
