@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import test from "node:test";
 
@@ -8,6 +9,7 @@ function source(path) {
 
 const service = source("control-service/local-control.mjs");
 const gateway = source("control/local-device-gateway.js");
+const runtimeEntry = source("src/runtime-entry.js");
 const html = source("index.html");
 const contract = JSON.parse(source("control/application-management.contract.json"));
 
@@ -23,12 +25,20 @@ test("GrowUP local control stays metadata-only", () => {
   }
 });
 
-test("GrowUP loopback gateway uses a P-256 fingerprint and only runs on loopback", () => {
+test("GrowUP loopback gateway uses a P-256 fingerprint without adding a second HTML entrypoint", () => {
   assert.match(gateway, /namedCurve: "P-256"/);
   assert.match(gateway, /SHA-256/);
   assert.match(gateway, /LOOPBACK_HOSTS/);
   assert.match(gateway, /127\.0\.0\.1:3007/);
-  assert.match(html, /control\/local-device-gateway\.js/);
+  assert.doesNotMatch(html, /control\/local-device-gateway\.js/);
+  assert.match(runtimeEntry, /loopbackHosts/);
+  assert.match(runtimeEntry, /import\('\.\.\/control\/local-device-gateway\.js'\)/);
+});
+
+test("new local control files are valid JavaScript", () => {
+  for (const path of ["control-service/local-control.mjs", "control/local-device-gateway.js"]) {
+    execFileSync(process.execPath, ["--check", new URL(`../${path}`, import.meta.url).pathname], { stdio: "pipe" });
+  }
 });
 
 test("production contract remains pending until a real deployed backend exists", () => {
