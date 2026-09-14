@@ -19,3 +19,8 @@ import './v17-runtime.js';
 import './v18-runtime.js';
 import './v19-runtime.js';
 import './a11y.js';
+
+const loopbackHosts = new Set(['127.0.0.1', 'localhost', '::1', '[::1]']);
+if (typeof window !== 'undefined' && loopbackHosts.has(window.location.hostname)) {
+  void import('../control/local-device-gateway.js');
+}
