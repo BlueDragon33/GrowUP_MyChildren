@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 
+function futureDate(days=2) {
+  const date=new Date();
+  date.setUTCDate(date.getUTCDate()+days);
+  return date.toISOString().slice(0,10);
+}
+
 async function createChild(page,name='Bé v0.8') {
   await page.goto('/');
   await page.locator('#emptyAddChild').click();
@@ -13,7 +19,7 @@ async function createChild(page,name='Bé v0.8') {
 test('family planning stores time commitments without ranking fields', async ({ page }) => {
   await createChild(page,'Bé Lịch');
   const form=page.locator('#v8FamilyPlanForm');
-  await form.locator('input[name="date"]').fill('2026-09-10');
+  await form.locator('input[name="date"]').fill(futureDate(2));
   await form.locator('input[name="title"]').fill('Bơi ếch');
   await form.locator('input[name="minutes"]').fill('75');
   await form.locator('button[type="submit"]').click();
