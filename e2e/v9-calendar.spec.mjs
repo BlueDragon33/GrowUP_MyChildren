@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 
+function futureDate(days=2) {
+  const date=new Date();
+  date.setUTCDate(date.getUTCDate()+days);
+  return date.toISOString().slice(0,10);
+}
+
 async function createChild(page){
   await page.goto('/');
   await page.locator('#emptyAddChild').click();
@@ -11,15 +17,16 @@ async function createChild(page){
 
 test('family plan ICS contains only selected item metadata',async({page})=>{
   await createChild(page);
-  await page.evaluate(()=>{
+  const planDates=[futureDate(2),futureDate(3)];
+  await page.evaluate(([selectedDate,otherDate])=>{
     const state=JSON.parse(localStorage.getItem('growup_mychildren_v1'));
     const childId=state.children[0].id;
     state.settings={...(state.settings||{}),familyPlanItems:[
-      {id:'plan-a',childId,date:'2026-09-10',title:'Selected activity',minutes:45},
-      {id:'plan-b',childId,date:'2026-09-11',title:'Other activity',minutes:30}
+      {id:'plan-a',childId,date:selectedDate,title:'Selected activity',minutes:45},
+      {id:'plan-b',childId,date:otherDate,title:'Other activity',minutes:30}
     ]};
     localStorage.setItem('growup_mychildren_v1',JSON.stringify(state));
-  });
+  },planDates);
   await page.reload();
   const form=page.locator('#v9FamilyIcsForm');
   await expect(form).toBeVisible();
