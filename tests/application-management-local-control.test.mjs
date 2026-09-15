@@ -32,6 +32,8 @@ test("GrowUP loopback gateway uses a P-256 fingerprint without adding a second H
   assert.match(gateway, /127\.0\.0\.1:3007/);
   assert.doesNotMatch(html, /control\/local-device-gateway\.js/);
   assert.match(runtimeEntry, /loopbackHosts/);
+  assert.match(runtimeEntry, /localControlRuntimePort = '3006'/);
+  assert.match(runtimeEntry, /window\.location\.port === localControlRuntimePort/);
   assert.match(runtimeEntry, /import\('\.\.\/control\/local-device-gateway\.js'\)/);
 });
 
