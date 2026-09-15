@@ -21,6 +21,11 @@ import './v19-runtime.js';
 import './a11y.js';
 
 const loopbackHosts = new Set(['127.0.0.1', 'localhost', '::1', '[::1]']);
-if (typeof window !== 'undefined' && loopbackHosts.has(window.location.hostname)) {
+const localControlRuntimePort = '3006';
+if (
+  typeof window !== 'undefined'
+  && loopbackHosts.has(window.location.hostname)
+  && window.location.port === localControlRuntimePort
+) {
   void import('../control/local-device-gateway.js');
 }
