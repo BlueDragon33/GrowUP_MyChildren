@@ -40,9 +40,9 @@
     "privacyLocalFirst": "available",
     "pwa": "available",
     "localAudit": "available",
-    "deviceRegistry": "local-only",
-    "deviceGateway": "local-only",
-    "adminApi": "local-only",
+    "deviceRegistry": "missing",
+    "deviceGateway": "missing",
+    "adminApi": "missing",
     "remoteAuditApi": "missing",
     "configurationReviewApi": "missing"
   },
