@@ -1,11 +1,32 @@
 {
+  "schema": "application-management.contract/v1",
+  "protocol": "growup-local-first-v1",
   "contractVersion": 1,
   "application": {
     "id": "growup-mychildren",
     "name": "GrowUP MyChildren",
+    "shortName": "GrowUP",
+    "category": "Gia đình",
     "tier": "client",
-    "repository": "BlueDragon33/GrowUP_MyChildren"
+    "repository": "BlueDragon33/GrowUP_MyChildren",
+    "version": "1.9.0"
   },
+  "capabilities": {
+    "webLaunch": true,
+    "deviceRegistry": false,
+    "deviceApproval": false,
+    "deviceBlock": false,
+    "deviceUnblock": false,
+    "deviceEditPermission": false,
+    "deviceIdempotentCommands": false,
+    "optimisticConcurrency": false,
+    "sessions": false,
+    "audit": false,
+    "contentReview": false,
+    "payments": false,
+    "reports": true
+  },
+  "endpoints": {},
   "boundary": {
     "independentRuntime": true,
     "pwaOffline": true,
@@ -19,9 +40,9 @@
     "privacyLocalFirst": "available",
     "pwa": "available",
     "localAudit": "available",
-    "deviceRegistry": "missing",
-    "deviceGateway": "missing",
-    "adminApi": "missing",
+    "deviceRegistry": "local-only",
+    "deviceGateway": "local-only",
+    "adminApi": "local-only",
     "remoteAuditApi": "missing",
     "configurationReviewApi": "missing"
   },
@@ -48,6 +69,7 @@
     "local backup contents"
   ],
   "policy": {
+    "remoteAdminReady": false,
     "applicationManagementMayInventOperationsWithoutBackend": false,
     "applicationManagementMayReadChildData": false,
     "applicationManagementMayReadHealthData": false
