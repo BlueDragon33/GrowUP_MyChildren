@@ -217,6 +217,20 @@ function commandResult(payload) {
   return { status: 200, payload: result };
 }
 
+function deletionResult(payload) {
+  if (payload.registryInstanceId !== state.registryInstanceId) return { status: 409, payload: { error: "GROWUP_REGISTRY_INSTANCE_MISMATCH" } };
+  const deviceId = safeText(payload.deviceId, 64);
+  if (!validDeviceId(deviceId) || payload.expectedStatus !== "pending") return { status: 409, payload: { error: "DEVICE_STATE_CONFLICT" } };
+  const device = state.devices.find(item => item.deviceId === deviceId);
+  if (!device) return { status: 200, payload: { ok: true, verified: true, verifiedStatus: "deleted", alreadyAbsent: true } };
+  if (device.status !== "pending") return { status: 409, payload: { error: "DEVICE_STATE_CONFLICT" } };
+  if (payload.confirmDeviceCode !== device.deviceCode) return { status: 409, payload: { error: "DEVICE_CODE_MISMATCH" } };
+  state.devices = state.devices.filter(item => item.deviceId !== deviceId);
+  addAudit("pending_device_deleted", device.deviceCode);
+  saveState();
+  return { status: 200, payload: { ok: true, verified: true, verifiedStatus: "deleted", deviceId } };
+}
+
 const server = createServer(async (request, response) => {
   const url = new URL(request.url || "/", `http://${host}:${port}`);
   const cors = corsHeaders(request);
@@ -261,11 +275,13 @@ const server = createServer(async (request, response) => {
       endpoints: {
         devices: "/api/control/devices",
         deviceCommands: "/api/control/device-commands",
+        deviceDeletions: "/api/control/device-deletions",
         audit: "/api/control/audit",
       },
       capabilities: {
         deviceRegistry: true,
         deviceApproval: true,
+        deviceDelete: true,
         deviceIdempotentCommands: true,
         optimisticConcurrency: true,
         privacySafeAudit: true,
@@ -283,6 +299,12 @@ const server = createServer(async (request, response) => {
 
   if (request.method === "GET" && url.pathname === "/api/control/audit") {
     json(response, 200, { registryInstanceId: state.registryInstanceId, audit: state.audit });
+    return;
+  }
+
+  if (request.method === "POST" && url.pathname === "/api/control/device-deletions") {
+    try { const result = deletionResult(await body(request)); json(response, result.status, result.payload); }
+    catch (error) { json(response, 400, { error: error instanceof Error ? error.message : "INVALID_PAYLOAD" }); }
     return;
   }
 
