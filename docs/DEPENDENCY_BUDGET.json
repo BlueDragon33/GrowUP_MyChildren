@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "BlueDragon33/GrowUP_MyChildren",
+  "blueprintLevel": "B5",
+  "constitutionPolicy": "blueprint-os:universal-century-grade@1.2.0",
+  "defaultPrinciple": "LOCAL_CHILD_STATE_OFFLINE_FIRST_PRIVATE_OPTIONAL_SYNC",
+  "canonicalDataRule": "Child/family/health/portfolio/private-note state remains user-controlled local data by default. External services may only receive explicitly approved, purpose-limited projections or encrypted backup artifacts.",
+  "dependencies": [
+    {
+      "id": "static-pwa",
+      "provider": "Browser static PWA + Service Worker",
+      "runtimeClass": "LOCAL_CORE",
+      "costClass": "local-free",
+      "purpose": [
+        "core app shell",
+        "offline use",
+        "family/child workflows"
+      ],
+      "dataBoundary": "user device",
+      "canonicalState": "allowed for core local application state according to schema",
+      "degradedBehavior": "baseline path",
+      "exportPath": [
+        "JSON export",
+        "encrypted backup package where applicable"
+      ],
+      "replacementPath": "equivalent static/local runtime preserving schema and offline contracts"
+    },
+    {
+      "id": "browser-storage",
+      "provider": "Browser localStorage / local core stores",
+      "runtimeClass": "LOCAL_CORE",
+      "costClass": "local-free",
+      "purpose": [
+        "child profiles",
+        "learning/health/activity/nutrition/habits/portfolio/roadmap state"
+      ],
+      "dataBoundary": "user device",
+      "canonicalState": "current v1 canonical persistence according to local schema",
+      "degradedBehavior": "baseline path",
+      "exportPath": [
+        "user-controlled JSON export",
+        "encrypted backup"
+      ],
+      "replacementPath": "versioned IndexedDB/OPFS/local database migration if needed"
+    },
+    {
+      "id": "local-advisor",
+      "provider": "Rules-based local advisor",
+      "runtimeClass": "LOCAL_CORE",
+      "costClass": "local-free",
+      "purpose": [
+        "development guidance without external AI"
+      ],
+      "dataBoundary": "user device",
+      "canonicalState": "advisory only; cannot create hidden child ranking authority",
+      "degradedBehavior": "baseline local feature",
+      "exportPath": [
+        "none required beyond app data"
+      ],
+      "replacementPath": "another local rules engine"
+    },
+    {
+      "id": "chatgpt-ai",
+      "provider": "ChatGPT / external AI",
+      "runtimeClass": "OPTIONAL_INTELLIGENCE",
+      "costClass": "user-selected",
+      "purpose": [
+        "optional explanation/planning assistance outside or through explicit future integration"
+      ],
+      "dataBoundary": "only explicit user-selected context; no automatic child-data upload",
+      "canonicalState": "forbidden for child ranking, profile truth, health truth, assessment truth, or family authority",
+      "degradedBehavior": "all core app features continue with local advisor/no AI",
+      "exportPath": [
+        "user-created artifacts only if explicitly saved"
+      ],
+      "replacementPath": "local advisor, no-AI workflow, or another optional provider",
+      "status": "not-required"
+    },
+    {
+      "id": "application-management",
+      "provider": "Application Management",
+      "runtimeClass": "OPTIONAL_SYNC",
+      "costClass": "local-or-user-hosted",
+      "purpose": [
+        "device/access/readiness coordination only"
+      ],
+      "dataBoundary": "management metadata allowlist only; no child/health/private-note/portfolio payload",
+      "canonicalState": "forbidden for child domain data",
+      "degradedBehavior": "GrowUP standalone/local-first mode remains usable",
+      "exportPath": [
+        "management metadata only"
+      ],
+      "replacementPath": "standalone mode or compatible control adapter"
+    },
+    {
+      "id": "github-pages",
+      "provider": "GitHub Pages",
+      "runtimeClass": "OPTIONAL_PUBLISH",
+      "costClass": "free-tier",
+      "purpose": [
+        "static public/hosted PWA delivery"
+      ],
+      "dataBoundary": "static application assets only",
+      "canonicalState": "forbidden for mutable child state",
+      "degradedBehavior": "local/static checked-out PWA remains usable",
+      "exportPath": [
+        "git repository/static build"
+      ],
+      "replacementPath": "any static host or local file server"
+    },
+    {
+      "id": "google-drive-backup",
+      "provider": "Google Drive",
+      "runtimeClass": "OPTIONAL_SYNC",
+      "costClass": "free-tier-or-user-plan",
+      "purpose": [
+        "user-initiated encrypted backup storage",
+        "cross-device backup transport"
+      ],
+      "dataBoundary": "encrypted backup package or explicitly sanitized export only",
+      "canonicalState": "forbidden as sole child/family state authority",
+      "degradedBehavior": "local app remains fully usable; backup deferred",
+      "exportPath": [
+        "encrypted backup file",
+        "JSON export when user explicitly chooses"
+      ],
+      "replacementPath": "local file/USB/another file-storage adapter",
+      "status": "planned-optional"
+    },
+    {
+      "id": "google-sheets",
+      "provider": "Google Sheets",
+      "runtimeClass": "OPTIONAL_SYNC",
+      "costClass": "free-tier-or-user-plan",
+      "purpose": [
+        "optional non-sensitive aggregate planning/reporting projection only"
+      ],
+      "dataBoundary": "no raw child profile, health/nutrition logs, private notes, portfolio evidence, assessment details, or backup content",
+      "canonicalState": "forbidden",
+      "degradedBehavior": "no effect on core app",
+      "exportPath": [
+        "CSV only for explicitly approved non-sensitive projection"
+      ],
+      "replacementPath": "local reports/export",
+      "status": "discouraged-for-child-data"
+    },
+    {
+      "id": "google-apps-script",
+      "provider": "Google Apps Script",
+      "runtimeClass": "OPTIONAL_SYNC",
+      "costClass": "free-tier-or-user-plan",
+      "purpose": [
+        "optional lightweight backup/sync coordination only"
+      ],
+      "dataBoundary": "least-privilege sanitized/encrypted payloads; no raw child/private data",
+      "canonicalState": "forbidden",
+      "degradedBehavior": "manual/local backup remains available",
+      "exportPath": [
+        "portable sync journal/protocol"
+      ],
+      "replacementPath": "manual sync or another adapter",
+      "status": "planned-optional"
+    }
+  ],
+  "forbiddenRemoteData": [
+    "raw child profiles in Google Sheets",
+    "raw health or nutrition logs in Google Sheets",
+    "private free-text notes in Google Sheets",
+    "portfolio evidence in Google Sheets",
+    "unencrypted child backup artifacts in Drive",
+    "child ranking or inferred sensitive labels sent automatically to AI",
+    "Application Management receiving child or health domain payload"
+  ],
+  "acceptance": {
+    "sovereigntyGateRequires": [
+      "core app remains usable offline/standalone",
+      "child/family canonical state remains local by default",
+      "cloud backup of sensitive data is encrypted before upload",
+      "no optional provider is required for app startup",
+      "export/restore path remains user-controlled",
+      "AI remains advisory and non-canonical"
+    ],
+    "productionAuthority": "separate-explicit-release-gate"
+  }
+}
