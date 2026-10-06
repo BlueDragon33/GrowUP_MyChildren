@@ -1,5 +1,12 @@
 # Shared Development / Release Policy
 
+Universal Constitution: `blueprint-os:universal-century-grade@1.2.0`
+
+Dependency budget: `docs/DEPENDENCY_BUDGET.json`
+
+GrowUP applies a B5 local-child-data rule: cloud/AI/sync providers are optional adapters; raw child/private/health data is never moved to generic cloud productivity tools merely for convenience.
+
+
 ## Default now: Development Live Mode
 
 This repository is in the shared BlueDragon33 Development Live Mode.
