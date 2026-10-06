@@ -32,3 +32,4 @@ jobs:
           test -f sw.js
           node --check sw.js
           node -e "JSON.parse(require('fs').readFileSync('app.webmanifest','utf8'))"
+          node --test tests/constitution-1.2-sovereignty.test.mjs
