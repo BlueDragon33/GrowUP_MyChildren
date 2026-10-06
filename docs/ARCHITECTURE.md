@@ -29,6 +29,19 @@ GrowUP My Children is a longitudinal family application for ages 3–18. It comb
 14. Backup / restore
 
 ## 4. Data ownership & privacy
+
+Universal Constitution: `blueprint-os:universal-century-grade@1.2.0`.
+
+Dependency budget: `docs/DEPENDENCY_BUDGET.json`.
+
+Operational-sovereignty rules:
+- child/family/health/private-note/portfolio state stays local by default;
+- Google Drive may store only encrypted backup packages or explicitly sanitized exports;
+- Google Sheets must not receive raw child profiles, health/nutrition logs, private notes, portfolio evidence or backup payloads;
+- Google Apps Script is optional coordination only and never child-data authority;
+- external AI is optional intelligence and cannot become child ranking, health truth or profile authority;
+- cloud/provider failure must not prevent standalone/offline core use.
+
 Child and health data are sensitive. v1 deliberately avoids cloud sync and third-party analytics. A later backend must implement authentication, family roles, encryption in transit/at rest, auditable access, data export/deletion, and separate permissions for health data.
 
 ## 5. Future service boundaries
