@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "policyId": "blueprint-os:universal-century-grade",
+  "policyVersion": "1.2.0",
+  "projectId": "project:growup-mychildren",
+  "blueprintLevel": "B5",
+  "posture": "LOCAL_CANONICAL_CHILD_DATA",
+  "complianceState": "MIGRATION_REQUIRED",
+  "canonicalAuthority": {
+    "childRecords": "application-owned-local-or-purpose-built-trusted-store",
+    "developmentalTruth": "human-caregiver-and-qualified-professional-records-not-ai",
+    "ai": "optional-advisory-intelligence-only",
+    "remoteBackup": "optional-encrypted-copy-only"
+  },
+  "dependencies": [
+    {
+      "id": "browser-local-pwa",
+      "class": "LOCAL_CORE",
+      "costClass": "local-free",
+      "purpose": "core family records, notes and offline-capable viewing/editing",
+      "dataBoundary": "user-controlled device/browser",
+      "offlineBehavior": "core family workflows remain available",
+      "exitPath": "portable encrypted export/import"
+    },
+    {
+      "id": "remote-hosting-or-db",
+      "class": "OPTIONAL_PUBLISH",
+      "costClass": "free-tier-or-optional-paid",
+      "purpose": "optional cross-device/hosted access",
+      "dataBoundary": "child/family state only when explicitly configured and protected",
+      "offlineBehavior": "local core remains available; remote sync pauses",
+      "exitPath": "export/migrate to another trusted store"
+    },
+    {
+      "id": "google-drive-or-equivalent",
+      "class": "OPTIONAL_SYNC",
+      "costClass": "free-or-optional-paid",
+      "purpose": "optional encrypted backup and cross-device restore",
+      "dataBoundary": "encrypted archive or intentionally sanitized export only",
+      "offlineBehavior": "no effect on local core",
+      "exitPath": "portable encrypted files"
+    },
+    {
+      "id": "google-sheets",
+      "class": "FORBIDDEN_FOR_RAW_SENSITIVE_STATE",
+      "costClass": "n/a",
+      "purpose": "only sanitized aggregate/report projections if explicitly enabled",
+      "dataBoundary": "no raw child records, birth/identity details, health notes, credentials or secrets",
+      "offlineBehavior": "not part of core runtime",
+      "exitPath": "local report/export"
+    },
+    {
+      "id": "ai-provider",
+      "class": "OPTIONAL_INTELLIGENCE",
+      "costClass": "optional",
+      "purpose": "summarization, planning, educational suggestions and non-authoritative assistance",
+      "dataBoundary": "minimum necessary user-selected context",
+      "offlineBehavior": "records and core planning remain usable without AI",
+      "exitPath": "provider can be disabled/replaced"
+    }
+  ],
+  "forbidden": [
+    "ai-owned-child-development-truth",
+    "plaintext-child-record-backup-in-drive",
+    "raw-child-or-health-records-in-google-sheets",
+    "secrets-or-session-tokens-in-drive-or-sheets",
+    "mandatory-paid-provider-for-basic-family-record-access",
+    "silent-cloud-only-canonical-copy-without-export"
+  ],
+  "migrationBlockers": [
+    "Prove encrypted portable export/restore.",
+    "Define conflict-safe optional sync without silent overwrite.",
+    "Document consent/data-boundary rules for any AI or remote sync use."
+  ],
+  "productionAuthority": "separate-explicit-release-gate"
+}
