@@ -57,3 +57,12 @@ Workflow `.github/workflows/pages.yml` triển khai từ `main`. Repository cầ
 
 ## Quy tắc phát triển
 Không sửa thử nghiệm trực tiếp trên `main`. Mỗi đợt thay đổi lớn đi qua feature branch + pull request + CI gate. Không merge khi `verify` hoặc Chromium E2E/Axe còn lỗi.
+
+
+## Operational sovereignty
+
+This repository adopts **Universal Constitution 1.2.0** at Blueprint Level **B5**.
+
+Child and family records are sensitive canonical state. Core record/planning workflows must remain local-first or have an explicit degraded mode. AI is advisory only. Google Drive or equivalent may be used only for optional encrypted backup/restore; Google Sheets must not contain raw child, health, identity, credential or session data.
+
+Canonical dependency posture: `.blueprint/dependency-budget.json`.
