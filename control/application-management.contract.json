@@ -24,7 +24,11 @@
     "audit": false,
     "contentReview": false,
     "payments": false,
-    "reports": true
+    "reports": true,
+    "deviceAutoApproval": false,
+    "deviceAutoBlockPending": false,
+    "automationIdempotentCommands": false,
+    "automationOptimisticConcurrency": false
   },
   "endpoints": {},
   "boundary": {
@@ -44,12 +48,17 @@
     "deviceGateway": "missing",
     "adminApi": "missing",
     "remoteAuditApi": "missing",
-    "configurationReviewApi": "missing"
+    "configurationReviewApi": "missing",
+    "automationPolicy": "local-control-only"
   },
   "requiredDeviceContract": {
     "namespace": "GU-",
     "identity": "p256-public-key-fingerprint",
-    "classes": ["desktop", "tablet", "phone"],
+    "classes": [
+      "desktop",
+      "tablet",
+      "phone"
+    ],
     "accessAndEditSeparated": true
   },
   "controlPlaneAllowlist": [

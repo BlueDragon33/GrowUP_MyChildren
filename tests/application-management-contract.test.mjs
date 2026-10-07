@@ -15,3 +15,13 @@ test("GrowUP contract self-classifies without exposing child or health data", ()
   assert.equal(contract.capabilities.deviceRegistry, false);
   assert.equal(contract.capabilities.webLaunch, true);
 });
+
+
+test("Production static contract does not overclaim local-only automation", () => {
+  assert.equal(contract.capabilities.deviceAutoApproval, false);
+  assert.equal(contract.capabilities.deviceAutoBlockPending, false);
+  assert.equal(contract.capabilities.automationIdempotentCommands, false);
+  assert.equal(contract.capabilities.automationOptimisticConcurrency, false);
+  assert.equal(contract.readiness.automationPolicy, "local-control-only");
+  assert.equal(contract.policy.remoteAdminReady, false);
+});

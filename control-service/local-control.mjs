@@ -27,6 +27,13 @@ function freshState() {
     registryInstanceId: `growup-local-${randomUUID()}`,
     devices: [],
     commands: {},
+    automation: {
+      autoApproveDevices: false,
+      autoBlockPendingDevices: false,
+      pendingBlockAfterHours: 168,
+      revision: 1,
+    },
+    automationCommands: {},
     audit: [],
   };
 }
@@ -37,6 +44,13 @@ function loadState() {
     const parsed = JSON.parse(readFileSync(stateFile, "utf8"));
     if (!parsed || parsed.schemaVersion !== 1 || !Array.isArray(parsed.devices)) return freshState();
     parsed.commands ||= {};
+    parsed.automation ||= {
+      autoApproveDevices: false,
+      autoBlockPendingDevices: false,
+      pendingBlockAfterHours: 168,
+      revision: 1,
+    };
+    parsed.automationCommands ||= {};
     parsed.audit ||= [];
     parsed.registryInstanceId ||= `growup-local-${randomUUID()}`;
     return parsed;
@@ -149,15 +163,15 @@ function registerDevice(payload) {
       deviceCode: deviceCode(deviceId),
       deviceClass,
       label: safeText(payload.label, 80) || `GrowUP ${deviceClass}`,
-      status: "pending",
-      accessAllowed: false,
+      status: state.automation.autoApproveDevices === true ? "approved" : "pending",
+      accessAllowed: state.automation.autoApproveDevices === true,
       editAllowed: false,
       createdAt: timestamp,
       lastSeenAt: timestamp,
       appVersion: safeText(payload.appVersion, 32) || "local",
     };
     state.devices.push(device);
-    addAudit("device_registered", device.deviceCode, { deviceClass });
+    addAudit(state.automation.autoApproveDevices === true ? "device_auto_approved" : "device_registered", device.deviceCode, { deviceClass });
   } else {
     device.deviceClass = deviceClass;
     device.label = safeText(payload.label, 80) || device.label;
@@ -170,6 +184,159 @@ function registerDevice(payload) {
 
 function validCommandId(value) {
   return typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
+}
+
+function normalizeHours(value) {
+  const hours = Math.round(Number(value));
+  return hours === 24 || hours === 168 || hours === 720 ? hours : null;
+}
+
+function publicAutomation() {
+  return {
+    autoApproveDevices: state.automation.autoApproveDevices === true,
+    autoBlockPendingDevices: state.automation.autoBlockPendingDevices === true,
+    pendingBlockAfterHours: normalizeHours(state.automation.pendingBlockAfterHours) || 168,
+    revision: Number(state.automation.revision) || 1,
+  };
+}
+
+function enforcePendingAutomation() {
+  const policy = publicAutomation();
+  if (!policy.autoBlockPendingDevices) return 0;
+  const cutoff = Date.now() - policy.pendingBlockAfterHours * 60 * 60 * 1000;
+  let blocked = 0;
+  for (const device of state.devices) {
+    if (device.status !== "pending") continue;
+    const createdAt = Date.parse(device.createdAt || "");
+    if (!Number.isFinite(createdAt) || createdAt > cutoff) continue;
+    device.status = "blocked";
+    device.accessAllowed = false;
+    device.editAllowed = false;
+    blocked += 1;
+    addAudit("pending_device_auto_blocked", device.deviceCode, {
+      pendingBlockAfterHours: policy.pendingBlockAfterHours,
+      registryPreserved: true,
+    });
+  }
+  if (blocked) saveState();
+  return blocked;
+}
+
+function automationCommandResult(payload) {
+  const commandId = safeText(payload.commandId, 36).toLowerCase();
+  if (!validCommandId(commandId)) return { status: 400, payload: { error: "INVALID_COMMAND_ID" } };
+  if (payload.operation !== "set-device-automation") return { status: 400, payload: { error: "INVALID_AUTOMATION_OPERATION" } };
+
+  const expected = payload.expected && typeof payload.expected === "object" && !Array.isArray(payload.expected) ? payload.expected : {};
+  const desired = payload.desired && typeof payload.desired === "object" && !Array.isArray(payload.desired) ? payload.desired : {};
+  const desiredKeys = ["autoApproveDevices", "autoBlockPendingDevices", "pendingBlockAfterHours"].filter((key) => key in desired);
+  if (!desiredKeys.length) return { status: 400, payload: { error: "AUTOMATION_DESIRED_EMPTY" } };
+  if ("autoApproveDevices" in desired && typeof desired.autoApproveDevices !== "boolean") return { status: 400, payload: { error: "INVALID_AUTO_APPROVE" } };
+  if ("autoBlockPendingDevices" in desired && typeof desired.autoBlockPendingDevices !== "boolean") return { status: 400, payload: { error: "INVALID_AUTO_BLOCK" } };
+  if ("pendingBlockAfterHours" in desired && !normalizeHours(desired.pendingBlockAfterHours)) return { status: 400, payload: { error: "INVALID_AUTO_BLOCK_THRESHOLD" } };
+
+  const canonical = JSON.stringify({
+    operation: "set-device-automation",
+    expected: {
+      ...("autoApproveDevices" in desired ? { autoApproveDevices: expected.autoApproveDevices } : {}),
+      ...("autoBlockPendingDevices" in desired ? { autoBlockPendingDevices: expected.autoBlockPendingDevices } : {}),
+      ...("pendingBlockAfterHours" in desired ? { pendingBlockAfterHours: normalizeHours(expected.pendingBlockAfterHours) } : {}),
+    },
+    desired: {
+      ...("autoApproveDevices" in desired ? { autoApproveDevices: desired.autoApproveDevices } : {}),
+      ...("autoBlockPendingDevices" in desired ? { autoBlockPendingDevices: desired.autoBlockPendingDevices } : {}),
+      ...("pendingBlockAfterHours" in desired ? { pendingBlockAfterHours: normalizeHours(desired.pendingBlockAfterHours) } : {}),
+    },
+  });
+  const payloadHash = createHash("sha256").update(canonical).digest("hex");
+  const prior = state.automationCommands[commandId];
+  if (prior) {
+    if (prior.payloadHash !== payloadHash) return { status: 409, payload: { error: "COMMAND_ID_PAYLOAD_MISMATCH" } };
+    return { status: 200, payload: { ok: true, commandId, replayed: true, automation: publicAutomation() } };
+  }
+
+  const current = publicAutomation();
+  for (const key of desiredKeys) {
+    if (key === "pendingBlockAfterHours") {
+      const expectedHours = normalizeHours(expected.pendingBlockAfterHours);
+      if (!expectedHours || expectedHours !== current.pendingBlockAfterHours) {
+        return { status: 409, payload: { error: "AUTOMATION_STATE_CONFLICT", automation: current } };
+      }
+    } else if (typeof expected[key] !== "boolean" || expected[key] !== current[key]) {
+      return { status: 409, payload: { error: "AUTOMATION_STATE_CONFLICT", automation: current } };
+    }
+  }
+
+  const next = {
+    autoApproveDevices: "autoApproveDevices" in desired ? desired.autoApproveDevices === true : current.autoApproveDevices,
+    autoBlockPendingDevices: "autoBlockPendingDevices" in desired ? desired.autoBlockPendingDevices === true : current.autoBlockPendingDevices,
+    pendingBlockAfterHours: "pendingBlockAfterHours" in desired ? normalizeHours(desired.pendingBlockAfterHours) : current.pendingBlockAfterHours,
+  };
+
+  state.automation = {
+    ...next,
+    revision: current.revision + 1,
+  };
+  state.automationCommands[commandId] = {
+    payloadHash,
+    completedAt: nowIso(),
+  };
+  if (Object.keys(state.automationCommands).length > 500) {
+    state.automationCommands = Object.fromEntries(Object.entries(state.automationCommands).slice(-300));
+  }
+  addAudit("automation_policy_updated", "automation", { commandId, desired: next });
+  enforcePendingAutomation();
+  saveState();
+  const readback = publicAutomation();
+  for (const key of desiredKeys) {
+    const expectedValue = key === "pendingBlockAfterHours" ? next.pendingBlockAfterHours : next[key];
+    if (readback[key] !== expectedValue) return { status: 502, payload: { error: "AUTOMATION_READBACK_MISMATCH" } };
+  }
+  return { status: 200, payload: { ok: true, commandId, replayed: false, automation: readback } };
+}
+
+function universalContractManifest() {
+  return {
+    schema: "application-management.contract/v1",
+    protocol: "growup-local-control-v1",
+    application: {
+      id: "growup-mychildren",
+      name: "GrowUP MyChildren",
+      category: "Gia đình",
+      version: "local",
+    },
+    capabilities: {
+      deviceRegistry: true,
+      deviceApproval: true,
+      deviceBlock: true,
+      deviceUnblock: false,
+      deviceEditPermission: false,
+      deviceIdempotentCommands: true,
+      optimisticConcurrency: true,
+      deviceAutoApproval: true,
+      deviceAutoBlockPending: true,
+      automationIdempotentCommands: true,
+      automationOptimisticConcurrency: true,
+      sessions: false,
+      audit: true,
+      contentReview: false,
+      payments: false,
+      reports: true,
+      webLaunch: false,
+    },
+    policy: {
+      remoteAdminReady: true,
+      credentialRequired: true,
+      localFirst: true,
+      productionRuntimeReady: false,
+    },
+    endpoints: {
+      status: "/api/control/status",
+      devices: "/api/control/devices",
+      deviceCommands: "/api/control/device-commands",
+      automation: "/api/control/automation",
+    },
+  };
 }
 
 function commandResult(payload) {
@@ -246,6 +413,11 @@ const server = createServer(async (request, response) => {
     return;
   }
 
+  if (request.method === "GET" && url.pathname === "/api/application-management/contract") {
+    json(response, 200, universalContractManifest());
+    return;
+  }
+
   if (request.method === "POST" && url.pathname === "/api/device/register") {
     const origin = String(request.headers.origin || "");
     if (!allowedOrigins.has(origin)) {
@@ -275,6 +447,7 @@ const server = createServer(async (request, response) => {
       endpoints: {
         devices: "/api/control/devices",
         deviceCommands: "/api/control/device-commands",
+        automation: "/api/control/automation",
         deviceDeletions: "/api/control/device-deletions",
         audit: "/api/control/audit",
       },
@@ -284,6 +457,10 @@ const server = createServer(async (request, response) => {
         deviceDelete: true,
         deviceIdempotentCommands: true,
         optimisticConcurrency: true,
+        deviceAutoApproval: true,
+        deviceAutoBlockPending: true,
+        automationIdempotentCommands: true,
+        automationOptimisticConcurrency: true,
         privacySafeAudit: true,
         childRecordsExposed: false,
         healthRecordsExposed: false,
@@ -293,7 +470,23 @@ const server = createServer(async (request, response) => {
   }
 
   if (request.method === "GET" && url.pathname === "/api/control/devices") {
+    enforcePendingAutomation();
     json(response, 200, { registryInstanceId: state.registryInstanceId, devices: state.devices.map(publicDevice) });
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/api/control/automation") {
+    json(response, 200, { automation: publicAutomation() });
+    return;
+  }
+
+  if (request.method === "POST" && url.pathname === "/api/control/automation") {
+    try {
+      const result = automationCommandResult(await body(request));
+      json(response, result.status, result.payload);
+    } catch (error) {
+      json(response, 400, { error: error instanceof Error ? error.message : "INVALID_PAYLOAD" });
+    }
     return;
   }
 

@@ -51,3 +51,19 @@ test("production contract remains pending until a real deployed backend exists",
   assert.equal(contract.boundary.childRecordsInControlPlane, false);
   assert.equal(contract.boundary.healthRecordsInControlPlane, false);
 });
+
+
+test("GrowUP local control publishes Universal automation without changing Production privacy readiness", () => {
+  assert.match(server, /schema: "application-management\.contract\/v1"/);
+  assert.match(server, /\/api\/application-management\/contract/);
+  assert.match(server, /deviceAutoApproval: true/);
+  assert.match(server, /deviceAutoBlockPending: true/);
+  assert.match(server, /automationIdempotentCommands: true/);
+  assert.match(server, /automationOptimisticConcurrency: true/);
+  assert.match(server, /\/api\/control\/automation/);
+  assert.match(server, /AUTOMATION_STATE_CONFLICT/);
+  assert.match(server, /COMMAND_ID_PAYLOAD_MISMATCH/);
+  assert.match(server, /AUTOMATION_READBACK_MISMATCH/);
+  assert.match(server, /device_auto_approved/);
+  assert.match(server, /pending_device_auto_blocked/);
+});
