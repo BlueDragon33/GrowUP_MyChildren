@@ -1,0 +1,44 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const read=p=>JSON.parse(readFileSync(p,"utf8"));
+const adoption=read(".blueprint/constitution-adoption.json");
+const budget=read(".blueprint/dependency-budget.json");
+const audit=read("docs/BLUEPRINT-13-SOURCE-AUDIT.json");
+const seven=["structural-capacity","architectural-longevity","product-elegance","premium-usability","long-term-durability","fortress-security-disaster-resilience","operational-sovereignty-dependency-minimization"];
+test("active 1.3 policy B-level ownership and seven pillars must remain enforced",()=>{
+ assert.equal(adoption.policyId,"blueprint-os:universal-century-grade");
+ assert.equal(adoption.policyVersion,"1.3.0");
+ assert.equal(adoption.projectId,"project:growup-mychildren");
+ assert.equal(adoption.blueprintLevel,"B5");
+ assert.deepEqual(adoption.inheritedPillars,seven);
+ assert.deepEqual(adoption.disabledPillars,[]);
+ assert.deepEqual(adoption.constitutionalWaivers,[]);
+ assert.equal(adoption.productionAuthority,"separate-explicit-release-gate");
+});
+test("critical local control/privacy is canonical, optional external providers stay optional",()=>{
+ assert.equal(budget.policyVersion,adoption.policyVersion);
+ assert.equal(budget.projectId,adoption.projectId);
+ assert.equal(budget.posture,"LOCAL_CANONICAL_CHILD_DATA");
+ const core=budget.dependencies.find(x=>x.id==="browser-local-pwa");
+ assert.equal(core?.class,"LOCAL_CORE");
+ const rules=new Set(budget.forbidden);
+ for(const id of ["plaintext-child-record-backup-in-drive","raw-child-or-health-records-in-google-sheets","ai-owned-child-development-truth"])assert.ok(rules.has(id),id);
+ for(const d of budget.dependencies)assert.ok(d.offlineBehavior&&d.exitPath,"no offline escape: "+d.id);
+ assert.equal(budget.complianceState,"MIGRATION_REQUIRED");
+ assert.equal(budget.blueprintLevel,"B5");
+ assert.ok(budget.migrationBlockers.length>=3);
+ assert.equal(budget.dependencies.find(x=>x.id==="google-sheets")?.class,"FORBIDDEN_FOR_RAW_SENSITIVE_STATE");
+});
+test("source audit cannot forge offline, protected B5 review or product acceptance",()=>{
+ assert.equal(audit.status,"SOURCE_CANDIDATE_REQUIRES_RUNTIME_EVIDENCE");
+ assert.equal(audit.centralAuthority.activeVersion,adoption.policyVersion);
+ assert.equal(audit.centralAuthority.ratificationUnchanged,true);
+ assert.equal(audit.truth.offlineCore,"UNVERIFIED");
+ assert.equal(audit.truth.sensitiveDataRoundtrip,"UNVERIFIED");
+ assert.equal(audit.truth.independentProtectedReview,"PENDING");
+ assert.equal(audit.truth.productPass,false);
+ assert.equal(audit.truth.productionAuthorized,false);
+ assert.equal(audit.truth.noRemotePublish,true);
+ assert.ok(audit.unresolvedEvidence.length>=3);
+});
