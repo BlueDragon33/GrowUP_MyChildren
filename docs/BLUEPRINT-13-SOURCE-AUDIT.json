@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "governed-app-source-audit",
+  "status": "SOURCE_CANDIDATE_REQUIRES_RUNTIME_EVIDENCE",
+  "projectId": "project:growup-mychildren",
+  "level": "B5",
+  "baseCommit": "43694c2b911400e04511bd1239b8a747501de90b",
+  "centralAuthority": {
+    "policy": "blueprint-os:universal-century-grade",
+    "activeVersion": "1.3.0",
+    "ratificationUnchanged": true
+  },
+  "domainBoundaries": {
+    "canonicalPosture": "LOCAL_CANONICAL_CHILD_DATA",
+    "coreId": "browser-local-pwa",
+    "coreClass": "LOCAL_CORE",
+    "forbidden": [
+      "plaintext-child-record-backup-in-drive",
+      "raw-child-or-health-records-in-google-sheets",
+      "ai-owned-child-development-truth"
+    ]
+  },
+  "unresolvedEvidence": [
+    "Real offline sensitive child record save/reload and encrypted export/restore",
+    "Independent B5 child-data privacy, integrity and caregiver UX review",
+    "Verified online providers are optional and never hold raw child records by default"
+  ],
+  "retainedMigrationRequired": true,
+  "truth": {
+    "offlineCore": "UNVERIFIED",
+    "sensitiveDataRoundtrip": "UNVERIFIED",
+    "sourcePolicyCheckedOnly": true,
+    "independentProtectedReview": "PENDING",
+    "productPass": false,
+    "productionAuthorized": false,
+    "noRemotePublish": true
+  }
+}
