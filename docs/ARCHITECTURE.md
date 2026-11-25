@@ -30,7 +30,7 @@ GrowUP My Children is a longitudinal family application for ages 3–18. It comb
 
 ## 4. Data ownership & privacy
 
-Universal Constitution: `blueprint-os:universal-century-grade@1.2.0`.
+Universal Constitution: `blueprint-os:universal-century-grade@1.3.0`.
 
 Dependency budget: `docs/DEPENDENCY_BUDGET.json`.
 

@@ -14,7 +14,7 @@ jobs:
     uses: BlueDragon33/Software-Blueprint-Hub/.github/workflows/constitution-compliance.yml@main
 
   dependency-sovereignty:
-    name: Constitution 1.2 child-data dependency sovereignty
+    name: GrowUP child-data dependency sovereignty
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -28,11 +28,11 @@ jobs:
           adoption = json.loads(Path(".blueprint/constitution-adoption.json").read_text())
           budget = json.loads(Path(".blueprint/dependency-budget.json").read_text())
 
-          assert adoption["policyVersion"] == "1.2.0"
           assert "operational-sovereignty-dependency-minimization" in adoption["inheritedPillars"]
-          assert budget["policyVersion"] == "1.2.0"
+          assert budget["policyId"] == adoption["policyId"]
+          assert budget["policyVersion"] == adoption["policyVersion"]
           assert budget["projectId"] == adoption["projectId"] == "project:growup-mychildren"
-          assert budget["blueprintLevel"] == "B5"
+          assert budget["blueprintLevel"] == adoption["blueprintLevel"] == "B5"
           assert budget["posture"] == "LOCAL_CANONICAL_CHILD_DATA"
           assert budget["complianceState"] == "MIGRATION_REQUIRED"
           assert budget["productionAuthority"] == "separate-explicit-release-gate"
@@ -53,5 +53,5 @@ jobs:
           assert "silent-cloud-only-canonical-copy-without-export" in forbidden
           assert "ai-owned-child-development-truth" in forbidden
 
-          print("GrowUP_MyChildren Constitution 1.2 dependency sovereignty: PASS")
+          print("GrowUP child-data sovereignty source checks passed")
           PY
