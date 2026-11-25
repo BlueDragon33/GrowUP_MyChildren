@@ -61,7 +61,7 @@ Không sửa thử nghiệm trực tiếp trên `main`. Mỗi đợt thay đổi
 
 ## Operational sovereignty
 
-This repository adopts **Universal Constitution 1.2.0** at Blueprint Level **B5**.
+The source contract inherits **Universal Constitution 1.3.0** at Blueprint Level **B5**. The dependency budget tracks the remaining encrypted restore, sync conflict and consent requirements.
 
 Child and family records are sensitive canonical state. Core record/planning workflows must remain local-first or have an explicit degraded mode. AI is advisory only. Google Drive or equivalent may be used only for optional encrypted backup/restore; Google Sheets must not contain raw child, health, identity, credential or session data.
 
